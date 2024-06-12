@@ -1,13 +1,13 @@
 from flask import Flask, request, render_template, jsonify
 from flask_pymongo import PyMongo
-from datetime import datetime
+from datetime import datetime, date
 
 import logging
 
 app = Flask(__name__)
 
 # Replace the following with your MongoDB connection URI
-app.config["MONGO_URI"] = "mongodb+srv://tarunjanapati7:%4074run54I@educationdetaails.x0zu5mp.mongodb.net/?retryWrites=true&w=majority&appName=EducationDetaails"
+app.config["MONGO_URI"] = "mongodb+srv://tarunjanapati7:%4074run54I@educationdetaails.x0zu5mp.mongodb.net/client_details?retryWrites=true&w=majority&appName=EducationDetaails"
 mongo = PyMongo(app)
 
 # Configure logging
@@ -21,12 +21,14 @@ def submit_form():
             birthdate_str = data['birthdate']
             birthdate = datetime.strptime(birthdate_str, '%Y-%m-%d').date()
             
+            birthdate_datetime = datetime.combine(birthdate, datetime.min.time())
+            
             client_details = {
                 "name": data['name'],
                 "address": data['address'],
                 "zip_code": data['zip'],
                 "phone": data['phone'],
-                "birthdate": birthdate,
+                "birthdate": birthdate_datetime,
                 "age": int(data['age']),
                 "sex": data['sex'],
                 "race": data['race'],
