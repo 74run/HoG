@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Heaven of Grace</title>
+    <style>
+        /* Add your custom CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .client-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .client-table th, .client-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .client-table th {
+            background-color: #f2f2f2;
+        }
+
+        .client-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .view-client-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    
+        .view-client-button:hover {
+            background-color: #45a049;
+        }
+
+        .navbar {
+            background-color: white;
+            overflow: hidden;
+        }
+    
+        .navbar-logo {
+            float: left;
+            padding: 10px 15px;
+        }
+    
+        .navbar-logo img {
+            height: 80px; /* Adjust the height as needed */
+            width: auto;
+        }
+    
+        .navbar-links {
+            float: right;
+            padding: 20px 15px;
+        }
+    
+        .navbar-links a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+        }
+    
+        .navbar-links a:hover {
+            background-color: #555;
+        }
+    
+        .container {
+            padding-top: 80px; /* Adjust according to navbar height */
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="navbar-logo">
+            <img src="./static/HoG.PNG" alt="Logo">
+        </div>
+        <div class="navbar-links">
+            <a href="/" class="view-client-button">Back to Form</a> 
+        </div>
+    </div>
+
+
+    
+
+<div class="client-data-container">
+<h1>Client Details</h1>
+<table class="client-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Zip Code</th>
+            <th>Phone</th>
+            <th>Birthdate</th>
+            <th>Age</th>
+            <th>Sex</th>
+            <th>Race</th>
+            <th>Ethnicity</th>
+            <th>Marital Status</th>
+            <th>Length of Stay at Previous Address</th>
+            <th>Country of Origin</th>
+            <th>Times in Shelter</th>
+            <th>Length of Stay at Previous Shelter</th>
+            <th>Number of Children</th>
+            <th>Education Level</th>
+            <th>Employment Status</th>
+            <th>Income Amount at Intake</th>
+            <th>Income Source at Intake</th>
+            <th>Income Amount at Exit</th>
+            <th>Income 1 Year from Exit</th>
+            <th>Weeks Pregnant</th>
+            <th>Prenatal Care Prior to Intake</th>
+            <th>Father Involvement</th>
+            <th>Father's Education Level</th>
+            <th>Father's Occupation</th>
+            <th>Father's Income</th>
+            <th>Domestic Violence Survivor</th>
+            <th>Veteran Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for client in clients %}
+        <tr>
+            <td>{{ client.name }}</td>
+            <td>{{ client.address }}</td>
+            <td>{{ client.zip_code }}</td>
+            <td>{{ client.phone }}</td>
+            <td>{{ client.birthdate }}</td>
+            <td>{{ client.age }}</td>
+            <td>{{ client.sex }}</td>
+            <td>{{ client.race }}</td>
+            <td>{{ client.ethnicity }}</td>
+            <td>{{ client.marital_status }}</td>
+            <td>{{ client.length_stay_previous_address }}</td>
+            <td>{{ client.country_of_origin }}</td>
+            <td>{{ client.times_in_shelter }}</td>
+            <td>{{ client.length_stay_previous_shelter }}</td>
+            <td>{{ client.number_of_children }}</td>
+            <td>{{ client.education_level }}</td>
+            <td>{{ client.employment_status }}</td>
+            <td>{{ client.income_amount_intake }}</td>
+            <td>{{ client.income_source_intake }}</td>
+            <td>{{ client.income_amount_exit }}</td>
+            <td>{{ client.income_1_year_exit }}</td>
+            <td>{{ client.weeks_pregnant }}</td>
+            <td>{{ client.prenatal_care_prior_intake }}</td>
+            <td>{{ client.father_involvement }}</td>
+            <td>{{ client.father_education_level }}</td>
+            <td>{{ client.father_occupation }}</td>
+            <td>{{ client.father_income }}</td>
+            <td>{{ client.domestic_violence_survivor }}</td>
+            <td>{{ client.veteran_status }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+</body>
+</html>
