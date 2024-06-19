@@ -29,6 +29,7 @@
         .client-table tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+
         .view-client-button {
             position: absolute;
             top: 20px;
@@ -40,7 +41,7 @@
             border-radius: 4px;
             cursor: pointer;
         }
-    
+
         .view-client-button:hover {
             background-color: #45a049;
         }
@@ -49,36 +50,68 @@
             background-color: white;
             overflow: hidden;
         }
-    
+
         .navbar-logo {
             float: left;
             padding: 10px 15px;
         }
-    
+
         .navbar-logo img {
             height: 80px; /* Adjust the height as needed */
             width: auto;
         }
-    
+
         .navbar-links {
             float: right;
             padding: 20px 15px;
         }
-    
+
         .navbar-links a {
             color: white;
             text-decoration: none;
             padding: 10px;
         }
-    
+
         .navbar-links a:hover {
             background-color: #555;
         }
-    
+
         .container {
             padding-top: 80px; /* Adjust according to navbar height */
             max-width: 800px;
             margin: 0 auto;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 500px; /* Adjust the max height as needed */
+        }
+
+        .search-bar {
+            margin-top: 20px;
+        }
+
+        .search-bar input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .delete-button {
+            background-color: #f44336;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .delete-button:hover {
+            background-color: #d32f2f;
         }
     </style>
 </head>
@@ -89,85 +122,136 @@
             <img src="./static/HoG.PNG" alt="Logo">
         </div>
         <div class="navbar-links">
-            <a href="/" class="view-client-button">Back to Form</a> 
+            <a href="/" class="view-client-button">Back to Form</a>
         </div>
     </div>
 
+    <div class="container">
+        <h1>Client Details</h1>
+        <div class="search-bar">
+            <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search for clients..">
+        </div>
+        <div class="table-container">
+            <table class="client-table" id="clientTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Zip Code</th>
+                        <th>Phone</th>
+                        <th>Birthdate</th>
+                        <th>Age</th>
+                        <th>Sex</th>
+                        <th>Race</th>
+                        <th>Ethnicity</th>
+                        <th>Marital Status</th>
+                        <th>Length of Stay at Previous Address</th>
+                        <th>Country of Origin</th>
+                        <th>Times in Shelter</th>
+                        <th>Length of Stay at Previous Shelter</th>
+                        <th>Number of Children</th>
+                        <th>Education Level</th>
+                        <th>Employment Status</th>
+                        <th>Income Amount at Intake</th>
+                        <th>Income Source at Intake</th>
+                        <th>Income Amount at Exit</th>
+                        <th>Income 1 Year from Exit</th>
+                        <th>Weeks Pregnant</th>
+                        <th>Prenatal Care Prior to Intake</th>
+                        <th>Father Involvement</th>
+                        <th>Father's Education Level</th>
+                        <th>Father's Occupation</th>
+                        <th>Father's Income</th>
+                        <th>Domestic Violence Survivor</th>
+                        <th>Veteran Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for client in clients %}
+                    <tr>
+                        <td>{{ client.name }}</td>
+                        <td>{{ client.address }}</td>
+                        <td>{{ client.zip_code }}</td>
+                        <td>{{ client.phone }}</td>
+                        <td>{{ client.birthdate }}</td>
+                        <td>{{ client.age }}</td>
+                        <td>{{ client.sex }}</td>
+                        <td>{{ client.race }}</td>
+                        <td>{{ client.ethnicity }}</td>
+                        <td>{{ client.marital_status }}</td>
+                        <td>{{ client.length_stay_previous_address }}</td>
+                        <td>{{ client.country_of_origin }}</td>
+                        <td>{{ client.times_in_shelter }}</td>
+                        <td>{{ client.length_stay_previous_shelter }}</td>
+                        <td>{{ client.number_of_children }}</td>
+                        <td>{{ client.education_level }}</td>
+                        <td>{{ client.employment_status }}</td>
+                        <td>{{ client.income_amount_intake }}</td>
+                        <td>{{ client.income_source_intake }}</td>
+                        <td>{{ client.income_amount_exit }}</td>
+                        <td>{{ client.income_1_year_exit }}</td>
+                        <td>{{ client.weeks_pregnant }}</td>
+                        <td>{{ client.prenatal_care_prior_intake }}</td>
+                        <td>{{ client.father_involvement }}</td>
+                        <td>{{ client.father_education_level }}</td>
+                        <td>{{ client.father_occupation }}</td>
+                        <td>{{ client.father_income }}</td>
+                        <td>{{ client.domestic_violence_survivor }}</td>
+                        <td>{{ client.veteran_status }}</td>
+                        <td>
+                            <button class="delete-button" data-id="{{ client._id }}" onclick="deleteClient(this)">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    
+    <script>
+        function searchTable() {
+            var input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toLowerCase();
+            table = document.getElementById("clientTable");
+            tr = table.getElementsByTagName("tr");
 
-<div class="client-data-container">
-<h1>Client Details</h1>
-<table class="client-table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Zip Code</th>
-            <th>Phone</th>
-            <th>Birthdate</th>
-            <th>Age</th>
-            <th>Sex</th>
-            <th>Race</th>
-            <th>Ethnicity</th>
-            <th>Marital Status</th>
-            <th>Length of Stay at Previous Address</th>
-            <th>Country of Origin</th>
-            <th>Times in Shelter</th>
-            <th>Length of Stay at Previous Shelter</th>
-            <th>Number of Children</th>
-            <th>Education Level</th>
-            <th>Employment Status</th>
-            <th>Income Amount at Intake</th>
-            <th>Income Source at Intake</th>
-            <th>Income Amount at Exit</th>
-            <th>Income 1 Year from Exit</th>
-            <th>Weeks Pregnant</th>
-            <th>Prenatal Care Prior to Intake</th>
-            <th>Father Involvement</th>
-            <th>Father's Education Level</th>
-            <th>Father's Occupation</th>
-            <th>Father's Income</th>
-            <th>Domestic Violence Survivor</th>
-            <th>Veteran Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for client in clients %}
-        <tr>
-            <td>{{ client.name }}</td>
-            <td>{{ client.address }}</td>
-            <td>{{ client.zip_code }}</td>
-            <td>{{ client.phone }}</td>
-            <td>{{ client.birthdate }}</td>
-            <td>{{ client.age }}</td>
-            <td>{{ client.sex }}</td>
-            <td>{{ client.race }}</td>
-            <td>{{ client.ethnicity }}</td>
-            <td>{{ client.marital_status }}</td>
-            <td>{{ client.length_stay_previous_address }}</td>
-            <td>{{ client.country_of_origin }}</td>
-            <td>{{ client.times_in_shelter }}</td>
-            <td>{{ client.length_stay_previous_shelter }}</td>
-            <td>{{ client.number_of_children }}</td>
-            <td>{{ client.education_level }}</td>
-            <td>{{ client.employment_status }}</td>
-            <td>{{ client.income_amount_intake }}</td>
-            <td>{{ client.income_source_intake }}</td>
-            <td>{{ client.income_amount_exit }}</td>
-            <td>{{ client.income_1_year_exit }}</td>
-            <td>{{ client.weeks_pregnant }}</td>
-            <td>{{ client.prenatal_care_prior_intake }}</td>
-            <td>{{ client.father_involvement }}</td>
-            <td>{{ client.father_education_level }}</td>
-            <td>{{ client.father_occupation }}</td>
-            <td>{{ client.father_income }}</td>
-            <td>{{ client.domestic_violence_survivor }}</td>
-            <td>{{ client.veteran_status }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-</div>
+            for (i = 1; i < tr.length; i++) {
+                tr[i].style.display = "none";
+                td = tr[i].getElementsByTagName("td");
+                for (j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        function deleteClient(button) {
+            var clientId = button.getAttribute("data-id");
+
+            // Send DELETE request to Flask backend
+            fetch(`/delete_client/${clientId}`, {
+                method: 'DELETE',
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Remove the row from the table on successful deletion
+                    var row = button.parentNode.parentNode;
+                    row.parentNode.removeChild(row);
+                    console.log('Client deleted successfully');
+                } else {
+                    console.error('Error deleting client');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+
 </body>
 </html>

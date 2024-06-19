@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, jsonify
-from flask_pymongo import PyMongo
+from flask_pymongo import PyMongo, ObjectId
 from datetime import datetime, date
 
 import logging
@@ -18,41 +18,39 @@ def submit_form():
     if request.method == "POST":
         try:
             data = request.form
-            birthdate_str = data['birthdate']
-            birthdate = datetime.strptime(birthdate_str, '%Y-%m-%d').date()
-            
-            birthdate_datetime = datetime.combine(birthdate, datetime.min.time())
-            
+            birthdate_str = data.get('birthdate', None)
+            birthdate = datetime.strptime(birthdate_str, '%Y-%m-%d').date() if birthdate_str else None
+
             client_details = {
-                "name": data['name'],
-                "address": data['address'],
-                "zip_code": data['zip'],
-                "phone": data['phone'],
-                "birthdate": birthdate_datetime,
-                "age": int(data['age']),
-                "sex": data['sex'],
-                "race": data['race'],
-                "ethnicity": data['ethnicity'],
-                "marital_status": data['marital_status'],
-                "length_stay_previous_address": data['length_stay_previous_address'],
-                "country_of_origin": data['country_of_origin'],
-                "times_in_shelter": int(data['times_in_shelter']),
-                "length_stay_previous_shelter": data['length_stay_previous_shelter'],
-                "number_of_children": int(data['number_of_children']),
-                "education_level": data['education_level'],
-                "employment_status": data['employment_status'],
-                "income_amount_intake": float(data['income_amount_intake']),
-                "income_source_intake": data['income_source_intake'],
-                "income_amount_exit": float(data['income_amount_exit']),
-                "income_1_year_exit": float(data['income_1_year_exit']),
-                "weeks_pregnant": int(data['weeks_pregnant']),
-                "prenatal_care_prior_intake": data['prenatal_care_prior_intake'],
-                "father_involvement": data['father_involvement'],
-                "father_education_level": data['father_education_level'],
-                "father_occupation": data['father_occupation'],
-                "father_income": float(data['father_income']),
-                "domestic_violence_survivor": data['domestic_violence_survivor'],
-                "veteran_status": data['veteran_status']
+                "name": data.get('name', ''),
+                "address": data.get('address', ''),
+                "zip_code": data.get('zip', ''),
+                "phone": data.get('phone', ''),
+                "birthdate": birthdate,
+                "age": int(data.get('age', 0)) if data.get('age') else None,
+                "sex": data.get('sex', ''),
+                "race": data.get('race', ''),
+                "ethnicity": data.get('ethnicity', ''),
+                "marital_status": data.get('marital_status', ''),
+                "length_stay_previous_address": data.get('length_stay_previous_address', ''),
+                "country_of_origin": data.get('country_of_origin', ''),
+                "times_in_shelter": int(data.get('times_in_shelter', 0)) if data.get('times_in_shelter') else None,
+                "length_stay_previous_shelter": data.get('length_stay_previous_shelter', ''),
+                "number_of_children": int(data.get('number_of_children', 0)) if data.get('number_of_children') else None,
+                "education_level": data.get('education_level', ''),
+                "employment_status": data.get('employment_status', ''),
+                "income_amount_intake": float(data.get('income_amount_intake', 0)) if data.get('income_amount_intake') else None,
+                "income_source_intake": data.get('income_source_intake', ''),
+                "income_amount_exit": float(data.get('income_amount_exit', 0)) if data.get('income_amount_exit') else None,
+                "income_1_year_exit": float(data.get('income_1_year_exit', 0)) if data.get('income_1_year_exit') else None,
+                "weeks_pregnant": int(data.get('weeks_pregnant', 0)) if data.get('weeks_pregnant') else None,
+                "prenatal_care_prior_intake": data.get('prenatal_care_prior_intake', ''),
+                "father_involvement": data.get('father_involvement', ''),
+                "father_education_level": data.get('father_education_level', ''),
+                "father_occupation": data.get('father_occupation', ''),
+                "father_income": float(data.get('father_income', 0)) if data.get('father_income') else None,
+                "domestic_violence_survivor": data.get('domestic_violence_survivor', ''),
+                "veteran_status": data.get('veteran_status', '')
             }
 
             mongo.db.client_details.insert_one(client_details)
@@ -74,6 +72,25 @@ def client_details():
         return render_template('client_details.html', clients=clients_list)
     except Exception as e:
         logging.error(f"Error retrieving client details: {e}")
+        return jsonify({'error': str(e)}), 500
+    
+    
+@app.route('/delete_client/<client_id>', methods=['DELETE'])
+def delete_client(client_id):
+    try:
+        # Convert client_id string to ObjectId
+        obj_id = ObjectId(client_id)
+        
+        # Delete client document from MongoDB
+        result = mongo.db.client_details.delete_one({'_id': obj_id})
+        
+        if result.deleted_count == 1:
+            logging.debug(f"Deleted client with id: {client_id}")
+            return jsonify({'message': 'Client deleted successfully'}), 200
+        else:
+            return jsonify({'error': 'Client not found'}), 404
+    except Exception as e:
+        logging.error(f"Error deleting client: {e}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
