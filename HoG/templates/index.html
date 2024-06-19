@@ -167,7 +167,7 @@
     </div>
 
   
-<form id="clientForm" action="/submit_form" method="POST">
+<form id="clientForm" action="/submit_form">
     <h2> <strong>Client Information</strong></h2>
     <label for="name">Name:</label>
     <input type="text" id="name" name="name">
@@ -282,27 +282,19 @@
         <option value="no">No</option>
     </select>
 
-    <input type="submit" id="submitBtn" value="submit" onclick="">
+    <input type="submit" id="submitBtn" value="next" onclick="">
 </form>
 
 <script>
     document.getElementById('clientForm').addEventListener('submit', function(event) {
         event.preventDefault();
         let formData = new FormData(this);
-        fetch('/submit_form', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data.message);
-            alert(data.message);
-            this.reset();
-        })
-        .catch(error => {
-            console.error('Error submitting form:', error);
-            alert('Error submitting form: ' + error.message);
-        });
+
+        // Store form data in session storage
+        sessionStorage.setItem('clientFormData', JSON.stringify(Object.fromEntries(formData)));
+
+        // Redirect to the health details page
+        window.location.href = '/submit_form';
     });
 </script>
 

@@ -5,28 +5,28 @@ from datetime import datetime, date
 import logging
 
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
-# Replace the following with your MongoDB connection URI
+# Replace the following with r MongoDB connection URI
 app.config["MONGO_URI"] = "mongodb+srv://tarunjanapati7:%4074run54I@educationdetaails.x0zu5mp.mongodb.net/client_details?retryWrites=true&w=majority&appName=EducationDetaails"
 mongo = PyMongo(app)
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
 
-@app.route('/submit_form', methods=['POST'])
-def submit_form():
+@app.route('/submit_all_data', methods=['POST'])
+def submit_all_data():
     if request.method == "POST":
         try:
-            data = request.form
-            birthdate_str = data.get('birthdate', None)
-            birthdate = datetime.strptime(birthdate_str, '%Y-%m-%d').date() if birthdate_str else None
+            data = request.get_json()
 
+            # Extract client details from the received JSON
             client_details = {
                 "name": data.get('name', ''),
                 "address": data.get('address', ''),
                 "zip_code": data.get('zip', ''),
                 "phone": data.get('phone', ''),
-                "birthdate": birthdate,
+                "birthdate": datetime.strptime(data.get('birthdate', ''), '%Y-%m-%d').date() if data.get('birthdate') else None,
                 "age": int(data.get('age', 0)) if data.get('age') else None,
                 "sex": data.get('sex', ''),
                 "race": data.get('race', ''),
@@ -53,11 +53,31 @@ def submit_form():
                 "veteran_status": data.get('veteran_status', '')
             }
 
+            # Extract health details from the received JSON
+            health_details = {
+                "highbp": data.get("highbp", ""),
+                "diabetes": data.get("diabetes", ""),
+                "heartdisease": data.get("heartdisease", ""),
+                "livebirths": data.get("livebirths", ""),
+                "miscarriages": int(data.get("miscarriages", 0)) if data.get("miscarriages") else None,
+                "diagdisabilty": data.get("diagdisabilty", ""),
+                "rehosp": data.get("rehosp", ""),
+                "doula": data.get("doula", ""),
+                "highriskpreg": data.get("highriskpreg", ""),
+                "vaginalbirth": data.get("vaginalbirth", "")
+            }
+
+            # Insert client details and health details into MongoDB
             mongo.db.client_details.insert_one(client_details)
+            mongo.db.health_details.insert_one(health_details)
             return jsonify({'message': 'Form submitted successfully'}), 200
         except Exception as e:
             logging.error(f"Error submitting form: {e}")
             return jsonify({'error': str(e)}), 500
+
+@app.route('/submit_form')
+def submit_route():
+    return render_template('health_details.html')
 
 @app.route('/')
 def index():
@@ -67,9 +87,11 @@ def index():
 def client_details():
     try:
         clients = mongo.db.client_details.find()
+        health_info = mongo.db.client_details.find()
         clients_list = list(clients)  # Convert to list to pass to the template
+        health_info_list = list(health_info)
         logging.debug(f"Retrieved {len(clients_list)} clients")
-        return render_template('client_details.html', clients=clients_list)
+        return render_template('client_details.html', clients=clients_list, health_info=health_info_list)
     except Exception as e:
         logging.error(f"Error retrieving client details: {e}")
         return jsonify({'error': str(e)}), 500
@@ -92,6 +114,6 @@ def delete_client(client_id):
     except Exception as e:
         logging.error(f"Error deleting client: {e}")
         return jsonify({'error': str(e)}), 500
-
+      
 if __name__ == '__main__':
     app.run(debug=True)

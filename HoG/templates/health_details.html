@@ -6,9 +6,19 @@
 <title>The Heaven of Grace</title>
 <style>
 
-    /* Add your custom CSS styles here */
-    body {
+body {
         font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     form {
         max-width: 600px;
@@ -16,29 +26,71 @@
     }
     label {
         display: block;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
+        font-weight: bold;
     }
     input[type="text"],
     input[type="number"],
     input[type="date"],
     select {
-        width: 100%;
-        padding: 8px;
+        width: calc(100% - 0px);
+        padding: 10px;
         margin-bottom: 15px;
         border: 1px solid #ccc;
-        border-radius: 4px;
+        border-radius: 20px;
         box-sizing: border-box;
+        font-size: 14px;
     }
     input[type="submit"] {
         background-color: #4CAF50;
         color: white;
-        padding: 10px 20px;
+        padding: 12px 20px;
         border: none;
         border-radius: 4px;
         cursor: pointer;
+        font-size: 16px;
+    }
+
+    input[type="text"] {
+    
+        border-radius: 20px;
+  
+        font-size: 16px;
+    }
+
+    input[type="number"] {
+    
+        border-radius: 20px;
+  
+        font-size: 16px;
+    }
+
+    input[type="date"] {
+    
+        border-radius: 20px;
+  
+        font-size: 16px;
     }
     input[type="submit"]:hover {
         background-color: #45a049;
+    }
+    select {
+        width: 100%;
+    }
+
+    input[type="date"] {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        position: relative;
+    }
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        opacity: 0.6;
     }
 
    
@@ -51,7 +103,7 @@
         color: white;
         padding: 10px 20px;
         border: none;
-        border-radius: 4px;
+        border-radius: 8px;
         cursor: pointer;
     }
 
@@ -101,7 +153,6 @@
         float: right;
         margin-top: 5px; /* Adjust the margin as needed */
     }
-</style
 </style>
 </head>
 <body>
@@ -114,27 +165,26 @@
             <a href="/client_details" class="view-client-button">View Client Data</a> 
         </div>
     </div>
-
   
-<form id="healthForm" action="/submit_form" method="POST">
+<form id="healthForm" action="/submit_all_data" method="POST">
     <h2> <strong>Fill the Health Information</strong></h2>
-    <label for="name">High blood pressure:</label>
+    <label for="highbp">High blood pressure:</label>
     <input type="text" id="highbp" name="highbp">
 
-    <label for="address">Diabetes:</label>
+    <label for="diabetes">Diabetes:</label>
     <input type="text" id="diabetes" name="diabetes">
 
-    <label for="zip">Heart disease:</label>
+    <label for="heartdisease">Heart disease:</label>
     <input type="text" id="heartdisease" name="heartdisease">
 
-    <label for="phone">Live births:</label>
+    <label for="livebirths">Live births:</label>
     <input type="text" id="livebirths" name="livebirths">
 
-    <label for="birthdate">Miscarriages:</label>
-    <input type="date" id="miscarriages" name="miscarriages">
+    <label for="miscarriages">Miscarriages:</label>
+    <input type="number" id="miscarriages" name="miscarriages">
 
-    <label for="birthdate">Diagnosed Disability:</label>
-    <input type="date" id="miscarriages" name="miscarriages">
+    <label for="diagdisabilty">Diagnosed Disability:</label>
+    <input type="test" id="diagdisabilty" name="diagdisabilty">
 
     <label for="rehosp">Rehospitalization:</label>
     <select id="rehosp" name="rehosp">
@@ -155,34 +205,42 @@
     </select>
 
     <label for="vaginalbirth">Vaginal birth:</label>:</label>
-    <input type="vaginalbirth" id="vaginalbirth" name="vaginalbirth">
+    <input type="text" id="vaginalbirth" name="vaginalbirth">
 
-
-    <input type="submit" id="submitBtn" value="Next" onclick="">
+    <input type="submit" id="submitBtn" value="Submit" onclick="">
 </form>
 
-
-
 <script>
-    document.getElementById('HealthForm').addEventListener('submit', function(event) {
+    document.getElementById('healthForm').addEventListener('submit', function(event) {
         event.preventDefault();
-        let formData = new FormData(this);
-        fetch('/submit_form', {
+        let healthFormData = new FormData(this);
+
+        // Retrieve client form data from session storage
+        let clientFormData = JSON.parse(sessionStorage.getItem('clientFormData'));
+
+        // Combine client and health form data
+        let combinedData = {...clientFormData,...Object.fromEntries(healthFormData)};
+
+        // Send combined data to the server
+        fetch('/submit_all_data', {
             method: 'POST',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(combinedData)
         })
-        .then(response => response.json())
-        .then(data => {
+       .then(response => response.json())
+       .then(data => {
             console.log(data.message);
             alert(data.message);
-            this.reset();
+            // Optionally redirect to another page or clear session storage
+            sessionStorage.removeItem('clientFormData');
         })
-        .catch(error => {
+       .catch(error => {
             console.error('Error submitting form:', error);
-            alert('Error submitting form: ' + error.message);
+            alert('Error submitting form:' + error.message);
         });
     });
 </script>
-
 </body>
 </html>

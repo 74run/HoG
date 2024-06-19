@@ -5,32 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Heaven of Grace</title>
     <style>
-        /* Add your custom CSS styles here */
         body {
             font-family: Arial, sans-serif;
         }
 
-        .client-table {
+       .client-table,.health-details-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
 
-        .client-table th, .client-table td {
+       .client-table th,.client-table td,.health-details-table th,.health-details-table td {
             padding: 8px;
             border: 1px solid #ddd;
             text-align: left;
         }
 
-        .client-table th {
+       .client-table th,.health-details-table th {
             background-color: #f2f2f2;
         }
 
-        .client-table tr:nth-child(even) {
+       .client-table tr:nth-child(even),.health-details-table tr:nth-child(even) {
             background-color: #f2f2f2;
         }
 
-        .view-client-button {
+       .view-client-button {
             position: absolute;
             top: 20px;
             right: 20px;
@@ -42,57 +41,57 @@
             cursor: pointer;
         }
 
-        .view-client-button:hover {
+       .view-client-button:hover {
             background-color: #45a049;
         }
 
-        .navbar {
+       .navbar {
             background-color: white;
             overflow: hidden;
         }
 
-        .navbar-logo {
+       .navbar-logo {
             float: left;
             padding: 10px 15px;
         }
 
-        .navbar-logo img {
-            height: 80px; /* Adjust the height as needed */
+       .navbar-logo img {
+            height: 80px;
             width: auto;
         }
 
-        .navbar-links {
+       .navbar-links {
             float: right;
             padding: 20px 15px;
         }
 
-        .navbar-links a {
+       .navbar-links a {
             color: white;
             text-decoration: none;
             padding: 10px;
         }
 
-        .navbar-links a:hover {
+       .navbar-links a:hover {
             background-color: #555;
         }
 
-        .container {
-            padding-top: 80px; /* Adjust according to navbar height */
+       .container {
+            padding-top: 80px;
             max-width: 800px;
             margin: 0 auto;
         }
 
-        .table-container {
+       .table-container {
             overflow-x: auto;
             overflow-y: auto;
-            max-height: 500px; /* Adjust the max height as needed */
+            max-height: 500px;
         }
 
-        .search-bar {
+       .search-bar {
             margin-top: 20px;
         }
 
-        .search-bar input[type="text"] {
+       .search-bar input[type="text"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 20px;
@@ -101,7 +100,7 @@
             border-radius: 4px;
         }
 
-        .delete-button {
+       .delete-button {
             background-color: #f44336;
             color: white;
             padding: 5px 10px;
@@ -110,7 +109,7 @@
             cursor: pointer;
         }
 
-        .delete-button:hover {
+       .delete-button:hover {
             background-color: #d32f2f;
         }
     </style>
@@ -207,6 +206,41 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="table-container">
+            <table class="health-details-table" id="healthDetailsTable">
+                <thead>
+                    <tr>
+                        <th>Highblood Pressure</th>
+                        <th>Diabetes</th>
+                        <th>Heart Disease</th>
+                        <th>Live Births</th>
+                        <th>Miscarriages</th>
+                        <th>Disability Diagnosis</th>
+                        <th>Rehospitalization</th>
+                        <th>Doula Support</th>
+                        <th>High Risk Pregnancy</th>
+                        <th>Vaginal Birth</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for healthDetail in healthDetails %}
+                    <tr>
+                        <td>{{ healthDetail.highbp }}</td>
+                        <td>{{ healthDetail.diabetes }}</td>
+                        <td>{{ healthDetail.heartdisease }}</td>
+                        <td>{{ healthDetail.livebirths }}</td>
+                        <td>{{ healthDetail.miscarriages }}</td>
+                        <td>{{ healthDetail.diagdisabilty }}</td>
+                        <td>{{ healthDetail.rehosp }}</td>
+                        <td>{{ healthDetail.doula }}</td>
+                        <td>{{ healthDetail.highriskpreg }}</td>
+                        <td>{{ healthDetail.vaginalbirth }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
@@ -239,7 +273,7 @@
             fetch(`/delete_client/${clientId}`, {
                 method: 'DELETE',
             })
-            .then(response => {
+           .then(response => {
                 if (response.ok) {
                     // Remove the row from the table on successful deletion
                     var row = button.parentNode.parentNode;
@@ -249,7 +283,7 @@
                     console.error('Error deleting client');
                 }
             })
-            .catch(error => console.error('Error:', error));
+           .catch(error => console.error('Error:', error));
         }
     </script>
 
