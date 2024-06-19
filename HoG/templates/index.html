@@ -6,9 +6,19 @@
 <title>The Heaven of Grace</title>
 <style>
 
-    /* Add your custom CSS styles here */
     body {
         font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     form {
         max-width: 600px;
@@ -16,29 +26,71 @@
     }
     label {
         display: block;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
+        font-weight: bold;
     }
     input[type="text"],
     input[type="number"],
     input[type="date"],
     select {
-        width: 100%;
-        padding: 8px;
+        width: calc(100% - 0px);
+        padding: 10px;
         margin-bottom: 15px;
         border: 1px solid #ccc;
-        border-radius: 4px;
+        border-radius: 20px;
         box-sizing: border-box;
+        font-size: 14px;
     }
     input[type="submit"] {
         background-color: #4CAF50;
         color: white;
-        padding: 10px 20px;
+        padding: 12px 20px;
         border: none;
         border-radius: 4px;
         cursor: pointer;
+        font-size: 16px;
+    }
+
+    input[type="text"] {
+    
+        border-radius: 20px;
+  
+        font-size: 16px;
+    }
+
+    input[type="number"] {
+    
+        border-radius: 20px;
+  
+        font-size: 16px;
+    }
+
+    input[type="date"] {
+    
+        border-radius: 20px;
+  
+        font-size: 16px;
     }
     input[type="submit"]:hover {
         background-color: #45a049;
+    }
+    select {
+        width: 100%;
+    }
+
+    input[type="date"] {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        position: relative;
+    }
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        opacity: 0.6;
     }
 
    
@@ -51,7 +103,7 @@
         color: white;
         padding: 10px 20px;
         border: none;
-        border-radius: 4px;
+        border-radius: 8px;
         cursor: pointer;
     }
 
@@ -101,7 +153,6 @@
         float: right;
         margin-top: 5px; /* Adjust the margin as needed */
     }
-</style
 </style>
 </head>
 <body>
@@ -117,7 +168,7 @@
 
   
 <form id="clientForm" action="/submit_form" method="POST">
-    <h2> <strong>Fill the Client Information</strong></h2>
+    <h2> <strong>Client Information</strong></h2>
     <label for="name">Name:</label>
     <input type="text" id="name" name="name">
 

@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, jsonify
-from flask_pymongo import PyMongo
+from flask_pymongo import PyMongo, ObjectId
 from datetime import datetime, date
 
 import logging
@@ -72,6 +72,25 @@ def client_details():
         return render_template('client_details.html', clients=clients_list)
     except Exception as e:
         logging.error(f"Error retrieving client details: {e}")
+        return jsonify({'error': str(e)}), 500
+    
+    
+@app.route('/delete_client/<client_id>', methods=['DELETE'])
+def delete_client(client_id):
+    try:
+        # Convert client_id string to ObjectId
+        obj_id = ObjectId(client_id)
+        
+        # Delete client document from MongoDB
+        result = mongo.db.client_details.delete_one({'_id': obj_id})
+        
+        if result.deleted_count == 1:
+            logging.debug(f"Deleted client with id: {client_id}")
+            return jsonify({'message': 'Client deleted successfully'}), 200
+        else:
+            return jsonify({'error': 'Client not found'}), 404
+    except Exception as e:
+        logging.error(f"Error deleting client: {e}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
