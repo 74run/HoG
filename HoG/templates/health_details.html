@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Heaven of Grace</title>
+<style>
+
+    /* Add your custom CSS styles here */
+    body {
+        font-family: Arial, sans-serif;
+    }
+    form {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+
+   
+
+    .view-client-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .view-client-button:hover {
+        background-color: #45a049;
+    }
+
+    .navbar {
+        background-color: white;
+        overflow: hidden;
+    }
+
+    .navbar-logo {
+        float: left;
+        padding: 10px 15px;
+    }
+
+    .navbar-logo img {
+        height: 80px; /* Adjust the height as needed */
+        width: auto;
+    }
+
+    .navbar-links {
+        float: right;
+        padding: 20px 15px;
+    }
+
+    .navbar-links a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+    }
+
+    .navbar-links a:hover {
+        background-color: #555;
+    }
+
+    .container {
+        padding-top: 80px; /* Adjust according to navbar height */
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    #submitBtn {
+        
+        
+        float: right;
+        margin-top: 5px; /* Adjust the margin as needed */
+    }
+</style
+</style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="navbar-logo">
+            <img src="/static/HoG.PNG" alt="Logo">
+        </div>
+        <div class="navbar-links">
+            <a href="/client_details" class="view-client-button">View Client Data</a> 
+        </div>
+    </div>
+
+  
+<form id="healthForm" action="/submit_form" method="POST">
+    <h2> <strong>Fill the Health Information</strong></h2>
+    <label for="name">High blood pressure:</label>
+    <input type="text" id="highbp" name="highbp">
+
+    <label for="address">Diabetes:</label>
+    <input type="text" id="diabetes" name="diabetes">
+
+    <label for="zip">Heart disease:</label>
+    <input type="text" id="heartdisease" name="heartdisease">
+
+    <label for="phone">Live births:</label>
+    <input type="text" id="livebirths" name="livebirths">
+
+    <label for="birthdate">Miscarriages:</label>
+    <input type="date" id="miscarriages" name="miscarriages">
+
+    <label for="birthdate">Diagnosed Disability:</label>
+    <input type="date" id="miscarriages" name="miscarriages">
+
+    <label for="rehosp">Rehospitalization:</label>
+    <select id="rehosp" name="rehosp">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+    </select>
+
+    <label for="doula">Doula Support:</label>
+    <select id="doula" name="doula">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+    </select>
+
+    <label for="highriskpreg">High Risk Pregnancy:</label>
+    <select id="highriskpreg" name="highriskpreg">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+    </select>
+
+    <label for="vaginalbirth">Vaginal birth:</label>:</label>
+    <input type="vaginalbirth" id="vaginalbirth" name="vaginalbirth">
+
+
+    <input type="submit" id="submitBtn" value="Next" onclick="">
+</form>
+
+
+
+<script>
+    document.getElementById('HealthForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        let formData = new FormData(this);
+        fetch('/submit_form', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.message);
+            alert(data.message);
+            this.reset();
+        })
+        .catch(error => {
+            console.error('Error submitting form:', error);
+            alert('Error submitting form: ' + error.message);
+        });
+    });
+</script>
+
+</body>
+</html>
