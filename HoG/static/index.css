@@ -1,0 +1,109 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.form-container {
+    width: 50%;
+    margin: 50px auto;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+    display: none;
+}
+
+.form-section.active {
+    display: block;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+input[type="submit"],
+button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px 5px 0;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+input[type="submit"]:hover,
+button:hover {
+    background-color: #0056b3;
+}
+
+.navbar {
+    background-color: white;
+    overflow: hidden;
+}
+
+.navbar-logo {
+    float: left;
+    padding: 10px 15px;
+}
+
+.navbar-logo img {
+    height: 80px;
+    width: auto;
+}
+
+.navbar-links {
+    float: right;
+    padding: 20px 15px;
+}
+
+.navbar-links a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+}
+
+.navbar-links a:hover {
+    background-color: #555;
+}
+
+.container {
+    padding-top: 80px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.view-client-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.view-client-button:hover {
+    background-color: #45a049;
+}
