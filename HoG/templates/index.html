@@ -4,309 +4,154 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Heaven of Grace</title>
-<style>
-
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f0f0f0;
-        margin: 0;
-        padding: 0;
-    }
-    .container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    form {
-        max-width: 600px;
-        margin: 0 auto;
-    }
-    label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: bold;
-    }
-    input[type="text"],
-    input[type="number"],
-    input[type="date"],
-    select {
-        width: calc(100% - 0px);
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 20px;
-        box-sizing: border-box;
-        font-size: 14px;
-    }
-    input[type="submit"] {
-        background-color: #4CAF50;
-        color: white;
-        padding: 12px 20px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-    input[type="text"] {
-    
-        border-radius: 20px;
-  
-        font-size: 16px;
-    }
-
-    input[type="number"] {
-    
-        border-radius: 20px;
-  
-        font-size: 16px;
-    }
-
-    input[type="date"] {
-    
-        border-radius: 20px;
-  
-        font-size: 16px;
-    }
-    input[type="submit"]:hover {
-        background-color: #45a049;
-    }
-    select {
-        width: 100%;
-    }
-
-    input[type="date"] {
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        position: relative;
-    }
-    input[type="date"]::-webkit-calendar-picker-indicator {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: pointer;
-        opacity: 0.6;
-    }
-
-   
-
-    .view-client-button {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        background-color: #4CAF50;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-    }
-
-    .view-client-button:hover {
-        background-color: #45a049;
-    }
-
-    .navbar {
-        background-color: white;
-        overflow: hidden;
-    }
-
-    .navbar-logo {
-        float: left;
-        padding: 10px 15px;
-    }
-
-    .navbar-logo img {
-        height: 80px; /* Adjust the height as needed */
-        width: auto;
-    }
-
-    .navbar-links {
-        float: right;
-        padding: 20px 15px;
-    }
-
-    .navbar-links a {
-        color: white;
-        text-decoration: none;
-        padding: 10px;
-    }
-
-    .navbar-links a:hover {
-        background-color: #555;
-    }
-
-    .container {
-        padding-top: 80px; /* Adjust according to navbar height */
-        max-width: 800px;
-        margin: 0 auto;
-    }
-    
-    #submitBtn {
-        
-        
-        float: right;
-        margin-top: 5px; /* Adjust the margin as needed */
-    }
-</style>
+<link rel="stylesheet" href="../static/index.css">
 </head>
 <body>
 
-    <div class="navbar">
-        <div class="navbar-logo">
-            <img src="/static/HoG.PNG" alt="Logo">
-        </div>
-        <div class="navbar-links">
-            <a href="/client_details" class="view-client-button">View Client Data</a> 
-        </div>
+<div class="navbar">
+    <div class="navbar-logo">
+        <img src="/static/HoG.PNG" alt="Logo">
     </div>
+    <div class="navbar-links">
+        <a href="/client_details" class="view-client-button">View Client Data</a> 
+    </div>
+</div>
 
-  
-<form id="clientForm" action="/submit_form" method="POST">
-    <h2> <strong>Client Information</strong></h2>
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name">
+<div class="form-container">
+    <form id="multiSectionForm">
+        <div class="form-section active">
+            <h2><strong>Fill the Client Information</strong></h2>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name">
 
-    <label for="address">Address:</label>
-    <input type="text" id="address" name="address">
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address">
 
-    <label for="zip">Zip Code:</label>
-    <input type="text" id="zip" name="zip">
+            <label for="zip">Zip Code:</label>
+            <input type="text" id="zip" name="zip">
 
-    <label for="phone">Phone:</label>
-    <input type="text" id="phone" name="phone">
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" name="phone">
 
-    <label for="birthdate">Birthdate:</label>
-    <input type="date" id="birthdate" name="birthdate">
+            <label for="birthdate">Birthdate:</label>
+            <input type="date" id="birthdate" name="birthdate">
 
-    <label for="age">Age:</label>
-    <input type="number" id="age" name="age">
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age">
 
-    <label for="sex">Sex:</label>
-    <select id="sex" name="sex">
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="other">Other</option>
-    </select>
+            <label for="sex">Sex:</label>
+            <select id="sex" name="sex">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
 
-    <label for="race">Race:</label>
-    <input type="text" id="race" name="race">
+            <label for="race">Race:</label>
+            <input type="text" id="race" name="race">
 
-    <label for="ethnicity">Ethnicity:</label>
-    <input type="text" id="ethnicity" name="ethnicity">
+            <label for="ethnicity">Ethnicity:</label>
+            <input type="text" id="ethnicity" name="ethnicity">
 
-    <label for="marital_status">Marital Status:</label>
-    <select id="marital_status" name="marital_status">
-        <option value="single">Single</option>
-        <option value="married">Married</option>
-        <option value="divorced">Divorced</option>
-        <option value="widowed">Widowed</option>
-        <option value="separated">Separated</option>
-    </select>
+            <label for="marital_status">Marital Status:</label>
+            <select id="marital_status" name="marital_status">
+                <option value="single">Single</option>
+                <option value="married">Married</option>
+                <option value="divorced">Divorced</option>
+                <option value="widowed">Widowed</option>
+                <option value="separated">Separated</option>
+            </select>
 
-    <label for="length_stay_previous_address">Length of Stay at Previous Address:</label>
-    <input type="text" id="length_stay_previous_address" name="length_stay_previous_address">
+            <button type="button" class="next-btn">Next</button>
+        </div>
 
-    <label for="country_of_origin">Country of Origin (if not U.S.):</label>
-    <input type="text" id="country_of_origin" name="country_of_origin">
+        <div class="form-section">
+            <h2><strong>Health Details</strong></h2>
+            <label for="length_stay_previous_address">Length of Stay at Previous Address:</label>
+            <input type="text" id="length_stay_previous_address" name="length_stay_previous_address">
 
-    <label for="times_in_shelter">Number of Times Living in a Shelter:</label>
-    <input type="number" id="times_in_shelter" name="times_in_shelter">
+            <label for="country_of_origin">Country of Origin (if not U.S.):</label>
+            <input type="text" id="country_of_origin" name="country_of_origin">
 
-    <label for="length_stay_previous_shelter">Length of Stay at Previous Shelter:</label>
-    <input type="text" id="length_stay_previous_shelter" name="length_stay_previous_shelter">
+            <label for="times_in_shelter">Number of Times Living in a Shelter:</label>
+            <input type="number" id="times_in_shelter" name="times_in_shelter">
 
-    <label for="number_of_children">Number of Children:</label>
-    <input type="number" id="number_of_children" name="number_of_children">
+            <label for="length_stay_previous_shelter">Length of Stay at Previous Shelter:</label>
+            <input type="text" id="length_stay_previous_shelter" name="length_stay_previous_shelter">
 
-    <label for="education_level">Highest Level of Education:</label>
-    <input type="text" id="education_level" name="education_level">
+            <label for="number_of_children">Number of Children:</label>
+            <input type="number" id="number_of_children" name="number_of_children">
 
-    <label for="employment_status">Employment Status:</label>
-    <select id="employment_status" name="employment_status">
-        <option value="employed">Employed</option>
-        <option value="unemployed">Unemployed</option>
-        <option value="student">Student</option>
-        <option value="retired">Retired</option>
-        <option value="disabled">Disabled</option>
-        <option value="other">Other</option>
-    </select>
+            <label for="education_level">Highest Level of Education:</label>
+            <input type="text" id="education_level" name="education_level">
 
-    <label for="income_amount_intake">Income Amount at Time of Intake:</label>
-    <input type="number" id="income_amount_intake" name="income_amount_intake">
+            <label for="employment_status">Employment Status:</label>
+            <select id="employment_status" name="employment_status">
+                <option value="employed">Employed</option>
+                <option value="unemployed">Unemployed</option>
+                <option value="student">Student</option>
+                <option value="retired">Retired</option>
+                <option value="disabled">Disabled</option>
+                <option value="other">Other</option>
+            </select>
 
-    <label for="income_source_intake">Income Source at Time of Intake:</label>
-    <input type="text" id="income_source_intake" name="income_source_intake">
+            <label for="income_amount_intake">Income Amount at Time of Intake:</label>
+            <input type="number" id="income_amount_intake" name="income_amount_intake">
 
-    <label for="income_amount_exit">Income Amount when Exiting HoG:</label>
-    <input type="number" id="income_amount_exit" name="income_amount_exit">
+            <label for="income_source_intake">Income Source at Time of Intake:</label>
+            <input type="text" id="income_source_intake" name="income_source_intake">
 
-    <label for="income_1_year_exit">Income 1 Year from Exiting HoG:</label>
-    <input type="number" id="income_1_year_exit" name="income_1_year_exit">
+            <button type="button" class="prev-btn">Previous</button>
+            <button type="button" class="next-btn">Next</button>
+        </div>
 
-    <label for="weeks_pregnant">Weeks Pregnant:</label>
-    <input type="number" id="weeks_pregnant" name="weeks_pregnant">
+        <div class="form-section">
+            <h2><strong>Additional Information</strong></h2>
+            <label for="income_amount_exit">Income Amount when Exiting HoG:</label>
+            <input type="number" id="income_amount_exit" name="income_amount_exit">
 
-    <label for="prenatal_care_prior_intake">Prenatal Care Prior to Intake at HoG:</label>
-    <input type="text" id="prenatal_care_prior_intake" name="prenatal_care_prior_intake">
+            <label for="income_1_year_exit">Income 1 Year from Exiting HoG:</label>
+            <input type="number" id="income_1_year_exit" name="income_1_year_exit">
 
-    <label for="father_involvement">Is the Father of the Unborn Child Still Involved?</label>
-    <select id="father_involvement" name="father_involvement">
-        <option value="yes">Yes</option>
-        <option value="no">No</option>
-    </select>
+            <label for="weeks_pregnant">Weeks Pregnant:</label>
+            <input type="number" id="weeks_pregnant" name="weeks_pregnant">
 
-    <label for="father_education_level">Father's Highest Level of Education:</label>
-    <input type="text" id="father_education_level" name="father_education_level">
+            <label for="prenatal_care_prior_intake">Prenatal Care Prior to Intake at HoG:</label>
+            <input type="text" id="prenatal_care_prior_intake" name="prenatal_care_prior_intake">
 
-    <label for="father_occupation">Father's Occupation:</label>
-    <input type="text" id="father_occupation" name="father_occupation">
+            <label for="father_involvement">Is the Father of the Unborn Child Still Involved?</label>
+            <select id="father_involvement" name="father_involvement">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
 
-    <label for="father_income">Father's Income (Wage or Salary):</label>
-    <input type="number" id="father_income" name="father_income">
+            <label for="father_education_level">Father's Highest Level of Education:</label>
+            <input type="text" id="father_education_level" name="father_education_level">
 
-    <label for="domestic_violence_survivor">Domestic Violence Survivor:</label>
-    <select id="domestic_violence_survivor" name="domestic_violence_survivor">
-        <option value="yes">Yes</option>
-        <option value="no">No</option>
-    </select>
+            <label for="father_occupation">Father's Occupation:</label>
+            <input type="text" id="father_occupation" name="father_occupation">
 
-    <label for="veteran_status">Veteran Status:</label>
-    <select id="veteran_status" name="veteran_status">
-        <option value="yes">Yes</option>
-        <option value="no">No</option>
-    </select>
+            <label for="father_income">Father's Income (Wage or Salary):</label>
+            <input type="number" id="father_income" name="father_income">
 
-    <input type="submit" id="submitBtn" value="Submit">
-</form>
+            <label for="domestic_violence_survivor">Domestic Violence Survivor:</label>
+            <select id="domestic_violence_survivor" name="domestic_violence_survivor">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
 
+            <label for="veteran_status">Veteran Status:</label>
+            <select id="veteran_status" name="veteran_status">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
 
+            <button type="button" class="prev-btn">Previous</button>
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+</div>
 
-<script>
-    document.getElementById('clientForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        let formData = new FormData(this);
-        fetch('/submit_form', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data.message);
-            alert(data.message);
-            this.reset();
-        })
-        .catch(error => {
-            console.error('Error submitting form:', error);
-            alert('Error submitting form: ' + error.message);
-        });
-    });
-</script>
+<script src="../static/index.js"></script>
 
 </body>
 </html>
