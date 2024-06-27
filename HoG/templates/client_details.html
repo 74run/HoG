@@ -167,39 +167,39 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for client in clients %}
+                    {% for detail in user_details %}
                     <tr>
-                        <td>{{ client.name }}</td>
-                        <td>{{ client.address }}</td>
-                        <td>{{ client.zip_code }}</td>
-                        <td>{{ client.phone }}</td>
-                        <td>{{ client.birthdate }}</td>
-                        <td>{{ client.age }}</td>
-                        <td>{{ client.sex }}</td>
-                        <td>{{ client.race }}</td>
-                        <td>{{ client.ethnicity }}</td>
-                        <td>{{ client.marital_status }}</td>
-                        <td>{{ client.length_stay_previous_address }}</td>
-                        <td>{{ client.country_of_origin }}</td>
-                        <td>{{ client.times_in_shelter }}</td>
-                        <td>{{ client.length_stay_previous_shelter }}</td>
-                        <td>{{ client.number_of_children }}</td>
-                        <td>{{ client.education_level }}</td>
-                        <td>{{ client.employment_status }}</td>
-                        <td>{{ client.income_amount_intake }}</td>
-                        <td>{{ client.income_source_intake }}</td>
-                        <td>{{ client.income_amount_exit }}</td>
-                        <td>{{ client.income_1_year_exit }}</td>
-                        <td>{{ client.weeks_pregnant }}</td>
-                        <td>{{ client.prenatal_care_prior_intake }}</td>
-                        <td>{{ client.father_involvement }}</td>
-                        <td>{{ client.father_education_level }}</td>
-                        <td>{{ client.father_occupation }}</td>
-                        <td>{{ client.father_income }}</td>
-                        <td>{{ client.domestic_violence_survivor }}</td>
-                        <td>{{ client.veteran_status }}</td>
+                        <td>{{ detail.client_details.name }}</td>
+                        <td>{{ detail.client_details.address }}</td>
+                        <td>{{ detail.client_details.zip_code }}</td>
+                        <td>{{ detail.client_details.phone }}</td>
+                        <td>{{ detail.client_details.birthdate }}</td>
+                        <td>{{ detail.client_details.age }}</td>
+                        <td>{{ detail.client_details.sex }}</td>
+                        <td>{{ detail.client_details.race }}</td>
+                        <td>{{ detail.client_details.ethnicity }}</td>
+                        <td>{{ detail.client_details.marital_status }}</td>
+                        <td>{{ detail.client_details.length_stay_previous_address }}</td>
+                        <td>{{ detail.client_details.country_of_origin }}</td>
+                        <td>{{ detail.client_details.times_in_shelter }}</td>
+                        <td>{{ detail.client_details.length_stay_previous_shelter }}</td>
+                        <td>{{ detail.client_details.number_of_children }}</td>
+                        <td>{{ detail.client_details.education_level }}</td>
+                        <td>{{ detail.client_details.employment_status }}</td>
+                        <td>{{ detail.client_details.income_amount_intake }}</td>
+                        <td>{{ detail.client_details.income_source_intake }}</td>
+                        <td>{{ detail.client_details.income_amount_exit }}</td>
+                        <td>{{ detail.client_details.income_1_year_exit }}</td>
+                        <td>{{ detail.client_details.weeks_pregnant }}</td>
+                        <td>{{ detail.client_details.prenatal_care_prior_intake }}</td>
+                        <td>{{ detail.client_details.father_involvement }}</td>
+                        <td>{{ detail.client_details.father_education_level }}</td>
+                        <td>{{ detail.client_details.father_occupation }}</td>
+                        <td>{{ detail.client_details.father_income }}</td>
+                        <td>{{ detail.client_details.domestic_violence_survivor }}</td>
+                        <td>{{ detail.client_details.veteran_status }}</td>
                         <td>
-                            <button class="delete-button" data-id="{{ client._id }}" onclick="deleteClient(this)">Delete</button>
+                            <button class="delete-button" data-id="{{ detail._id }}" onclick="deleteClient(this)">Delete</button>
                         </td>
                     </tr>
                     {% endfor %}
@@ -224,18 +224,45 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for healthDetail in healthDetails %}
+                    {% for detail in user_details %}
                     <tr>
-                        <td>{{ healthDetail.highbp }}</td>
-                        <td>{{ healthDetail.diabetes }}</td>
-                        <td>{{ healthDetail.heartdisease }}</td>
-                        <td>{{ healthDetail.livebirths }}</td>
-                        <td>{{ healthDetail.miscarriages }}</td>
-                        <td>{{ healthDetail.diagdisabilty }}</td>
-                        <td>{{ healthDetail.rehosp }}</td>
-                        <td>{{ healthDetail.doula }}</td>
-                        <td>{{ healthDetail.highriskpreg }}</td>
-                        <td>{{ healthDetail.vaginalbirth }}</td>
+                        <td>{{ detail.health_details.highbp }}</td>
+                        <td>{{ detail.health_details.diabetes }}</td>
+                        <td>{{ detail.health_details.heartdisease }}</td>
+                        <td>{{ detail.health_details.livebirths }}</td>
+                        <td>{{ detail.health_details.miscarriages }}</td>
+                        <td>{{ detail.health_details.diagdisabilty }}</td>
+                        <td>{{ detail.health_details.rehosp }}</td>
+                        <td>{{ detail.health_details.doula }}</td>
+                        <td>{{ detail.health_details.highriskpreg }}</td>
+                        <td>{{ detail.health_details.vaginalbirth }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-container"></div>
+            <table class="shelter-infants-table" id="shelterInfantsTable">
+                <thead>
+                    <tr>
+                        <th>Infant Name</th>
+                        <th>Birth Date</th>
+                        <th>Birth Weight</th>
+                        <th>Weeks at Delivery</th>
+                        <th>Healthy Delivery</th>
+                        <th>Rehospitalization</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for detail in infant_details %}
+                    <tr>
+                        <td>{{ detail.infant_name }}</td>
+                        <td>{{ detail.birthdate }}</td>
+                        <td>{{ detail.birth_weight }}</td>
+                        <td>{{ detail.weeks_at_delivery }}</td>
+                        <td>{{ detail.healthy_delivery }}</td>
+                        <td>{{ detail.rehospitalization }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

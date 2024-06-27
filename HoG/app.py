@@ -19,9 +19,9 @@ def submit_all_data():
     if request.method == "POST":
         try:
             data = request.get_json()
-
+            user_details = {
             # Extract client details from the received JSON
-            client_details = {
+            "client_details" : {
                 "name": data.get('name', ''),
                 "address": data.get('address', ''),
                 "zip_code": data.get('zip', ''),
@@ -51,10 +51,9 @@ def submit_all_data():
                 "father_income": float(data.get('father_income', 0)) if data.get('father_income') else None,
                 "domestic_violence_survivor": data.get('domestic_violence_survivor', ''),
                 "veteran_status": data.get('veteran_status', '')
-            }
-
+            },
             # Extract health details from the received JSON
-            health_details = {
+            "health_details" : {
                 "highbp": data.get("highbp", ""),
                 "diabetes": data.get("diabetes", ""),
                 "heartdisease": data.get("heartdisease", ""),
@@ -66,10 +65,10 @@ def submit_all_data():
                 "highriskpreg": data.get("highriskpreg", ""),
                 "vaginalbirth": data.get("vaginalbirth", "")
             }
+            }
 
             # Insert client details and health details into MongoDB
-            mongo.db.client_details.insert_one(client_details)
-            mongo.db.health_details.insert_one(health_details)
+            mongo.db.user_details.insert_one(user_details)
             return jsonify({'message': 'Form submitted successfully'}), 200
         except Exception as e:
             logging.error(f"Error submitting form: {e}")
@@ -86,14 +85,14 @@ def index():
 @app.route('/client_details')
 def client_details():
     try:
-        clients = mongo.db.client_details.find()
-        health_info = mongo.db.client_details.find()
-        clients_list = list(clients)  # Convert to list to pass to the template
-        health_info_list = list(health_info)
-        logging.debug(f"Retrieved {len(clients_list)} clients")
-        return render_template('client_details.html', clients=clients_list, health_info=health_info_list)
+        # Fetch user details from the database
+        user_details = mongo.db.user_details.find()
+        user_details_list = list(user_details)  # Convert to list to pass to the template
+        
+        logging.debug(f"Retrieved {len(user_details_list)} user details")
+        return render_template('client_details.html', user_details=user_details_list)
     except Exception as e:
-        logging.error(f"Error retrieving client details: {e}")
+        logging.error(f"Error retrieving user details: {e}")
         return jsonify({'error': str(e)}), 500
     
     
@@ -104,7 +103,7 @@ def delete_client(client_id):
         obj_id = ObjectId(client_id)
         
         # Delete client document from MongoDB
-        result = mongo.db.client_details.delete_one({'_id': obj_id})
+        result = mongo.db.user_details.delete_one({'_id': obj_id})
         
         if result.deleted_count == 1:
             logging.debug(f"Deleted client with id: {client_id}")

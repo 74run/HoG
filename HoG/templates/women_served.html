@@ -1,0 +1,51 @@
+<form action="/submit_women_served_details" method="post">
+    <section>
+        <h2>Intake Information</h2>
+        <label for="women_accepted_intake">Number of Women Accepted at Intake:</label>
+        <input type="number" id="women_accepted_intake" name="women_accepted_intake" required><br>
+        
+        <label for="incoming_calls_shelter">Incoming Calls for Shelter:</label>
+        <input type="number" id="incoming_calls_shelter" name="incoming_calls_shelter" required><br>
+        
+        <label for="calls_seeking_shelter_women">Number of Calls Seeking Shelter for Women:</label>
+        <input type="number" id="calls_seeking_shelter_women" name="calls_seeking_shelter_women" required><br>
+        
+        <label for="calls_seeking_shelter_pregnant">Number of Calls Seeking Shelter for Pregnant Women:</label>
+        <input type="number" id="calls_seeking_shelter_pregnant" name="calls_seeking_shelter_pregnant" required><br>
+        
+        <label for="pregnant_women_turned_away">Number of Pregnant Women Turned Away:</label>
+        <input type="number" id="pregnant_women_turned_away" name="pregnant_women_turned_away" required><br>
+        
+        <label for="pregnant_women_turned_away_reason">Reason for Turning Away Pregnant Women:</label>
+        <textarea id="pregnant_women_turned_away_reason" name="pregnant_women_turned_away_reason"></textarea><br>
+        
+        <!-- Additional intake-related fields here -->
+    </section>
+    
+    <section>
+        <h2>Outreach Activities</h2>
+        <label for="community_outreach_activities">Number of Women and Children Touched During Community Outreach Activities:</label>
+        <input type="number" id="community_outreach_activities" name="community_outreach_activities" required><br>
+        
+        <label for="referrals_other_agencies">Number of Referrals to Other Shelters or Social Service Agencies:</label>
+        <input type="number" id="referrals_other_agencies" name="referrals_other_agencies" required><br>
+        
+        <!-- Additional outreach-related fields here -->
+    </section>
+    
+    <section>
+        <h2>Transitions and Movements</h2>
+        <label for="moved_from_maternity_to_apartments">Number of Women Moved from Maternity Shelter to Transitional Apartments:</label>
+        <input type="number" id="moved_from_maternity_to_apartments" name="moved_from_maternity_to_apartments" required><br>
+        
+        <label for="moved_to_aftercare_program">Number of Women Moved to the AfterCare Program:</label>
+        <input type="number" id="moved_to_aftercare_program" name="moved_to_aftercare_program" required><br>
+        
+        <label for="aftercare_program_details">Names, Ages, and School Grade Levels of Children in the Aftercare Program:</label>
+        <textarea id="aftercare_program_details" name="aftercare_program_details"></textarea><br>
+        
+        <!-- Additional transition/movement-related fields here -->
+    </section>
+    
+    <input type="submit" id="submitBtn" value="Submit" onclick="">
+</form>
