@@ -112,6 +112,28 @@
         .delete-button:hover {
             background-color: #d32f2f;
         }
+
+        /* Style for the health details table */
+        .health_table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .health_table th, .health_table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .health_table th {
+            background-color: #f2f2f2;
+        }
+
+        .health_table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 <body>
@@ -205,6 +227,43 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Second table for health details -->
+        <h1>Health Details</h1>
+        <div class="table-container">
+            <table class="health_table" id="healthTable">
+                <thead>
+                    <tr>
+                        <th>High BP</th>
+                        <th>Diabetes</th>
+                        <th>Heart Disease</th>
+                        <th>Live Births</th>
+                        <th>Miscarriages</th>
+                        <th>Diagnosed Disability</th>
+                        <th>Rehospitalizations</th>
+                        <th>Doula</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for health in clients %}
+                    <tr>
+                        <td>{{ health.health_details.high_bp }}</td>
+                        <td>{{ health.health_details.diabetes }}</td>
+                        <td>{{ health.health_details.heart_disease }}</td>
+                        <td>{{ health.health_details.live_births }}</td>
+                        <td>{{ health.health_details.miscarriages }}</td>
+                        <td>{{ health.health_details.diagnosed_disability }}</td>
+                        <td>{{ health.health_details.rehospitalizations }}</td>
+                        <td>{{ health.health_details.doula }}</td>
+                        <td>
+                            <button class="delete-button" data-id="{{ health._id }}" onclick="deleteClient(this)">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
@@ -233,11 +292,13 @@
         function deleteClient(button) {
             var clientId = button.getAttribute("data-id");
 
+            // Send DELETE request to Flask backend
             fetch(`/delete_client/${clientId}`, {
                 method: 'DELETE',
             })
             .then(response => {
                 if (response.ok) {
+                    // Remove the row from the table on successful deletion
                     var row = button.parentNode.parentNode;
                     row.parentNode.removeChild(row);
                     console.log('Client deleted successfully');
@@ -248,5 +309,6 @@
             .catch(error => console.error('Error:', error));
         }
     </script>
+
 </body>
 </html>
