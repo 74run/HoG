@@ -79,7 +79,7 @@ def index():
 @app.route('/client_details')
 def client_details():
     try:
-        clients = mongo.db.client_details.find()
+        clients = mongo.db.user_details.find()
         clients_list = list(clients)  # Convert to list to pass to the template
         logging.debug(f"Retrieved {len(clients_list)} clients")
         return render_template('client_details.html', clients=clients_list)
@@ -91,7 +91,7 @@ def client_details():
 def delete_client(client_id):
     try:
         obj_id = ObjectId(client_id)
-        result = mongo.db.client_details.delete_one({'_id': obj_id})
+        result = mongo.db.user_details.delete_one({'_id': obj_id})
 
         if result.deleted_count == 1:
             logging.debug(f"Deleted client with id: {client_id}")
