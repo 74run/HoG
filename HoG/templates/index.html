@@ -18,7 +18,7 @@
 </div>
 
 <div class="form-container">
-    <form id="multiSectionForm">
+    <form id="multiSectionForm" action="/submit_form" method="POST">
         <div class="form-section active">
             <h2><strong>Fill the Client Information</strong></h2>
             <label for="name">Name:</label>
@@ -145,6 +145,51 @@
                 <option value="no">No</option>
             </select>
 
+            <button type="button" class="prev-btn">Previous</button>
+            <button type="button" class="next-btn">Next</button>
+        </div>
+
+        <div class="form-section">
+            <h2><strong>Fill the Health Information</strong></h2>
+            <label for="highbp">High blood pressure:</label>
+            <input type="text" id="highbp" name="highbp">
+        
+            <label for="diabetes">Diabetes:</label>
+            <input type="text" id="diabetes" name="diabetes">
+        
+            <label for="heartdisease">Heart disease:</label>
+            <input type="text" id="heartdisease" name="heartdisease">
+        
+            <label for="livebirths">Live births:</label>
+            <input type="text" id="livebirths" name="livebirths">
+        
+            <label for="miscarriages">Miscarriages:</label>
+            <input type="number" id="miscarriages" name="miscarriages">
+        
+            <label for="diagdisabilty">Diagnosed Disability:</label>
+            <input type="text" id="diagdisabilty" name="diagdisabilty">
+        
+            <label for="rehosp">Rehospitalization:</label>
+            <select id="rehosp" name="rehosp">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+        
+            <label for="doula">Doula Support:</label>
+            <select id="doula" name="doula">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+        
+            <label for="highriskpreg">High Risk Pregnancy:</label>
+            <select id="highriskpreg" name="highriskpreg">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+        
+            <label for="vaginalbirth">Vaginal birth:</label>
+            <input type="text" id="vaginalbirth" name="vaginalbirth">
+        
             <button type="button" class="prev-btn">Previous</button>
             <button type="submit">Submit</button>
         </div>

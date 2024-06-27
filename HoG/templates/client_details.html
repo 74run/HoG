@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Heaven of Grace</title>
     <style>
-        /* Add your custom CSS styles here */
         body {
             font-family: Arial, sans-serif;
         }
@@ -57,7 +56,7 @@
         }
 
         .navbar-logo img {
-            height: 80px; /* Adjust the height as needed */
+            height: 80px;
             width: auto;
         }
 
@@ -77,7 +76,7 @@
         }
 
         .container {
-            padding-top: 80px; /* Adjust according to navbar height */
+            padding-top: 80px;
             max-width: 800px;
             margin: 0 auto;
         }
@@ -85,7 +84,7 @@
         .table-container {
             overflow-x: auto;
             overflow-y: auto;
-            max-height: 500px; /* Adjust the max height as needed */
+            max-height: 500px;
         }
 
         .search-bar {
@@ -113,10 +112,31 @@
         .delete-button:hover {
             background-color: #d32f2f;
         }
+
+        /* Style for the health details table */
+        .health_table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .health_table th, .health_table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .health_table th {
+            background-color: #f2f2f2;
+        }
+
+        .health_table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 <body>
-
     <div class="navbar">
         <div class="navbar-logo">
             <img src="./static/HoG.PNG" alt="Logo">
@@ -170,37 +190,74 @@
                 <tbody>
                     {% for client in clients %}
                     <tr>
-                        <td>{{ client.name }}</td>
-                        <td>{{ client.address }}</td>
-                        <td>{{ client.zip_code }}</td>
-                        <td>{{ client.phone }}</td>
-                        <td>{{ client.birthdate }}</td>
-                        <td>{{ client.age }}</td>
-                        <td>{{ client.sex }}</td>
-                        <td>{{ client.race }}</td>
-                        <td>{{ client.ethnicity }}</td>
-                        <td>{{ client.marital_status }}</td>
-                        <td>{{ client.length_stay_previous_address }}</td>
-                        <td>{{ client.country_of_origin }}</td>
-                        <td>{{ client.times_in_shelter }}</td>
-                        <td>{{ client.length_stay_previous_shelter }}</td>
-                        <td>{{ client.number_of_children }}</td>
-                        <td>{{ client.education_level }}</td>
-                        <td>{{ client.employment_status }}</td>
-                        <td>{{ client.income_amount_intake }}</td>
-                        <td>{{ client.income_source_intake }}</td>
-                        <td>{{ client.income_amount_exit }}</td>
-                        <td>{{ client.income_1_year_exit }}</td>
-                        <td>{{ client.weeks_pregnant }}</td>
-                        <td>{{ client.prenatal_care_prior_intake }}</td>
-                        <td>{{ client.father_involvement }}</td>
-                        <td>{{ client.father_education_level }}</td>
-                        <td>{{ client.father_occupation }}</td>
-                        <td>{{ client.father_income }}</td>
-                        <td>{{ client.domestic_violence_survivor }}</td>
-                        <td>{{ client.veteran_status }}</td>
+                        <td>{{ client.client_details.name }}</td>
+                        <td>{{ client.client_details.address }}</td>
+                        <td>{{ client.client_details.zip_code }}</td>
+                        <td>{{ client.client_details.phone }}</td>
+                        <td>{{ client.client_details.birthdate }}</td>
+                        <td>{{ client.client_details.age }}</td>
+                        <td>{{ client.client_details.sex }}</td>
+                        <td>{{ client.client_details.race }}</td>
+                        <td>{{ client.client_details.ethnicity }}</td>
+                        <td>{{ client.client_details.marital_status }}</td>
+                        <td>{{ client.client_details.length_stay_previous_address }}</td>
+                        <td>{{ client.client_details.country_of_origin }}</td>
+                        <td>{{ client.client_details.times_in_shelter }}</td>
+                        <td>{{ client.client_details.length_stay_previous_shelter }}</td>
+                        <td>{{ client.client_details.number_of_children }}</td>
+                        <td>{{ client.client_details.education_level }}</td>
+                        <td>{{ client.client_details.employment_status }}</td>
+                        <td>{{ client.client_details.income_amount_intake }}</td>
+                        <td>{{ client.client_details.income_source_intake }}</td>
+                        <td>{{ client.client_details.income_amount_exit }}</td>
+                        <td>{{ client.client_details.income_1_year_exit }}</td>
+                        <td>{{ client.client_details.weeks_pregnant }}</td>
+                        <td>{{ client.client_details.prenatal_care_prior_intake }}</td>
+                        <td>{{ client.client_details.father_involvement }}</td>
+                        <td>{{ client.client_details.father_education_level }}</td>
+                        <td>{{ client.client_details.father_occupation }}</td>
+                        <td>{{ client.client_details.father_income }}</td>
+                        <td>{{ client.client_details.domestic_violence_survivor }}</td>
+                        <td>{{ client.client_details.veteran_status }}</td>
                         <td>
                             <button class="delete-button" data-id="{{ client._id }}" onclick="deleteClient(this)">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Second table for health details -->
+        <h1>Health Details</h1>
+        <div class="table-container">
+            <table class="health_table" id="healthTable">
+                <thead>
+                    <tr>
+                        <th>High BP</th>
+                        <th>Diabetes</th>
+                        <th>Heart Disease</th>
+                        <th>Live Births</th>
+                        <th>Miscarriages</th>
+                        <th>Diagnosed Disability</th>
+                        <th>Rehospitalizations</th>
+                        <th>Doula</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for health in clients %}
+                    <tr>
+                        <td>{{ health.health_details.high_bp }}</td>
+                        <td>{{ health.health_details.diabetes }}</td>
+                        <td>{{ health.health_details.heart_disease }}</td>
+                        <td>{{ health.health_details.live_births }}</td>
+                        <td>{{ health.health_details.miscarriages }}</td>
+                        <td>{{ health.health_details.diagnosed_disability }}</td>
+                        <td>{{ health.health_details.rehospitalizations }}</td>
+                        <td>{{ health.health_details.doula }}</td>
+                        <td>
+                            <button class="delete-button" data-id="{{ health._id }}" onclick="deleteClient(this)">Delete</button>
                         </td>
                     </tr>
                     {% endfor %}
