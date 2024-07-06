@@ -4,146 +4,228 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Heaven of Grace</title>
-    <style>
+<style>
+        /* Basic CSS for layout and styling */
         body {
             font-family: Arial, sans-serif;
-        }
-
-        .client-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .client-table th, .client-table td {
-            padding: 8px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-
-        .client-table th {
             background-color: #f2f2f2;
-        }
-
-        .client-table tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        .view-client-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .view-client-button:hover {
-            background-color: #45a049;
-        }
-
-        .navbar {
-            background-color: white;
-            overflow: hidden;
-        }
-
-        .navbar-logo {
-            float: left;
-            padding: 10px 15px;
-        }
-
-        .navbar-logo img {
-            height: 80px;
-            width: auto;
-        }
-
-        .navbar-links {
-            float: right;
-            padding: 20px 15px;
-        }
-
-        .navbar-links a {
-            color: white;
-            text-decoration: none;
-            padding: 10px;
-        }
-
-        .navbar-links a:hover {
-            background-color: #555;
+            margin: 0;
+            padding: 0;
         }
 
         .container {
-            padding-top: 80px;
-            max-width: 800px;
-            margin: 0 auto;
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            position: relative; /* Ensure relative positioning for absolute elements */
         }
 
-        .table-container {
-            overflow-x: auto;
-            overflow-y: auto;
-            max-height: 500px;
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         .search-bar {
-            margin-top: 20px;
+            margin-bottom: 20px;
         }
 
         .search-bar input[type="text"] {
             width: 100%;
             padding: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             box-sizing: border-box;
-            border: 1px solid #ddd;
+            border: 1px solid #ccc;
             border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 500px; /* Adjust max-height as needed */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+
+        th {
+            background-color: #333;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
         }
 
         .delete-button {
             background-color: #f44336;
             color: white;
-            padding: 5px 10px;
             border: none;
+            padding: 8px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
             border-radius: 4px;
             cursor: pointer;
         }
+
+        .edit-button {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
 
         .delete-button:hover {
             background-color: #d32f2f;
         }
 
-        /* Style for the health details table */
-        .health_table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            margin-bottom: 20px;
+        .back-to-form-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 4px;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            right: 20px;
         }
 
-        .health_table th, .health_table td {
-            padding: 8px;
-            border: 1px solid #ddd;
-            text-align: left;
+        .back-to-form-button:hover {
+            background-color: #45a049;
         }
 
-        .health_table th {
-            background-color: #f2f2f2;
+        .company-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
         }
 
-        .health_table tr:nth-child(even) {
-            background-color: #f2f2f2;
+        .company-logo img {
+            height: 60px; /* Adjust the height as needed */
+            width: auto;
         }
+
+        /* Modal styling */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.5s;
+}
+
+/* Add animation for modal */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Form styling */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-top: 10px;
+}
+
+input, select, button {
+    padding: 10px;
+    margin-top: 5px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-family: 'Arial', sans-serif;
+}
+
     </style>
+
 </head>
 <body>
     <div class="navbar">
         <div class="navbar-logo">
             <img src="./static/HoG.PNG" alt="Logo">
         </div>
-        <div class="navbar-links">
-            <a href="/" class="view-client-button">Back to Form</a>
-        </div>
+
     </div>
 
     <div class="container">
@@ -162,34 +244,12 @@
                         <th>Birthdate</th>
                         <th>Age</th>
                         <th>Sex</th>
-                        <th>Race</th>
-                        <th>Ethnicity</th>
-                        <th>Marital Status</th>
-                        <th>Length of Stay at Previous Address</th>
-                        <th>Country of Origin</th>
-                        <th>Times in Shelter</th>
-                        <th>Length of Stay at Previous Shelter</th>
-                        <th>Number of Children</th>
-                        <th>Education Level</th>
-                        <th>Employment Status</th>
-                        <th>Income Amount at Intake</th>
-                        <th>Income Source at Intake</th>
-                        <th>Income Amount at Exit</th>
-                        <th>Income 1 Year from Exit</th>
-                        <th>Weeks Pregnant</th>
-                        <th>Prenatal Care Prior to Intake</th>
-                        <th>Father Involvement</th>
-                        <th>Father's Education Level</th>
-                        <th>Father's Occupation</th>
-                        <th>Father's Income</th>
-                        <th>Domestic Violence Survivor</th>
-                        <th>Veteran Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for client in clients %}
-                    <tr>
+                    <tr data-id="{{ client._id }}">
                         <td>{{ client.client_details.name }}</td>
                         <td>{{ client.client_details.address }}</td>
                         <td>{{ client.client_details.zip_code }}</td>
@@ -197,29 +257,8 @@
                         <td>{{ client.client_details.birthdate }}</td>
                         <td>{{ client.client_details.age }}</td>
                         <td>{{ client.client_details.sex }}</td>
-                        <td>{{ client.client_details.race }}</td>
-                        <td>{{ client.client_details.ethnicity }}</td>
-                        <td>{{ client.client_details.marital_status }}</td>
-                        <td>{{ client.client_details.length_stay_previous_address }}</td>
-                        <td>{{ client.client_details.country_of_origin }}</td>
-                        <td>{{ client.client_details.times_in_shelter }}</td>
-                        <td>{{ client.client_details.length_stay_previous_shelter }}</td>
-                        <td>{{ client.client_details.number_of_children }}</td>
-                        <td>{{ client.client_details.education_level }}</td>
-                        <td>{{ client.client_details.employment_status }}</td>
-                        <td>{{ client.client_details.income_amount_intake }}</td>
-                        <td>{{ client.client_details.income_source_intake }}</td>
-                        <td>{{ client.client_details.income_amount_exit }}</td>
-                        <td>{{ client.client_details.income_1_year_exit }}</td>
-                        <td>{{ client.client_details.weeks_pregnant }}</td>
-                        <td>{{ client.client_details.prenatal_care_prior_intake }}</td>
-                        <td>{{ client.client_details.father_involvement }}</td>
-                        <td>{{ client.client_details.father_education_level }}</td>
-                        <td>{{ client.client_details.father_occupation }}</td>
-                        <td>{{ client.client_details.father_income }}</td>
-                        <td>{{ client.client_details.domestic_violence_survivor }}</td>
-                        <td>{{ client.client_details.veteran_status }}</td>
                         <td>
+                            <button class="edit-button" data-id="{{ client._id }}" onclick="openEditForm(this)">Edit</button>
                             <button class="delete-button" data-id="{{ client._id }}" onclick="deleteClient(this)">Delete</button>
                         </td>
                     </tr>
@@ -236,27 +275,16 @@
                     <tr>
                         <th>High BP</th>
                         <th>Diabetes</th>
-                        <th>Heart Disease</th>
-                        <th>Live Births</th>
-                        <th>Miscarriages</th>
-                        <th>Diagnosed Disability</th>
-                        <th>Rehospitalizations</th>
-                        <th>Doula</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for health in clients %}
-                    <tr>
-                        <td>{{ health.health_details.high_bp }}</td>
+                    <tr data-id="{{ health._id }}">
+                        <td>{{ health.health_details.highbp }}</td>
                         <td>{{ health.health_details.diabetes }}</td>
-                        <td>{{ health.health_details.heart_disease }}</td>
-                        <td>{{ health.health_details.live_births }}</td>
-                        <td>{{ health.health_details.miscarriages }}</td>
-                        <td>{{ health.health_details.diagnosed_disability }}</td>
-                        <td>{{ health.health_details.rehospitalizations }}</td>
-                        <td>{{ health.health_details.doula }}</td>
                         <td>
+                            <button class="edit-button" data-id="{{ health._id }}" onclick="openEditHealthForm(this)">Edit</button>
                             <button class="delete-button" data-id="{{ health._id }}" onclick="deleteClient(this)">Delete</button>
                         </td>
                     </tr>
@@ -264,43 +292,259 @@
                 </tbody>
             </table>
         </div>
+        <button class="back-to-form-button" onclick="location.href='/';">Back to Form</button>
     </div>
+
+<!-- Edit Health Details Modal -->
+<div id="editHealthModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeEditHealthForm()">&times;</span>
+        <h2>Edit Health Details</h2>
+        <form id="editHealthForm">
+            <input type="hidden" id="editHealthClientId">
+            <label for="editHighBp">High BP:</label>
+            <input type="text" id="editHighBp" name="highbp" required><br>
+            <label for="editDiabetes">Diabetes:</label>
+            <input type="text" id="editDiabetes" name="diabetes" required><br>
+            <button type="button" onclick="submitEditHealthForm()">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+
+    <!-- Edit Form Modal -->
+<div id="editFormModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeEditForm()">&times;</span>
+        <h2>Edit Client Details</h2>
+        <form id="editForm">
+            <input type="hidden" id="editClientId">
+            <label for="editName">Name:</label>
+            <input type="text" id="editName" name="name" required><br>
+            <label for="editAddress">Address:</label>
+            <input type="text" id="editAddress" name="address" required><br>
+            <label for="editZip">Zip Code:</label>
+            <input type="text" id="editZip" name="zip" required><br>
+            <label for="editPhone">Phone:</label>
+            <input type="text" id="editPhone" name="phone" required><br>
+            <label for="editBirthdate">Birthdate:</label>
+            <input type="date" id="editBirthdate" name="birthdate"><br>
+            <label for="editAge">Age:</label>
+            <input type="number" id="editAge" name="age" required><br>
+            <label for="editSex">Sex:</label>
+            <select id="editSex" name="sex" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select><br>
+
+           
+            <button type="button" onclick="submitEditForm()">Save Changes</button>
+        </form>
+    </div>
+</div>
+
 
     <script>
         function searchTable() {
-            var input, filter, table, tr, td, i, j, txtValue;
+            var input, filter, clientTable, healthTable, clientRows, healthRows, i, j, clientTd, healthTd, txtValue, shouldDisplayRow;
             input = document.getElementById("searchInput");
-            filter = input.value.toLowerCase();
-            table = document.getElementById("clientTable");
-            tr = table.getElementsByTagName("tr");
-
-            for (i = 1; i < tr.length; i++) {
-                tr[i].style.display = "none";
-                td = tr[i].getElementsByTagName("td");
-                for (j = 0; j < td.length; j++) {
-                    if (td[j]) {
-                        txtValue = td[j].textContent || td[j].innerText;
-                        if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                            tr[i].style.display = "";
+            filter = input.value.toUpperCase();
+            clientTable = document.getElementById("clientTable");
+            healthTable = document.getElementById("healthTable");
+            clientRows = clientTable.getElementsByTagName("tr");
+            healthRows = healthTable.getElementsByTagName("tr");
+        
+            // Loop through all client detail table rows
+            for (i = 1; i < clientRows.length; i++) {
+                clientRows[i].style.display = "none"; // Initially hide the row
+                shouldDisplayRow = false;
+                
+                clientTd = clientRows[i].getElementsByTagName("td");
+                // Loop through all table cells in the client details row
+                for (j = 0; j < clientTd.length; j++) {
+                    if (clientTd[j]) {
+                        txtValue = clientTd[j].textContent || clientTd[j].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            shouldDisplayRow = true;
                             break;
                         }
                     }
                 }
+        
+                // Corresponding health details row (assuming same number of rows and alignment)
+                if (shouldDisplayRow) {
+                    healthRows[i].style.display = "";
+                } else {
+                    healthTd = healthRows[i].getElementsByTagName("td");
+                    // Loop through all table cells in the health details row
+                    for (j = 0; j < healthTd.length; j++) {
+                        if (healthTd[j]) {
+                            txtValue = healthTd[j].textContent || healthTd[j].innerText;
+                            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                shouldDisplayRow = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+        
+                // Display the row if any cell matches the filter
+                if (shouldDisplayRow) {
+                    clientRows[i].style.display = "";
+                    healthRows[i].style.display = "";
+                } else {
+                    clientRows[i].style.display = "none";
+                    healthRows[i].style.display = "none";
+                }
             }
         }
+        
+        
+        function openEditForm(button) {
+            var clientId = button.getAttribute("data-id");
+
+            var row = button.closest("tr");
+            document.getElementById("editClientId").value = clientId;
+            document.getElementById("editName").value = row.cells[0].textContent;
+            document.getElementById("editAddress").value = row.cells[1].textContent;
+            document.getElementById("editZip").value = row.cells[2].textContent;
+            document.getElementById("editPhone").value = row.cells[3].textContent;
+            document.getElementById("editBirthdate").value = row.cells[4].textContent;
+            document.getElementById("editAge").value = row.cells[5].textContent;
+            document.getElementById("editSex").value = row.cells[6].textContent;
+
+           
+
+            document.getElementById("editFormModal").style.display = "block";
+        }
+
+
+        function openEditHealthForm(button) {
+            var clientId = button.getAttribute("data-id");
+
+            var row = button.closest("tr");
+            document.getElementById("editHealthClientId").value = clientId;
+
+            var healthRow = document.querySelector(`#healthTable tr[data-id="${clientId}"]`);
+            document.getElementById("editHighBp").value = healthRow.cells[0].textContent;
+            document.getElementById("editDiabetes").value = healthRow.cells[1].textContent;
+
+            document.getElementById("editHealthModal").style.display = "block";
+        }
+
+        function closeEditForm() {
+            document.getElementById("editFormModal").style.display = "none";
+        }
+
+        function closeEditHealthForm() {
+            document.getElementById("editHealthModal").style.display = "none";
+        }
+
+        function submitEditForm() {
+            var clientId = document.getElementById("editClientId").value;
+            var formData = {
+                name: document.getElementById("editName").value,
+                address: document.getElementById("editAddress").value,
+                zip: document.getElementById("editZip").value,
+                phone: document.getElementById("editPhone").value,
+                birthdate: document.getElementById("editBirthdate").value,
+                age: document.getElementById("editAge").value,
+                sex: document.getElementById("editSex").value,
+              
+            };
+
+            // Handle empty birthdate
+            if (!formData.birthdate) {
+                delete formData.birthdate;
+            }
+
+            fetch(`/edit_client/${clientId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    var row = document.querySelector(`tr[data-id="${clientId}"]`);
+                    row.cells[0].textContent = formData.name;
+                    row.cells[1].textContent = formData.address;
+                    row.cells[2].textContent = formData.zip;
+                    row.cells[3].textContent = formData.phone;
+                    row.cells[4].textContent = formData.birthdate || row.cells[4].textContent;
+                    row.cells[5].textContent = formData.age;
+                    row.cells[6].textContent = formData.sex;
+
+                    
+
+                    closeEditForm();
+                    console.log('Client updated successfully');
+                } else {
+                    console.error('Error updating client');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+
+        function submitEditHealthForm() {
+            var clientId = document.getElementById("editHealthClientId").value;
+            var formData = {
+                highbp: document.getElementById("editHighBp").value,
+                diabetes: document.getElementById("editDiabetes").value,
+            };
+
+            // Handle empty birthdate
+            if (!formData.birthdate) {
+                delete formData.birthdate;
+            }
+
+            fetch(`/edit_health_client/${clientId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    var row = document.querySelector(`tr[data-id="${clientId}"]`);
+
+                    var healthRow = document.querySelector(`#healthTable tr[data-id="${clientId}"]`);
+                    healthRow.cells[0].textContent = formData.highbp;
+                    healthRow.cells[1].textContent = formData.diabetes;
+
+                    closeEditHealthForm();
+                    console.log('Client updated successfully');
+                } else {
+                    console.error('Error updating client');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        
 
         function deleteClient(button) {
             var clientId = button.getAttribute("data-id");
 
-            // Send DELETE request to Flask backend
             fetch(`/delete_client/${clientId}`, {
                 method: 'DELETE',
             })
-            .then(response => {
-                if (response.ok) {
-                    // Remove the row from the table on successful deletion
-                    var row = button.parentNode.parentNode;
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    var row = button.closest("tr");
                     row.parentNode.removeChild(row);
+
+                    var healthRow = document.querySelector(`#healthTable tr[data-id="${clientId}"]`);
+                    if (healthRow) {
+                        healthRow.parentNode.removeChild(healthRow);
+                    }
+
                     console.log('Client deleted successfully');
                 } else {
                     console.error('Error deleting client');
@@ -309,6 +553,5 @@
             .catch(error => console.error('Error:', error));
         }
     </script>
-
 </body>
 </html>

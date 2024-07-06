@@ -5,7 +5,7 @@ import logging
 
 app = Flask(__name__)
 
-# Replace the following with your MongoDB connection URI
+# Replace with your MongoDB connection URI
 app.config["MONGO_URI"] = "mongodb+srv://tarunjanapati7:%4074run54I@educationdetaails.x0zu5mp.mongodb.net/client_details?retryWrites=true&w=majority&appName=EducationDetaails"
 mongo = PyMongo(app)
 
@@ -18,14 +18,17 @@ def submit_form():
         try:
             data = request.form
             
+            # Parse and format the birthdate
+            birthdate = data.get('birthdate', '')
+            birthdate = datetime.strptime(birthdate, '%Y-%m-%d') if birthdate else None
+            
             user_details = {
-                # Extract client details from the received JSON
                 "client_details" : {
                     "name": data.get('name', ''),
                     "address": data.get('address', ''),
                     "zip_code": data.get('zip', ''),
                     "phone": data.get('phone', ''),
-                    "birthdate": datetime.strptime(data.get('birthdate', ''), '%Y-%m-%d').date() if data.get('birthdate') else None,
+                    "birthdate": birthdate,
                     "age": int(data.get('age', 0)) if data.get('age') else None,
                     "sex": data.get('sex', ''),
                     "race": data.get('race', ''),
@@ -51,7 +54,6 @@ def submit_form():
                     "domestic_violence_survivor": data.get('domestic_violence_survivor', ''),
                     "veteran_status": data.get('veteran_status', '')
                 },
-                # Extract health details from the received JSON
                 "health_details" : {
                     "highbp": data.get("highbp", ""),
                     "diabetes": data.get("diabetes", ""),
@@ -100,6 +102,57 @@ def delete_client(client_id):
             return jsonify({'error': 'Client not found'}), 404
     except Exception as e:
         logging.error(f"Error deleting client: {e}")
+        return jsonify({'error': str(e)}), 500
+    
+@app.route('/edit_client/<client_id>', methods=['PUT'])
+def edit_client(client_id):
+    try:
+        data = request.json
+        
+        birthdate = data.get('birthdate', '')
+        birthdate = datetime.strptime(birthdate, '%Y-%m-%d') if birthdate else None
+        
+        update_fields = {
+            "client_details.name": data.get('name', ''),
+            "client_details.address": data.get('address', ''),
+            "client_details.zip_code": data.get('zip', ''),
+            "client_details.phone": data.get('phone', ''),
+            "client_details.birthdate": birthdate,
+            "client_details.age": int(data.get('age', 0)) if data.get('age') else None,
+            "client_details.sex": data.get('sex', ''),
+
+        }
+        
+        # Remove None values to prevent overwriting fields with None
+        update_fields = {k: v for k, v in update_fields.items() if v is not None}
+
+        mongo.db.user_details.update_one({'_id': ObjectId(client_id)}, {'$set': update_fields})
+        return jsonify({'message': 'Client updated successfully'}), 200
+    except Exception as e:
+        logging.error(f"Error updating client: {e}")
+        return jsonify({'error': str(e)}), 500
+    
+    
+@app.route('/edit_health_client/<client_id>', methods=['PUT'])
+def edit_health_client(client_id):
+    try:
+        data = request.json
+        
+        birthdate = data.get('birthdate', '')
+        birthdate = datetime.strptime(birthdate, '%Y-%m-%d') if birthdate else None
+        
+        update_fields = {
+            "health_details.highbp": data.get("highbp", ""),
+            "health_details.diabetes": data.get("diabetes", ""),
+        }
+        
+        # Remove None values to prevent overwriting fields with None
+        update_fields = {k: v for k, v in update_fields.items() if v is not None}
+
+        mongo.db.user_details.update_one({'_id': ObjectId(client_id)}, {'$set': update_fields})
+        return jsonify({'message': 'Client updated successfully'}), 200
+    except Exception as e:
+        logging.error(f"Error updating client: {e}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
