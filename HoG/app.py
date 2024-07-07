@@ -65,7 +65,50 @@ def submit_form():
                     "doula": data.get("doula", ""),
                     "highriskpreg": data.get("highriskpreg", ""),
                     "vaginalbirth": data.get("vaginalbirth", "")
+                },
+                # Extract infant details from the received JSON
+                "shelter_infant_details" : {
+                    "infant_name": data.get("infant_name", ""),
+                    "birthdate": data.get("birthdate", ""),
+                    "birth_weight": float(data.get("birth_weight", 0)) if data.get("birth_weight") else None,
+                    "weeks_at_delivery": int(data.get("weeks_at_delivery", 0)) if data.get("weeks_at_delivery") else None,
+                    "healthy_delivery": data.get("healthy_delivery", ""),
+                    "rehospitalization": data.get("rehospitalization", "")
+                },
+                # Extract children details from the received JSON
+                "shelter_children_details" : {
+                    "child_name": data.get("child_name", ""),
+                    "birthdate": data.get("birthdate", ""),
+                    "age": int(data.get("age", 0)) if data.get("age") else None,
+                    "grade_level": data.get("grade_level", ""),
+                    "trauma_programming_hours": int(data.get("trauma_programming_hours", 0)) if data.get("trauma_programming_hours") else None
+                },
+                # Extract housing details from the received JSON
+                "housing_details" : {
+                    "length_stay_shelter": data.get("length_stay_shelter", ""),
+                    "reason_leaving_shelter": data.get("reason_leaving_shelter", ""),
+                    "moved_to_transitional_housing": data.get("moved_to_transitional_housing", ""),
+                    "length_stay_transitional_housing": data.get("length_stay_transitional_housing", ""),
+                    "housing_voucher_recipient": data.get("housing_voucher_recipient", ""),
+                    "case_management_assistance": data.get("case_management_assistance", "")
+                },
+                # Extract women served details from the received JSON
+                "women_served_details" : {
+                    "women_accepted_intake": int(data.get("women_accepted_intake", 0)) if data.get("women_accepted_intake") else None,
+                    "incoming_calls_shelter": int(data.get("incoming_calls_shelter", 0)) if data.get("incoming_calls_shelter") else None,
+                    "calls_seeking_shelter_women": int(data.get("calls_seeking_shelter_women", 0)) if data.get("calls_seeking_shelter_women") else None,
+                    "calls_seeking_shelter_pregnant": int(data.get("calls_seeking_shelter_pregnant", 0)) if data.get("calls_seeking_shelter_pregnant") else None,
+                    "pregnant_women_turned_away": int(data.get("pregnant_women_turned_away", 0)) if data.get("pregnant_women_turned_away") else None,
+                    "pregnant_women_turned_away_reason": data.get("pregnant_women_turned_away_reason", ""),
+                    
+                    "community_outreach_activities": int(data.get("community_outreach_activities", 0)) if data.get("community_outreach_activities") else None,
+                    "referrals_other_agencies": int(data.get("referrals_other_agencies", 0)) if data.get("referrals_other_agencies") else None,
+                    
+                    "moved_from_maternity_to_apartments": int(data.get("moved_from_maternity_to_apartments", 0)) if data.get("moved_from_maternity_to_apartments") else None,
+                    "moved_to_aftercare_program": int(data.get("moved_to_aftercare_program", 0)) if data.get("moved_to_aftercare_program") else None,
+                    "aftercare_program_details": data.get("aftercare_program_details", "")
                 }
+
             }
 
             mongo.db.user_details.insert_one(user_details)

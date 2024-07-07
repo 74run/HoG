@@ -8,11 +8,33 @@
         /* Basic CSS for layout and styling */
         body {
             font-family: Arial, sans-serif;
+        }
+
+        .client-table, .health_table, .infants_table, .children_table, .housing_table, .women_served_table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .client-table th, .client-table td,
+        .health_table th, .health_table td,
+        .infants_table th, .infants_table td,
+        .children_table th, .children_table td,
+        .housing_table th, .housing_table td,
+        .women_served_table th, .women_served_table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .client-table th, .health_table th, .infants_table th, .children_table th, .housing_table th, .women_served_table th {
             background-color: #f2f2f2;
             margin: 0;
             padding: 0;
         }
 
+        .client-table tr:nth-child(even), .health_table tr:nth-child(even), .infants_table tr:nth-child(even), .children_table tr:nth-child(even), .housing_table tr:nth-child(even), .women_served_table tr:nth-child(even) {
+            background-color: #f2f2f2;
         .container {
             max-width: 1200px;
             margin: 20px auto;
@@ -216,8 +238,7 @@ h2 {
     color: #333;
     font-family: 'Arial', sans-serif;
 }
-
-    </style>
+</style>
 
 </head>
 <body>
@@ -286,6 +307,142 @@ h2 {
                         <td>
                             <button class="edit-button" data-id="{{ health._id }}" onclick="openEditHealthForm(this)">Edit</button>
                             <button class="delete-button" data-id="{{ health._id }}" onclick="deleteClient(this)">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <h1>Shelter Infants Details</h1>
+        <div class="table-container">
+            <table class="infants_table" id="infantsTable">
+                <thead>
+                    <tr>
+                        <th>Infant Name</th>
+                        <th>Birth Date</th>
+                        <th>Birth Weight</th>
+                        <th>Weeks at Delivery</th>
+                        <th>Healthy Delivery</th>
+                        <th>Rehospitalization</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for client in clients %}
+                    <tr>
+                        <td>{{ client.shelter_infant_details.infant_name }}</td>
+                        <td>{{ client.shelter_infant_details.birthdate }}</td>
+                        <td>{{ client.shelter_infant_details.birth_weight }}</td>
+                        <td>{{ client.shelter_infant_details.weeks_at_delivery }}</td>
+                        <td>{{ client.shelter_infant_details.healthy_delivery }}</td>
+                        <td>{{ client.shelter_infant_details.rehospitalization }}</td>
+                        <td>
+                            <button class="delete-button" data-id="{{ client._id }}" onclick="deleteInfant(this)">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <h1>Shelter Children Details</h1>
+        <div class="table-container">
+            <table class="children_table" id="childrenTable">
+                <thead>
+                    <tr>
+                        <th>Child Name</th>
+                        <th>Birth Date</th>
+                        <th>Age</th>
+                        <th>Grade Level</th>
+                        <th>Trauma Programming Hours</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for client in clients %}
+                    <tr>
+                        <td>{{ client.shelter_children_details.child_name }}</td>
+                        <td>{{ client.shelter_children_details.birthdate }}</td>
+                        <td>{{ client.shelter_children_details.age }}</td>
+                        <td>{{ client.shelter_children_details.grade_level }}</td>
+                        <td>{{ client.shelter_children_details.trauma_programming_hours }}</td>
+                        <td>
+                            <button class="delete-button" data-id="{{ client._id }}" onclick="deleteChild(this)">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <h1>Housing Information</h1>
+        <div class="table-container">
+            <table class="housing_table" id="housingTable">
+                <thead>
+                    <tr>
+                        <th>Length of Stay in Shelter</th>
+                        <th>Reason for Leaving Shelter</th>
+                        <th>Moved to Transitional Housing</th>
+                        <th>Length of Stay in Transitional Housing</th>
+                        <th>Housing Voucher Recipient</th>
+                        <th>Case Management Assistance</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for client in clients %}
+                    <tr>
+                        <td>{{ client.housing_details.length_stay_shelter }}</td>
+                        <td>{{ client.housing_details.reason_leaving_shelter }}</td>
+                        <td>{{ client.housing_details.moved_to_transitional_housing }}</td>
+                        <td>{{ client.housing_details.length_stay_transitional_housing }}</td>
+                        <td>{{ client.housing_details.housing_voucher_recipient }}</td>
+                        <td>{{ client.housing_details.case_management_assistance }}</td>
+                        <td>
+                            <button class="delete-button" data-id="{{ client._id }}" onclick="deleteHousing(this)">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <h1>Women Served Details</h1>
+        <div class="table-container">
+            <table class="women_served_table" id="womenServedTable">
+                <thead>
+                    <tr>
+                        <th>Number of Women Accepted at Intake</th>
+                        <th>Incoming Calls for Shelter</th>
+                        <th>Number of Calls Seeking Shelter for Women</th>
+                        <th>Number of Calls Seeking Shelter for Pregnant Women</th>
+                        <th>Number of Pregnant Women Turned Away</th>
+                        <th>Reason for Turning Away Pregnant Women</th>
+                        <th>Number of Women and Children Touched During Community Outreach</th>
+                        <th>Number of Referrals to Other Shelters or Agencies</th>
+                        <th>Number of Women Moved from Maternity Shelter to Transitional Apartments</th>
+                        <th>Number of Women Moved to the AfterCare Program</th>
+                        <th>Details of Children in Aftercare Program</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for client in clients %}
+                    <tr>
+                        <td>{{ client.women_served_details.women_accepted_intake }}</td>
+                        <td>{{ client.women_served_details.incoming_calls_shelter }}</td>
+                        <td>{{ client.women_served_details.calls_seeking_shelter_women }}</td>
+                        <td>{{ client.women_served_details.calls_seeking_shelter_pregnant }}</td>
+                        <td>{{ client.women_served_details.pregnant_women_turned_away }}</td>
+                        <td>{{ client.women_served_details.pregnant_women_turned_away_reason }}</td>
+                        <td>{{ client.women_served_details.community_outreach_activities }}</td>
+                        <td>{{ client.women_served_details.referrals_other_agencies }}</td>
+                        <td>{{ client.women_served_details.moved_from_maternity_to_apartments }}</td>
+                        <td>{{ client.women_served_details.moved_to_aftercare_program }}</td>
+                        <td>{{ client.women_served_details.aftercare_program_details }}</td>
+                        <td>
+                            <button class="delete-button" data-id="{{ client._id }}" onclick="deleteWoman(this)">Delete</button>
                         </td>
                     </tr>
                     {% endfor %}
