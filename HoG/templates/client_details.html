@@ -8,33 +8,11 @@
         /* Basic CSS for layout and styling */
         body {
             font-family: Arial, sans-serif;
-        }
-
-        .client-table, .health_table, .infants_table, .children_table, .housing_table, .women_served_table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .client-table th, .client-table td,
-        .health_table th, .health_table td,
-        .infants_table th, .infants_table td,
-        .children_table th, .children_table td,
-        .housing_table th, .housing_table td,
-        .women_served_table th, .women_served_table td {
-            padding: 8px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-
-        .client-table th, .health_table th, .infants_table th, .children_table th, .housing_table th, .women_served_table th {
             background-color: #f2f2f2;
             margin: 0;
             padding: 0;
         }
 
-        .client-table tr:nth-child(even), .health_table tr:nth-child(even), .infants_table tr:nth-child(even), .children_table tr:nth-child(even), .housing_table tr:nth-child(even), .women_served_table tr:nth-child(even) {
-            background-color: #f2f2f2;
         .container {
             max-width: 1200px;
             margin: 20px auto;
@@ -156,31 +134,37 @@
         }
 
         /* Modal styling */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Modal Content/Box */
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-    max-width: 600px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    animation: fadeIn 0.5s;
-}
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        
+        /* Modal Content/Box */
+        .modal-content {
+            position: fixed; /* Fixed position */
+            background-color: #fefefe;
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%); /* Center the modal */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            max-width: 600px;
+            max-height: 80%; /* Maximum height */
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            overflow-y: auto; /* Make content scrollable */
+            animation: fadeIn 0.5s;
+        }
+        
 
 /* Add animation for modal */
 @keyframes fadeIn {
@@ -238,7 +222,8 @@ h2 {
     color: #333;
     font-family: 'Arial', sans-serif;
 }
-</style>
+
+    </style>
 
 </head>
 <body>
@@ -313,102 +298,116 @@ h2 {
                 </tbody>
             </table>
         </div>
+        
+  
 
-        <h1>Shelter Infants Details</h1>
-        <div class="table-container">
-            <table class="infants_table" id="infantsTable">
-                <thead>
-                    <tr>
-                        <th>Infant Name</th>
-                        <th>Birth Date</th>
-                        <th>Birth Weight</th>
-                        <th>Weeks at Delivery</th>
-                        <th>Healthy Delivery</th>
-                        <th>Rehospitalization</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for client in clients %}
-                    <tr>
-                        <td>{{ client.shelter_infant_details.infant_name }}</td>
-                        <td>{{ client.shelter_infant_details.birthdate }}</td>
-                        <td>{{ client.shelter_infant_details.birth_weight }}</td>
-                        <td>{{ client.shelter_infant_details.weeks_at_delivery }}</td>
-                        <td>{{ client.shelter_infant_details.healthy_delivery }}</td>
-                        <td>{{ client.shelter_infant_details.rehospitalization }}</td>
-                        <td>
-                            <button class="delete-button" data-id="{{ client._id }}" onclick="deleteInfant(this)">Delete</button>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
 
-        <h1>Shelter Children Details</h1>
-        <div class="table-container">
-            <table class="children_table" id="childrenTable">
-                <thead>
-                    <tr>
-                        <th>Child Name</th>
-                        <th>Birth Date</th>
-                        <th>Age</th>
-                        <th>Grade Level</th>
-                        <th>Trauma Programming Hours</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for client in clients %}
-                    <tr>
-                        <td>{{ client.shelter_children_details.child_name }}</td>
-                        <td>{{ client.shelter_children_details.birthdate }}</td>
-                        <td>{{ client.shelter_children_details.age }}</td>
-                        <td>{{ client.shelter_children_details.grade_level }}</td>
-                        <td>{{ client.shelter_children_details.trauma_programming_hours }}</td>
-                        <td>
-                            <button class="delete-button" data-id="{{ client._id }}" onclick="deleteChild(this)">Delete</button>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+    <h1>Shelter Infants Details</h1>
+    <div class="table-container">
+        <table class="infants_table" id="infantsTable">
+            <thead>
+                <tr>
+                    <th>Infant Name</th>
+                    <th>Birth Date</th>
+                    <th>Birth Weight</th>
+                    <th>Weeks at Delivery</th>
+                    <th>Healthy Delivery</th>
+                    <th>Rehospitalization</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for client in clients %}
+                {% if client.shelter_infant_details %}
+                <tr data-id="{{ client._id }}">
+                    <td>{{ client.shelter_infant_details.infant_name }}</td>
+                    <td>{{ client.shelter_infant_details.birthdate }}</td>
+                    <td>{{ client.shelter_infant_details.birth_weight }}</td>
+                    <td>{{ client.shelter_infant_details.weeks_at_delivery }}</td>
+                    <td>{{ client.shelter_infant_details.healthy_delivery }}</td>
+                    <td>{{ client.shelter_infant_details.rehospitalization }}</td>
+                    <td>
+                        <button class="edit-button" data-id="{{ client._id }}" onclick="openEditInfantForm(this)">Edit</button>
+                        <button class="delete-button" onclick="openDeleteModal('{{ client._id }}')">Delete</button>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
 
-        <h1>Housing Information</h1>
-        <div class="table-container">
-            <table class="housing_table" id="housingTable">
-                <thead>
-                    <tr>
-                        <th>Length of Stay in Shelter</th>
-                        <th>Reason for Leaving Shelter</th>
-                        <th>Moved to Transitional Housing</th>
-                        <th>Length of Stay in Transitional Housing</th>
-                        <th>Housing Voucher Recipient</th>
-                        <th>Case Management Assistance</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for client in clients %}
-                    <tr>
-                        <td>{{ client.housing_details.length_stay_shelter }}</td>
-                        <td>{{ client.housing_details.reason_leaving_shelter }}</td>
-                        <td>{{ client.housing_details.moved_to_transitional_housing }}</td>
-                        <td>{{ client.housing_details.length_stay_transitional_housing }}</td>
-                        <td>{{ client.housing_details.housing_voucher_recipient }}</td>
-                        <td>{{ client.housing_details.case_management_assistance }}</td>
-                        <td>
-                            <button class="delete-button" data-id="{{ client._id }}" onclick="deleteHousing(this)">Delete</button>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+    </div>
 
-        <h1>Women Served Details</h1>
+    <h1>Shelter Children Details</h1>
+    <div class="table-container">
+        <table class="children_table" id="childrenTable">
+            <thead>
+                <tr>
+                    <th>Child Name</th>
+                    <th>Birth Date</th>
+                    <th>Age</th>
+                    <th>Grade Level</th>
+                    <th>Trauma Programming Hours</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for client in clients %}
+                {% if client.shelter_children_details %}
+                <tr data-id="{{ client._id }}">
+                    <td>{{ client.shelter_children_details.child_name }}</td>
+                    <td>{{ client.shelter_children_details.birthdate }}</td>
+                    <td>{{ client.shelter_children_details.age }}</td>
+                    <td>{{ client.shelter_children_details.grade_level }}</td>
+                    <td>{{ client.shelter_children_details.trauma_programming_hours }}</td>
+                    <td>
+                        <button class="edit-button" data-id="{{ client._id }}" onclick="openEditInfantForm(this)">Edit</button>
+                        
+                        <button class="delete-button" onclick="openDeleteModal('{{ client._id }}')">Delete</button>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h1>Housing Information</h1>
+    <div class="table-container">
+        <table class="housing_table" id="housingTable">
+            <thead>
+                <tr>
+                    <th>Length of Stay in Shelter</th>
+                    <th>Reason for Leaving Shelter</th>
+                    <th>Moved to Transitional Housing</th>
+                    <th>Length of Stay in Transitional Housing</th>
+                    <th>Housing Voucher Recipient</th>
+                    <th>Case Management Assistance</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for client in clients %}
+                {% if client.housing_details %}
+                <tr data-id="{{ client._id }}">
+                    <td>{{ client.housing_details.length_stay_shelter }}</td>
+                    <td>{{ client.housing_details.reason_leaving_shelter }}</td>
+                    <td>{{ client.housing_details.moved_to_transitional_housing }}</td>
+                    <td>{{ client.housing_details.length_stay_transitional_housing }}</td>
+                    <td>{{ client.housing_details.housing_voucher_recipient }}</td>
+                    <td>{{ client.housing_details.case_management_assistance }}</td>
+                    <td>
+                        <button class="edit-button" data-id="{{ client._id }}" onclick="openEditInfantForm(this)">Edit</button>
+                        <button class="delete-button" onclick="openDeleteModal('{{ client._id }}')">Delete</button>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h1>Women Served Details</h1>
         <div class="table-container">
             <table class="women_served_table" id="womenServedTable">
                 <thead>
@@ -429,7 +428,8 @@ h2 {
                 </thead>
                 <tbody>
                     {% for client in clients %}
-                    <tr>
+                    {% if client.women_served_details %}
+                    <tr data-id="{{ client._id }}">
                         <td>{{ client.women_served_details.women_accepted_intake }}</td>
                         <td>{{ client.women_served_details.incoming_calls_shelter }}</td>
                         <td>{{ client.women_served_details.calls_seeking_shelter_women }}</td>
@@ -442,67 +442,87 @@ h2 {
                         <td>{{ client.women_served_details.moved_to_aftercare_program }}</td>
                         <td>{{ client.women_served_details.aftercare_program_details }}</td>
                         <td>
-                            <button class="delete-button" data-id="{{ client._id }}" onclick="deleteWoman(this)">Delete</button>
+                            <button class="edit-button" data-id="{{ client._id }}" onclick="openEditInfantForm(this)">Edit</button>
+                            <button class="delete-button" onclick="openDeleteModal('{{ client._id }}')">Delete</button>
                         </td>
                     </tr>
+                    {% endif %}
                     {% endfor %}
                 </tbody>
             </table>
         </div>
+
         <button class="back-to-form-button" onclick="location.href='/';">Back to Form</button>
     </div>
 
-<!-- Edit Health Details Modal -->
-<div id="editHealthModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeEditHealthForm()">&times;</span>
-        <h2>Edit Health Details</h2>
-        <form id="editHealthForm">
-            <input type="hidden" id="editHealthClientId">
-            <label for="editHighBp">High BP:</label>
-            <input type="text" id="editHighBp" name="highbp" required><br>
-            <label for="editDiabetes">Diabetes:</label>
-            <input type="text" id="editDiabetes" name="diabetes" required><br>
-            <button type="button" onclick="submitEditHealthForm()">Save Changes</button>
-        </form>
+    <!-- Edit Client Details Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditForm()">&times;</span>
+            <h2>Edit Client Details</h2>
+            <form id="editForm">
+                <input type="hidden" id="editClientId">
+                <label for="editName">Name:</label>
+                <input type="text" id="editName" name="name" required><br>
+                <label for="editAddress">Address:</label>
+                <input type="text" id="editAddress" name="address" required><br>
+                <label for="editZipCode">Zip Code:</label>
+                <input type="text" id="editZipCode" name="zip_code" required><br>
+                <label for="editPhone">Phone:</label>
+                <input type="text" id="editPhone" name="phone" required><br>
+                <label for="editBirthdate">Birthdate:</label>
+                <input type="date" id="editBirthdate" name="birthdate" required><br>
+                <label for="editAge">Age:</label>
+                <input type="text" id="editAge" name="age" required><br>
+                <label for="editSex">Sex:</label>
+                <input type="text" id="editSex" name="sex" required><br>
+                <button type="button" onclick="submitEditForm()">Save Changes</button>
+            </form>
+        </div>
     </div>
-</div>
 
-
-    <!-- Edit Form Modal -->
-<div id="editFormModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeEditForm()">&times;</span>
-        <h2>Edit Client Details</h2>
-        <form id="editForm">
-            <input type="hidden" id="editClientId">
-            <label for="editName">Name:</label>
-            <input type="text" id="editName" name="name" required><br>
-            <label for="editAddress">Address:</label>
-            <input type="text" id="editAddress" name="address" required><br>
-            <label for="editZip">Zip Code:</label>
-            <input type="text" id="editZip" name="zip" required><br>
-            <label for="editPhone">Phone:</label>
-            <input type="text" id="editPhone" name="phone" required><br>
-            <label for="editBirthdate">Birthdate:</label>
-            <input type="date" id="editBirthdate" name="birthdate"><br>
-            <label for="editAge">Age:</label>
-            <input type="number" id="editAge" name="age" required><br>
-            <label for="editSex">Sex:</label>
-            <select id="editSex" name="sex" required>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-            </select><br>
-
-           
-            <button type="button" onclick="submitEditForm()">Save Changes</button>
-        </form>
+    <!-- Edit Health Details Modal -->
+    <div id="editHealthModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditHealthForm()">&times;</span>
+            <h2>Edit Health Details</h2>
+            <form id="editHealthForm">
+                <input type="hidden" id="editHealthId">
+                <label for="editHighBP">High BP:</label>
+                <input type="text" id="editHighBP" name="highbp" required><br>
+                <label for="editDiabetes">Diabetes:</label>
+                <input type="text" id="editDiabetes" name="diabetes" required><br>
+                <button type="button" onclick="submitEditHealthForm()">Save Changes</button>
+            </form>
+        </div>
     </div>
-</div>
+
+    <!-- Edit Infant Details Modal -->
+    <div id="editInfantModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditInfantForm()">&times;</span>
+            <h2>Edit Infant Details</h2>
+            <form id="editInfantForm">
+                <input type="hidden" id="editInfantId">
+                <label for="editInfantName">Infant Name:</label>
+                <input type="text" id="editInfantName" name="infant_name" required><br>
+                <label for="editInfantBirthdate">Birth Date:</label>
+                <input type="date" id="editInfantBirthdate" name="birthdate" required><br>
+                <label for="editInfantWeight">Birth Weight:</label>
+                <input type="text" id="editInfantWeight" name="birth_weight" required><br>
+                <label for="editInfantWeeks">Weeks at Delivery:</label>
+                <input type="text" id="editInfantWeeks" name="weeks_at_delivery" required><br>
+                <label for="editInfantHealthy">Healthy Delivery:</label>
+                <input type="text" id="editInfantHealthy" name="healthy_delivery" required><br>
+                <label for="editInfantRehospitalization">Rehospitalization:</label>
+                <input type="text" id="editInfantRehospitalization" name="rehospitalization" required><br>
+                <button type="button" onclick="submitEditInfantForm()">Save Changes</button>
+            </form>
+        </div>
+    </div>
 
 
-<!-- Delete Confirmation Modal -->
+    <!-- Delete Confirmation Modal -->
 <div id="deleteModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeDeleteModal()">&times;</span>
@@ -514,77 +534,61 @@ h2 {
 </div>
 
 
-
     <script>
         function searchTable() {
-            var input, filter, clientTable, healthTable, clientRows, healthRows, i, j, clientTd, healthTd, txtValue, shouldDisplayRow;
+            var input, filter, clientTable, healthTable, infantsTable, clientRows, healthRows, infantsRows, i, j, clientTd, healthTd, infantsTd, txtValue, shouldDisplayRow;
             input = document.getElementById("searchInput");
             filter = input.value.toUpperCase();
             clientTable = document.getElementById("clientTable");
             healthTable = document.getElementById("healthTable");
+            infantsTable = document.getElementById("infantsTable");
             clientRows = clientTable.getElementsByTagName("tr");
             healthRows = healthTable.getElementsByTagName("tr");
-        
-            // Loop through all client detail table rows
-            for (i = 1; i < clientRows.length; i++) {
-                clientRows[i].style.display = "none"; // Initially hide the row
-                shouldDisplayRow = false;
-                
-                clientTd = clientRows[i].getElementsByTagName("td");
-                // Loop through all table cells in the client details row
-                for (j = 0; j < clientTd.length; j++) {
-                    if (clientTd[j]) {
-                        txtValue = clientTd[j].textContent || clientTd[j].innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            shouldDisplayRow = true;
-                            break;
-                        }
-                    }
-                }
-        
-                // Corresponding health details row (assuming same number of rows and alignment)
-                if (shouldDisplayRow) {
-                    healthRows[i].style.display = "";
-                } else {
-                    healthTd = healthRows[i].getElementsByTagName("td");
-                    // Loop through all table cells in the health details row
-                    for (j = 0; j < healthTd.length; j++) {
-                        if (healthTd[j]) {
-                            txtValue = healthTd[j].textContent || healthTd[j].innerText;
+            infantsRows = infantsTable.getElementsByTagName("tr");
+
+            // Function to filter rows
+            function filterRows(rows) {
+                for (i = 1; i < rows.length; i++) {
+                    rows[i].style.display = "none";
+                    shouldDisplayRow = false;
+                    cells = rows[i].getElementsByTagName("td");
+                    for (j = 0; j < cells.length; j++) {
+                        if (cells[j]) {
+                            txtValue = cells[j].textContent || cells[j].innerText;
                             if (txtValue.toUpperCase().indexOf(filter) > -1) {
                                 shouldDisplayRow = true;
                                 break;
                             }
                         }
                     }
-                }
-        
-                // Display the row if any cell matches the filter
-                if (shouldDisplayRow) {
-                    clientRows[i].style.display = "";
-                    healthRows[i].style.display = "";
-                } else {
-                    clientRows[i].style.display = "none";
-                    healthRows[i].style.display = "none";
+                    if (shouldDisplayRow) {
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
                 }
             }
+
+            // Filter each table
+            filterRows(clientRows);
+            filterRows(healthRows);
+            filterRows(infantsRows);
         }
 
-
-        // Function to open the delete confirmation modal
-        function openDeleteModal(id) {
-            var modal = document.getElementById("deleteModal");
-            modal.style.display = "block";
-            document.getElementById("confirmDeleteButton").setAttribute("data-id", id);
-        }
-
-        // Function to close the delete confirmation modal
-        function closeDeleteModal() {
-            var modal = document.getElementById("deleteModal");
-            modal.style.display = "none";
-        }
+                // Function to open the delete confirmation modal
+                function openDeleteModal(id) {
+                    var modal = document.getElementById("deleteModal");
+                    modal.style.display = "block";
+                    document.getElementById("confirmDeleteButton").setAttribute("data-id", id);
+                }
         
+                // Function to close the delete confirmation modal
+                function closeDeleteModal() {
+                    var modal = document.getElementById("deleteModal");
+                    modal.style.display = "none";
+                }
         
+
         function openEditForm(button) {
             var clientId = button.getAttribute("data-id");
 
@@ -592,37 +596,17 @@ h2 {
             document.getElementById("editClientId").value = clientId;
             document.getElementById("editName").value = row.cells[0].textContent;
             document.getElementById("editAddress").value = row.cells[1].textContent;
-            document.getElementById("editZip").value = row.cells[2].textContent;
+            document.getElementById("editZipCode").value = row.cells[2].textContent;
             document.getElementById("editPhone").value = row.cells[3].textContent;
             document.getElementById("editBirthdate").value = row.cells[4].textContent;
             document.getElementById("editAge").value = row.cells[5].textContent;
             document.getElementById("editSex").value = row.cells[6].textContent;
 
-           
-
-            document.getElementById("editFormModal").style.display = "block";
-        }
-
-
-        function openEditHealthForm(button) {
-            var clientId = button.getAttribute("data-id");
-
-            var row = button.closest("tr");
-            document.getElementById("editHealthClientId").value = clientId;
-
-            var healthRow = document.querySelector(`#healthTable tr[data-id="${clientId}"]`);
-            document.getElementById("editHighBp").value = healthRow.cells[0].textContent;
-            document.getElementById("editDiabetes").value = healthRow.cells[1].textContent;
-
-            document.getElementById("editHealthModal").style.display = "block";
+            document.getElementById("editModal").style.display = "block";
         }
 
         function closeEditForm() {
-            document.getElementById("editFormModal").style.display = "none";
-        }
-
-        function closeEditHealthForm() {
-            document.getElementById("editHealthModal").style.display = "none";
+            document.getElementById("editModal").style.display = "none";
         }
 
         function submitEditForm() {
@@ -630,18 +614,12 @@ h2 {
             var formData = {
                 name: document.getElementById("editName").value,
                 address: document.getElementById("editAddress").value,
-                zip: document.getElementById("editZip").value,
+                zip_code: document.getElementById("editZipCode").value,
                 phone: document.getElementById("editPhone").value,
                 birthdate: document.getElementById("editBirthdate").value,
                 age: document.getElementById("editAge").value,
                 sex: document.getElementById("editSex").value,
-              
             };
-
-            // Handle empty birthdate
-            if (!formData.birthdate) {
-                delete formData.birthdate;
-            }
 
             fetch(`/edit_client/${clientId}`, {
                 method: 'PUT',
@@ -653,40 +631,47 @@ h2 {
             .then(response => response.json())
             .then(data => {
                 if (data.message) {
-                    var row = document.querySelector(`tr[data-id="${clientId}"]`);
+                    var row = document.querySelector(`#clientTable tr[data-id="${clientId}"]`);
                     row.cells[0].textContent = formData.name;
                     row.cells[1].textContent = formData.address;
-                    row.cells[2].textContent = formData.zip;
+                    row.cells[2].textContent = formData.zip_code;
                     row.cells[3].textContent = formData.phone;
-                    row.cells[4].textContent = formData.birthdate || row.cells[4].textContent;
+                    row.cells[4].textContent = formData.birthdate;
                     row.cells[5].textContent = formData.age;
                     row.cells[6].textContent = formData.sex;
-
-                    
 
                     closeEditForm();
                     console.log('Client updated successfully');
                 } else {
-                    console.error('Error updating client');
+                    console.error('Error updating client:', data.message);
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => console.error('Error updating client:', error));
         }
 
+        function openEditHealthForm(button) {
+            var healthId = button.getAttribute("data-id");
+
+            var row = button.closest("tr");
+            document.getElementById("editHealthId").value = healthId;
+            document.getElementById("editHighBP").value = row.cells[0].textContent;
+            document.getElementById("editDiabetes").value = row.cells[1].textContent;
+
+            document.getElementById("editHealthModal").style.display = "block";
+        }
+
+        function closeEditHealthForm() {
+            document.getElementById("editHealthModal").style.display = "none";
+        }
 
         function submitEditHealthForm() {
-            var clientId = document.getElementById("editHealthClientId").value;
+            var healthId = document.getElementById("editHealthId").value;
             var formData = {
-                highbp: document.getElementById("editHighBp").value,
+                highbp: document.getElementById("editHighBP").value,
                 diabetes: document.getElementById("editDiabetes").value,
             };
 
-            // Handle empty birthdate
-            if (!formData.birthdate) {
-                delete formData.birthdate;
-            }
-
-            fetch(`/edit_health_client/${clientId}`, {
+            fetch(`/edit_health/${healthId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -696,21 +681,75 @@ h2 {
             .then(response => response.json())
             .then(data => {
                 if (data.message) {
-                    var row = document.querySelector(`tr[data-id="${clientId}"]`);
-
-                    var healthRow = document.querySelector(`#healthTable tr[data-id="${clientId}"]`);
-                    healthRow.cells[0].textContent = formData.highbp;
-                    healthRow.cells[1].textContent = formData.diabetes;
+                    var row = document.querySelector(`#healthTable tr[data-id="${healthId}"]`);
+                    row.cells[0].textContent = formData.highbp;
+                    row.cells[1].textContent = formData.diabetes;
 
                     closeEditHealthForm();
-                    console.log('Client updated successfully');
+                    console.log('Health details updated successfully');
                 } else {
-                    console.error('Error updating client');
+                    console.error('Error updating health details:', data.message);
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => console.error('Error updating health details:', error));
         }
-        
+
+        function openEditInfantForm(button) {
+            var infantId = button.getAttribute("data-id");
+
+            var row = button.closest("tr");
+            document.getElementById("editInfantId").value = infantId;
+            document.getElementById("editInfantName").value = row.cells[0].textContent;
+            document.getElementById("editInfantBirthdate").value = row.cells[1].textContent;
+            document.getElementById("editInfantWeight").value = row.cells[2].textContent;
+            document.getElementById("editInfantWeeks").value = row.cells[3].textContent;
+            document.getElementById("editInfantHealthy").value = row.cells[4].textContent;
+            document.getElementById("editInfantRehospitalization").value = row.cells[5].textContent;
+
+            document.getElementById("editInfantModal").style.display = "block";
+        }
+
+        function closeEditInfantForm() {
+            document.getElementById("editInfantModal").style.display = "none";
+        }
+
+        function submitEditInfantForm() {
+            var infantId = document.getElementById("editInfantId").value;
+            var formData = {
+                infant_name: document.getElementById("editInfantName").value,
+                birthdate: document.getElementById("editInfantBirthdate").value,
+                birth_weight: document.getElementById("editInfantWeight").value,
+                weeks_at_delivery: document.getElementById("editInfantWeeks").value,
+                healthy_delivery: document.getElementById("editInfantHealthy").value,
+                rehospitalization: document.getElementById("editInfantRehospitalization").value,
+            };
+
+            fetch(`/edit_infant/${infantId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    var row = document.querySelector(`#infantsTable tr[data-id="${infantId}"]`);
+                    row.cells[0].textContent = formData.infant_name;
+                    row.cells[1].textContent = formData.birthdate;
+                    row.cells[2].textContent = formData.birth_weight;
+                    row.cells[3].textContent = formData.weeks_at_delivery;
+                    row.cells[4].textContent = formData.healthy_delivery;
+                    row.cells[5].textContent = formData.rehospitalization;
+
+                    closeEditInfantForm();
+                    console.log('Infant details updated successfully');
+                } else {
+                    console.error('Error updating infant details:', data.message);
+                }
+            })
+            .catch(error => console.error('Error updating infant details:', error));
+        }
 
         function deleteClient(button) {
             var id = document.getElementById("confirmDeleteButton").getAttribute("data-id");
@@ -728,14 +767,20 @@ h2 {
             .catch(error => console.error('Error:', error));
         }
 
-        // Closing modals when clicking outside of them
+        // Close modal when clicking outside of it
         window.onclick = function(event) {
-            var modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                if (event.target === modal) {
-                    modal.style.display = "none";
-                }
-            });
+            var editModal = document.getElementById("editModal");
+            var editHealthModal = document.getElementById("editHealthModal");
+            var editInfantModal = document.getElementById("editInfantModal");
+            if (event.target == editModal) {
+                editModal.style.display = "none";
+            }
+            if (event.target == editHealthModal) {
+                editHealthModal.style.display = "none";
+            }
+            if (event.target == editInfantModal) {
+                editInfantModal.style.display = "none";
+            }
         }
     </script>
 </body>
