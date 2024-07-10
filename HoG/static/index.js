@@ -50,3 +50,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
     showSection(currentSection);
 });
+
+function addChildrenFields() {
+    var numberOfChildren = document.getElementById('number_of_children').value;
+    var container = document.getElementById('children-details-container');
+    container.innerHTML = ''; // Clear previous content
+
+    for (var i = 1; i <= numberOfChildren; i++) {
+      var childNameLabel = document.createElement('label');
+      childNameLabel.textContent = 'Child ' + i + ' Name:';
+      container.appendChild(childNameLabel);
+
+      var childNameInput = document.createElement('input');
+      childNameInput.type = 'text';
+      childNameInput.name = 'child_name_' + i;
+      container.appendChild(childNameInput);
+
+      container.appendChild(document.createElement('br')); // Line break
+
+      var childDOBLabel = document.createElement('label');
+      childDOBLabel.textContent = 'Child ' + i + ' Date of Birth:';
+      container.appendChild(childDOBLabel);
+
+      var childDOBInput = document.createElement('input');
+      childDOBInput.type = 'date';
+      childDOBInput.name = 'child_dob_' + i;
+      container.appendChild(childDOBInput);
+
+      container.appendChild(document.createElement('br')); // Line break
+      container.appendChild(document.createElement('br')); // Line break
+    }
+  }
