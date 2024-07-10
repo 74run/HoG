@@ -92,7 +92,7 @@ def submit_form():
                     "highriskpreg": data.get("highriskpreg", ""),
                     "vaginalbirth": data.get("vaginalbirth", "")
                 },
-                
+
                 # Extract infant details from the received JSON
                 "shelter_infant_details" : {
                     "infant_name": data.get("infant_name", ""),
