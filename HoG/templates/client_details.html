@@ -13,6 +13,21 @@
             padding: 0;
         }
 
+        .navbar {
+            background-color: white;
+            overflow: hidden;
+        }
+        
+        .navbar-logo {
+            float: left;
+            padding: 10px 15px;
+        }
+        
+        .navbar-logo img {
+            height: 80px;
+            width: auto;
+        }
+
         .container {
             max-width: 1200px;
             margin: 20px auto;
@@ -134,6 +149,7 @@
         }
 
         /* Modal styling */
+        /* Modal styling */
         .modal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
@@ -243,6 +259,8 @@ h2 {
             <table class="client-table" id="clientTable">
                 <thead>
                     <tr>
+                        <th>Date of Entry</th>
+                        <th>Date of Exit</th>
                         <th>Name</th>
                         <th>Address</th>
                         <th>Zip Code</th>
@@ -250,12 +268,37 @@ h2 {
                         <th>Birthdate</th>
                         <th>Age</th>
                         <th>Sex</th>
+                        <th>Race</th>
+                        <th>Ethnicity</th>
+                        <th>Marital Status</th>
+                        <th>Length of Stay at Previous Address</th>
+                        <th>Country of Origin</th>
+                        <th>Times in Shelter</th>
+                        <th>Length of Stay at Previous Shelter</th>
+                        <th>Number of Children</th>
+                        <th>Children</th> 
+                        <th>Education Level</th>
+                        <th>Employment Status</th>
+                        <th>Income Amount at Intake</th>
+                        <th>Income Source at Intake</th>
+                        <th>Income Amount at Exit</th>
+                        <th>Income 1 Year from Exit</th>
+                        <th>Weeks Pregnant</th>
+                        <th>Prenatal Care Prior to Intake</th>
+                        <th>Father Involvement</th>
+                        <th>Father's Education Level</th>
+                        <th>Father's Occupation</th>
+                        <th>Father's Income</th>
+                        <th>Domestic Violence Survivor</th>
+                        <th>Veteran Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for client in clients %}
                     <tr data-id="{{ client._id }}">
+                        <td>{{ client.client_details.date_of_entry }}</td>
+                        <td>{{ client.client_details.date_of_exit }}</td>
                         <td>{{ client.client_details.name }}</td>
                         <td>{{ client.client_details.address }}</td>
                         <td>{{ client.client_details.zip_code }}</td>
@@ -263,6 +306,35 @@ h2 {
                         <td>{{ client.client_details.birthdate }}</td>
                         <td>{{ client.client_details.age }}</td>
                         <td>{{ client.client_details.sex }}</td>
+                        <td>{{ client.client_details.race }}</td>
+                        <td>{{ client.client_details.ethnicity }}</td>
+                        <td>{{ client.client_details.marital_status }}</td>
+                        <td>{{ client.client_details.length_stay_previous_address }}</td>
+                        <td>{{ client.client_details.country_of_origin }}</td>
+                        <td>{{ client.client_details.times_in_shelter }}</td>
+                        <td>{{ client.client_details.length_stay_previous_shelter }}</td>
+                        <td>{{ client.client_details.number_of_children }}</td>
+                        <td>
+                            <ul>
+                                {% for child in client.client_details.children %}
+                                <li>{{ child.name }} (DOB: {{ child.date_of_birth }})</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>{{ client.client_details.education_level }}</td>
+                        <td>{{ client.client_details.employment_status }}</td>
+                        <td>{{ client.client_details.income_amount_intake }}</td>
+                        <td>{{ client.client_details.income_source_intake }}</td>
+                        <td>{{ client.client_details.income_amount_exit }}</td>
+                        <td>{{ client.client_details.income_1_year_exit }}</td>
+                        <td>{{ client.client_details.weeks_pregnant }}</td>
+                        <td>{{ client.client_details.prenatal_care_prior_intake }}</td>
+                        <td>{{ client.client_details.father_involvement }}</td>
+                        <td>{{ client.client_details.father_education_level }}</td>
+                        <td>{{ client.client_details.father_occupation }}</td>
+                        <td>{{ client.client_details.father_income }}</td>
+                        <td>{{ client.client_details.domestic_violence_survivor }}</td>
+                        <td>{{ client.client_details.veteran_status }}</td>
                         <td>
                             <button class="edit-button" data-id="{{ client._id }}" onclick="openEditForm(this)">Edit</button>
                             <button class="delete-button" onclick="openDeleteModal('{{ client._id }}')">Delete</button>
@@ -281,6 +353,14 @@ h2 {
                     <tr>
                         <th>High BP</th>
                         <th>Diabetes</th>
+                        <th>Heart Disease</th>
+                        <th>Live Births</th>
+                        <th>Miscarriages</th>
+                        <th>Disability Diagnosis</th>
+                        <th>Rehospitalization</th>
+                        <th>Doula Support</th>
+                        <th>High Risk Pregnancy</th>
+                        <th>Vaginal Birth</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -289,6 +369,14 @@ h2 {
                     <tr data-id="{{ health._id }}">
                         <td>{{ health.health_details.highbp }}</td>
                         <td>{{ health.health_details.diabetes }}</td>
+                        <td>{{ health.health_details.heartdisease }}</td>
+                        <td>{{ health.health_details.livebirths }}</td>
+                        <td>{{ health.health_details.miscarriages }}</td>
+                        <td>{{ health.health_details.diagdisabilty }}</td>
+                        <td>{{ health.health_details.rehosp }}</td>
+                        <td>{{ health.health_details.doula }}</td>
+                        <td>{{ health.health_details.highriskpreg }}</td>
+                        <td>{{ health.health_details.vaginalbirth }}</td>
                         <td>
                             <button class="edit-button" data-id="{{ health._id }}" onclick="openEditHealthForm(this)">Edit</button>
                             <button class="delete-button" onclick="openDeleteModal('{{ health._id }}')">Delete</button>
@@ -298,149 +386,101 @@ h2 {
                 </tbody>
             </table>
         </div>
-        
-  
 
-
-    <h1>Shelter Infants Details</h1>
-    <div class="table-container">
-        <table class="infants_table" id="infantsTable">
-            <thead>
-                <tr>
-                    <th>Infant Name</th>
-                    <th>Birth Date</th>
-                    <th>Birth Weight</th>
-                    <th>Weeks at Delivery</th>
-                    <th>Healthy Delivery</th>
-                    <th>Rehospitalization</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for client in clients %}
-                {% if client.shelter_infant_details %}
-                <tr data-id="{{ client._id }}">
-                    <td>{{ client.shelter_infant_details.infant_name }}</td>
-                    <td>{{ client.shelter_infant_details.birthdate }}</td>
-                    <td>{{ client.shelter_infant_details.birth_weight }}</td>
-                    <td>{{ client.shelter_infant_details.weeks_at_delivery }}</td>
-                    <td>{{ client.shelter_infant_details.healthy_delivery }}</td>
-                    <td>{{ client.shelter_infant_details.rehospitalization }}</td>
-                    <td>
-                        <button class="edit-button" data-id="{{ client._id }}" onclick="openEditInfantForm(this)">Edit</button>
-                        <button class="delete-button" onclick="openDeleteModal('{{ client._id }}')">Delete</button>
-                    </td>
-                </tr>
-                {% endif %}
-                {% endfor %}
-            </tbody>
-        </table>
-
-    </div>
-
-    <h1>Shelter Children Details</h1>
-    <div class="table-container">
-        <table class="children_table" id="childrenTable">
-            <thead>
-                <tr>
-                    <th>Child Name</th>
-                    <th>Birth Date</th>
-                    <th>Age</th>
-                    <th>Grade Level</th>
-                    <th>Trauma Programming Hours</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for client in clients %}
-                {% if client.shelter_children_details %}
-                <tr data-id="{{ client._id }}">
-                    <td>{{ client.shelter_children_details.child_name }}</td>
-                    <td>{{ client.shelter_children_details.birthdate }}</td>
-                    <td>{{ client.shelter_children_details.age }}</td>
-                    <td>{{ client.shelter_children_details.grade_level }}</td>
-                    <td>{{ client.shelter_children_details.trauma_programming_hours }}</td>
-                    <td>
-                        <button class="edit-button" data-id="{{ client._id }}" onclick="openEditInfantForm(this)">Edit</button>
-                        
-                        <button class="delete-button" onclick="openDeleteModal('{{ client._id }}')">Delete</button>
-                    </td>
-                </tr>
-                {% endif %}
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <h1>Housing Information</h1>
-    <div class="table-container">
-        <table class="housing_table" id="housingTable">
-            <thead>
-                <tr>
-                    <th>Length of Stay in Shelter</th>
-                    <th>Reason for Leaving Shelter</th>
-                    <th>Moved to Transitional Housing</th>
-                    <th>Length of Stay in Transitional Housing</th>
-                    <th>Housing Voucher Recipient</th>
-                    <th>Case Management Assistance</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for client in clients %}
-                {% if client.housing_details %}
-                <tr data-id="{{ client._id }}">
-                    <td>{{ client.housing_details.length_stay_shelter }}</td>
-                    <td>{{ client.housing_details.reason_leaving_shelter }}</td>
-                    <td>{{ client.housing_details.moved_to_transitional_housing }}</td>
-                    <td>{{ client.housing_details.length_stay_transitional_housing }}</td>
-                    <td>{{ client.housing_details.housing_voucher_recipient }}</td>
-                    <td>{{ client.housing_details.case_management_assistance }}</td>
-                    <td>
-                        <button class="edit-button" data-id="{{ client._id }}" onclick="openEditInfantForm(this)">Edit</button>
-                        <button class="delete-button" onclick="openDeleteModal('{{ client._id }}')">Delete</button>
-                    </td>
-                </tr>
-                {% endif %}
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <h1>Women Served Details</h1>
+        <h1>Shelter Infants Details</h1>
         <div class="table-container">
-            <table class="women_served_table" id="womenServedTable">
+            <table class="infants_table" id="infantsTable">
                 <thead>
                     <tr>
-                        <th>Number of Women Accepted at Intake</th>
-                        <th>Incoming Calls for Shelter</th>
-                        <th>Number of Calls Seeking Shelter for Women</th>
-                        <th>Number of Calls Seeking Shelter for Pregnant Women</th>
-                        <th>Number of Pregnant Women Turned Away</th>
-                        <th>Reason for Turning Away Pregnant Women</th>
-                        <th>Number of Women and Children Touched During Community Outreach</th>
-                        <th>Number of Referrals to Other Shelters or Agencies</th>
-                        <th>Number of Women Moved from Maternity Shelter to Transitional Apartments</th>
-                        <th>Number of Women Moved to the AfterCare Program</th>
-                        <th>Details of Children in Aftercare Program</th>
+                        <th>Infant Name</th>
+                        <th>Birth Date</th>
+                        <th>Birth Weight</th>
+                        <th>Weeks at Delivery</th>
+                        <th>Healthy Delivery</th>
+                        <th>Rehospitalization</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for client in clients %}
-                    {% if client.women_served_details %}
+                    {% if client.shelter_infant_details %}
                     <tr data-id="{{ client._id }}">
-                        <td>{{ client.women_served_details.women_accepted_intake }}</td>
-                        <td>{{ client.women_served_details.incoming_calls_shelter }}</td>
-                        <td>{{ client.women_served_details.calls_seeking_shelter_women }}</td>
-                        <td>{{ client.women_served_details.calls_seeking_shelter_pregnant }}</td>
-                        <td>{{ client.women_served_details.pregnant_women_turned_away }}</td>
-                        <td>{{ client.women_served_details.pregnant_women_turned_away_reason }}</td>
-                        <td>{{ client.women_served_details.community_outreach_activities }}</td>
-                        <td>{{ client.women_served_details.referrals_other_agencies }}</td>
-                        <td>{{ client.women_served_details.moved_from_maternity_to_apartments }}</td>
-                        <td>{{ client.women_served_details.moved_to_aftercare_program }}</td>
-                        <td>{{ client.women_served_details.aftercare_program_details }}</td>
+                        <td>{{ client.shelter_infant_details.infant_name }}</td>
+                        <td>{{ client.shelter_infant_details.birthdate }}</td>
+                        <td>{{ client.shelter_infant_details.birth_weight }}</td>
+                        <td>{{ client.shelter_infant_details.weeks_at_delivery }}</td>
+                        <td>{{ client.shelter_infant_details.healthy_delivery }}</td>
+                        <td>{{ client.shelter_infant_details.rehospitalization }}</td>
+                        <td>
+                            <button class="edit-button" data-id="{{ client._id }}" onclick="openEditInfantForm(this)">Edit</button>
+                            <button class="delete-button" onclick="openDeleteModal('{{ client._id }}')">Delete</button>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+    
+        </div>
+    
+        <h1>Shelter Children Details</h1>
+        <div class="table-container">
+            <table class="children_table" id="childrenTable">
+                <thead>
+                    <tr>
+                        <th>Child Name</th>
+                        <th>Birth Date</th>
+                        <th>Age</th>
+                        <th>Grade Level</th>
+                        <th>Trauma Programming Hours</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for client in clients %}
+                    {% if client.shelter_children_details %}
+                    <tr data-id="{{ client._id }}">
+                        <td>{{ client.shelter_children_details.child_name }}</td>
+                        <td>{{ client.shelter_children_details.birthdate }}</td>
+                        <td>{{ client.shelter_children_details.age }}</td>
+                        <td>{{ client.shelter_children_details.grade_level }}</td>
+                        <td>{{ client.shelter_children_details.trauma_programming_hours }}</td>
+                        <td>
+                            <button class="edit-button" data-id="{{ client._id }}" onclick="openEditInfantForm(this)">Edit</button>
+                            
+                            <button class="delete-button" onclick="openDeleteModal('{{ client._id }}')">Delete</button>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    
+        <h1>Housing Information</h1>
+        <div class="table-container">
+            <table class="housing_table" id="housingTable">
+                <thead>
+                    <tr>
+                        <th>Length of Stay in Shelter</th>
+                        <th>Reason for Leaving Shelter</th>
+                        <th>Moved to Transitional Housing</th>
+                        <th>Length of Stay in Transitional Housing</th>
+                        <th>Housing Voucher Recipient</th>
+                        <th>Case Management Assistance</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for client in clients %}
+                    {% if client.housing_details %}
+                    <tr data-id="{{ client._id }}">
+                        <td>{{ client.housing_details.length_stay_shelter }}</td>
+                        <td>{{ client.housing_details.reason_leaving_shelter }}</td>
+                        <td>{{ client.housing_details.moved_to_transitional_housing }}</td>
+                        <td>{{ client.housing_details.length_stay_transitional_housing }}</td>
+                        <td>{{ client.housing_details.housing_voucher_recipient }}</td>
+                        <td>{{ client.housing_details.case_management_assistance }}</td>
                         <td>
                             <button class="edit-button" data-id="{{ client._id }}" onclick="openEditInfantForm(this)">Edit</button>
                             <button class="delete-button" onclick="openDeleteModal('{{ client._id }}')">Delete</button>
@@ -451,78 +491,205 @@ h2 {
                 </tbody>
             </table>
         </div>
-
+    
+        <h1>Women Served Details</h1>
+            <div class="table-container">
+                <table class="women_served_table" id="womenServedTable">
+                    <thead>
+                        <tr>
+                            <th>Number of Women Accepted at Intake</th>
+                            <th>Incoming Calls for Shelter</th>
+                            <th>Number of Calls Seeking Shelter for Women</th>
+                            <th>Number of Calls Seeking Shelter for Pregnant Women</th>
+                            <th>Number of Pregnant Women Turned Away</th>
+                            <th>Reason for Turning Away Pregnant Women</th>
+                            <th>Number of Women and Children Touched During Community Outreach</th>
+                            <th>Number of Referrals to Other Shelters or Agencies</th>
+                            <th>Number of Women Moved from Maternity Shelter to Transitional Apartments</th>
+                            <th>Number of Women Moved to the AfterCare Program</th>
+                            <th>Details of Children in Aftercare Program</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for client in clients %}
+                        {% if client.women_served_details %}
+                        <tr data-id="{{ client._id }}">
+                            <td>{{ client.women_served_details.women_accepted_intake }}</td>
+                            <td>{{ client.women_served_details.incoming_calls_shelter }}</td>
+                            <td>{{ client.women_served_details.calls_seeking_shelter_women }}</td>
+                            <td>{{ client.women_served_details.calls_seeking_shelter_pregnant }}</td>
+                            <td>{{ client.women_served_details.pregnant_women_turned_away }}</td>
+                            <td>{{ client.women_served_details.pregnant_women_turned_away_reason }}</td>
+                            <td>{{ client.women_served_details.community_outreach_activities }}</td>
+                            <td>{{ client.women_served_details.referrals_other_agencies }}</td>
+                            <td>{{ client.women_served_details.moved_from_maternity_to_apartments }}</td>
+                            <td>{{ client.women_served_details.moved_to_aftercare_program }}</td>
+                            <td>{{ client.women_served_details.aftercare_program_details }}</td>
+                            <td>
+                                <button class="edit-button" data-id="{{ client._id }}" onclick="openEditInfantForm(this)">Edit</button>
+                                <button class="delete-button" onclick="openDeleteModal('{{ client._id }}')">Delete</button>
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    
         <button class="back-to-form-button" onclick="location.href='/';">Back to Form</button>
     </div>
 
-    <!-- Edit Client Details Modal -->
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeEditForm()">&times;</span>
-            <h2>Edit Client Details</h2>
-            <form id="editForm">
-                <input type="hidden" id="editClientId">
-                <label for="editName">Name:</label>
-                <input type="text" id="editName" name="name" required><br>
-                <label for="editAddress">Address:</label>
-                <input type="text" id="editAddress" name="address" required><br>
-                <label for="editZipCode">Zip Code:</label>
-                <input type="text" id="editZipCode" name="zip_code" required><br>
-                <label for="editPhone">Phone:</label>
-                <input type="text" id="editPhone" name="phone" required><br>
-                <label for="editBirthdate">Birthdate:</label>
-                <input type="date" id="editBirthdate" name="birthdate" required><br>
-                <label for="editAge">Age:</label>
-                <input type="text" id="editAge" name="age" required><br>
-                <label for="editSex">Sex:</label>
-                <input type="text" id="editSex" name="sex" required><br>
-                <button type="button" onclick="submitEditForm()">Save Changes</button>
-            </form>
-        </div>
+
+<!-- Edit Health Details Modal -->
+<div id="editHealthModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeEditHealthForm()">&times;</span>
+        <h2>Edit Health Details</h2>
+        <form id="editHealthForm">
+            <input type="hidden" id="editHealthClientId">
+            <label for="editHighBp">High BP:</label>
+            <input type="text" id="editHighBp" name="highbp" required><br>
+            <label for="editDiabetes">Diabetes:</label>
+            <input type="text" id="editDiabetes" name="diabetes" required><br>
+            <button type="button" onclick="submitEditHealthForm()">Save Changes</button>
+        </form>
     </div>
+</div>
 
-    <!-- Edit Health Details Modal -->
-    <div id="editHealthModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeEditHealthForm()">&times;</span>
-            <h2>Edit Health Details</h2>
-            <form id="editHealthForm">
-                <input type="hidden" id="editHealthId">
-                <label for="editHighBP">High BP:</label>
-                <input type="text" id="editHighBP" name="highbp" required><br>
-                <label for="editDiabetes">Diabetes:</label>
-                <input type="text" id="editDiabetes" name="diabetes" required><br>
-                <button type="button" onclick="submitEditHealthForm()">Save Changes</button>
-            </form>
-        </div>
+  <!-- Edit Infant Details Modal -->
+  <div id="editInfantModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeEditInfantForm()">&times;</span>
+        <h2>Edit Infant Details</h2>
+        <form id="editInfantForm">
+            <input type="hidden" id="editInfantId">
+            <label for="editInfantName">Infant Name:</label>
+            <input type="text" id="editInfantName" name="infant_name" required><br>
+            <label for="editInfantBirthdate">Birth Date:</label>
+            <input type="date" id="editInfantBirthdate" name="birthdate" required><br>
+            <label for="editInfantWeight">Birth Weight:</label>
+            <input type="text" id="editInfantWeight" name="birth_weight" required><br>
+            <label for="editInfantWeeks">Weeks at Delivery:</label>
+            <input type="text" id="editInfantWeeks" name="weeks_at_delivery" required><br>
+            <label for="editInfantHealthy">Healthy Delivery:</label>
+            <input type="text" id="editInfantHealthy" name="healthy_delivery" required><br>
+            <label for="editInfantRehospitalization">Rehospitalization:</label>
+            <input type="text" id="editInfantRehospitalization" name="rehospitalization" required><br>
+            <button type="button" onclick="submitEditInfantForm()">Save Changes</button>
+        </form>
     </div>
+</div>
 
-    <!-- Edit Infant Details Modal -->
-    <div id="editInfantModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeEditInfantForm()">&times;</span>
-            <h2>Edit Infant Details</h2>
-            <form id="editInfantForm">
-                <input type="hidden" id="editInfantId">
-                <label for="editInfantName">Infant Name:</label>
-                <input type="text" id="editInfantName" name="infant_name" required><br>
-                <label for="editInfantBirthdate">Birth Date:</label>
-                <input type="date" id="editInfantBirthdate" name="birthdate" required><br>
-                <label for="editInfantWeight">Birth Weight:</label>
-                <input type="text" id="editInfantWeight" name="birth_weight" required><br>
-                <label for="editInfantWeeks">Weeks at Delivery:</label>
-                <input type="text" id="editInfantWeeks" name="weeks_at_delivery" required><br>
-                <label for="editInfantHealthy">Healthy Delivery:</label>
-                <input type="text" id="editInfantHealthy" name="healthy_delivery" required><br>
-                <label for="editInfantRehospitalization">Rehospitalization:</label>
-                <input type="text" id="editInfantRehospitalization" name="rehospitalization" required><br>
-                <button type="button" onclick="submitEditInfantForm()">Save Changes</button>
-            </form>
-        </div>
+
+
+    <!-- Edit Form Modal -->
+<div id="editFormModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeEditForm()">&times;</span>
+        <h2>Edit Client Details</h2>
+        <form id="editForm">
+            <input type="hidden" id="editClientId">
+
+            <label for="editDateOfEntry">Date of Entry:</label>
+            <input type="date" id="editDateOfEntry" name="date_of_entry" required><br>
+
+            <label for="editDateOfExit">Date of Exit:</label>
+            <input type="date" id="editDateOfExit" name="date_of_exit"><br>
+
+            <label for="editName">Name:</label>
+            <input type="text" id="editName" name="name" required><br>
+            <label for="editAddress">Address:</label>
+            <input type="text" id="editAddress" name="address" required><br>
+            <label for="editZip">Zip Code:</label>
+            <input type="text" id="editZip" name="zip" required><br>
+            <label for="editPhone">Phone:</label>
+            <input type="text" id="editPhone" name="phone" required><br>
+            <label for="editBirthdate">Birthdate:</label>
+            <input type="date" id="editBirthdate" name="birthdate"><br>
+            <label for="editAge">Age:</label>
+            <input type="number" id="editAge" name="age" required><br>
+            <label for="editSex">Sex:</label>
+            <select id="editSex" name="sex" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select><br>
+
+            <label for="editRace">Race:</label>
+            <input type="text" id="editRace" name="race"><br>
+
+            <label for="editEthnicity">Ethnicity:</label>
+            <input type="text" id="editEthnicity" name="ethnicity"><br>
+
+            <label for="editMaritalStatus">Marital Status:</label>
+            <input type="text" id="editMaritalStatus" name="marital_status"><br>
+
+            <label for="editLengthStayPreviousAddress">Length of Stay at Previous Address:</label>
+            <input type="text" id="editLengthStayPreviousAddress" name="length_stay_previous_address"><br>
+
+            <label for="editCountryOfOrigin">Country of Origin:</label>
+            <input type="text" id="editCountryOfOrigin" name="country_of_origin"><br>
+
+            <label for="editTimesInShelter">Times in Shelter:</label>
+            <input type="number" id="editTimesInShelter" name="times_in_shelter"><br>
+
+            <label for="editLengthStayPreviousShelter">Length of Stay at Previous Shelter:</label>
+            <input type="text" id="editLengthStayPreviousShelter" name="length_stay_previous_shelter"><br>
+
+            <label for="editNumberOfChildren">Number of Children:</label>
+            <input type="number" id="editNumberOfChildren" name="number_of_children"><br>
+
+            <label for="editEducationLevel">Education Level:</label>
+            <input type="text" id="editEducationLevel" name="education_level"><br>
+
+            <label for="editEmploymentStatus">Employment Status:</label>
+            <input type="text" id="editEmploymentStatus" name="employment_status"><br>
+
+            <label for="editIncomeAmountIntake">Income Amount at Intake:</label>
+            <input type="number" id="editIncomeAmountIntake" name="income_amount_intake"><br>
+
+            <label for="editIncomeSourceIntake">Income Source at Intake:</label>
+            <input type="text" id="editIncomeSourceIntake" name="income_source_intake"><br>
+
+            <label for="editIncomeAmountExit">Income Amount at Exit:</label>
+            <input type="number" id="editIncomeAmountExit" name="income_amount_exit"><br>
+
+            <label for="editIncome1YearExit">Income 1 Year from Exit:</label>
+            <input type="number" id="editIncome1YearExit" name="income_1_year_exit"><br>
+
+            <label for="editWeeksPregnant">Weeks Pregnant:</label>
+            <input type="number" id="editWeeksPregnant" name="weeks_pregnant"><br>
+
+            <label for="editPrenatalCarePriorIntake">Prenatal Care Prior to Intake:</label>
+            <input type="text" id="editPrenatalCarePriorIntake" name="prenatal_care_prior_intake"><br>
+
+            <label for="editFatherInvolvement">Father Involvement:</label>
+            <input type="text" id="editFatherInvolvement" name="father_involvement"><br>
+
+            <label for="editFatherEducationLevel">Father's Education Level:</label>
+            <input type="text" id="editFatherEducationLevel" name="father_education_level"><br>
+
+            <label for="editFatherOccupation">Father's Occupation:</label>
+            <input type="text" id="editFatherOccupation" name="father_occupation"><br>
+
+            <label for="editFatherIncome">Father's Income:</label>
+            <input type="number" id="editFatherIncome" name="father_income"><br>
+
+            <label for="editDomesticViolenceSurvivor">Domestic Violence Survivor:</label>
+            <input type="text" id="editDomesticViolenceSurvivor" name="domestic_violence_survivor"><br>
+
+            <label for="editVeteranStatus">Veteran Status:</label>
+            <input type="text" id="editVeteranStatus" name="veteran_status"><br>
+
+           
+            <button type="button" onclick="submitEditForm()">Save Changes</button>
+        </form>
     </div>
+</div>
 
 
-    <!-- Delete Confirmation Modal -->
+<!-- Delete Confirmation Modal -->
 <div id="deleteModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeDeleteModal()">&times;</span>
@@ -534,79 +701,139 @@ h2 {
 </div>
 
 
+
     <script>
         function searchTable() {
-            var input, filter, clientTable, healthTable, infantsTable, clientRows, healthRows, infantsRows, i, j, clientTd, healthTd, infantsTd, txtValue, shouldDisplayRow;
+            var input, filter, clientTable, healthTable, clientRows, healthRows, i, j, clientTd, healthTd, txtValue, shouldDisplayRow;
             input = document.getElementById("searchInput");
             filter = input.value.toUpperCase();
             clientTable = document.getElementById("clientTable");
             healthTable = document.getElementById("healthTable");
-            infantsTable = document.getElementById("infantsTable");
             clientRows = clientTable.getElementsByTagName("tr");
             healthRows = healthTable.getElementsByTagName("tr");
-            infantsRows = infantsTable.getElementsByTagName("tr");
-
-            // Function to filter rows
-            function filterRows(rows) {
-                for (i = 1; i < rows.length; i++) {
-                    rows[i].style.display = "none";
-                    shouldDisplayRow = false;
-                    cells = rows[i].getElementsByTagName("td");
-                    for (j = 0; j < cells.length; j++) {
-                        if (cells[j]) {
-                            txtValue = cells[j].textContent || cells[j].innerText;
+        
+            // Loop through all client detail table rows
+            for (i = 1; i < clientRows.length; i++) {
+                clientRows[i].style.display = "none"; // Initially hide the row
+                shouldDisplayRow = false;
+                
+                clientTd = clientRows[i].getElementsByTagName("td");
+                // Loop through all table cells in the client details row
+                for (j = 0; j < clientTd.length; j++) {
+                    if (clientTd[j]) {
+                        txtValue = clientTd[j].textContent || clientTd[j].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            shouldDisplayRow = true;
+                            break;
+                        }
+                    }
+                }
+        
+                // Corresponding health details row (assuming same number of rows and alignment)
+                if (shouldDisplayRow) {
+                    healthRows[i].style.display = "";
+                } else {
+                    healthTd = healthRows[i].getElementsByTagName("td");
+                    // Loop through all table cells in the health details row
+                    for (j = 0; j < healthTd.length; j++) {
+                        if (healthTd[j]) {
+                            txtValue = healthTd[j].textContent || healthTd[j].innerText;
                             if (txtValue.toUpperCase().indexOf(filter) > -1) {
                                 shouldDisplayRow = true;
                                 break;
                             }
                         }
                     }
-                    if (shouldDisplayRow) {
-                        rows[i].style.display = "";
-                    } else {
-                        rows[i].style.display = "none";
-                    }
+                }
+        
+                // Display the row if any cell matches the filter
+                if (shouldDisplayRow) {
+                    clientRows[i].style.display = "";
+                    healthRows[i].style.display = "";
+                } else {
+                    clientRows[i].style.display = "none";
+                    healthRows[i].style.display = "none";
                 }
             }
-
-            // Filter each table
-            filterRows(clientRows);
-            filterRows(healthRows);
-            filterRows(infantsRows);
         }
 
-                // Function to open the delete confirmation modal
-                function openDeleteModal(id) {
-                    var modal = document.getElementById("deleteModal");
-                    modal.style.display = "block";
-                    document.getElementById("confirmDeleteButton").setAttribute("data-id", id);
-                }
+
+        // Function to open the delete confirmation modal
+        function openDeleteModal(id) {
+            var modal = document.getElementById("deleteModal");
+            modal.style.display = "block";
+            document.getElementById("confirmDeleteButton").setAttribute("data-id", id);
+        }
+
+        // Function to close the delete confirmation modal
+        function closeDeleteModal() {
+            var modal = document.getElementById("deleteModal");
+            modal.style.display = "none";
+        }
         
-                // Function to close the delete confirmation modal
-                function closeDeleteModal() {
-                    var modal = document.getElementById("deleteModal");
-                    modal.style.display = "none";
-                }
+        
+        function openEditForm(button) {
+            var clientId = button.getAttribute("data-id");
+        
+            var row = button.closest("tr");
+            document.getElementById("editClientId").value = clientId;
+            
+            document.getElementById("editClientId").value = clientId;
+    document.getElementById("editDateOfEntry").value = row.cells[0].textContent;
+    document.getElementById("editDateOfExit").value = row.cells[1].textContent;
+    document.getElementById("editName").value = row.cells[2].textContent;
+    document.getElementById("editAddress").value = row.cells[3].textContent;
+    document.getElementById("editZip").value = row.cells[4].textContent;
+    document.getElementById("editPhone").value = row.cells[5].textContent;
+    document.getElementById("editBirthdate").value = row.cells[6].textContent;
+    document.getElementById("editAge").value = row.cells[7].textContent;
+    document.getElementById("editSex").value = row.cells[8].textContent;
+    document.getElementById("editRace").value = row.cells[9].textContent;
+    document.getElementById("editEthnicity").value = row.cells[10].textContent;
+    document.getElementById("editMaritalStatus").value = row.cells[11].textContent;
+    document.getElementById("editLengthStayPreviousAddress").value = row.cells[12].textContent;
+    document.getElementById("editCountryOfOrigin").value = row.cells[13].textContent;
+    document.getElementById("editTimesInShelter").value = row.cells[14].textContent;
+    document.getElementById("editLengthStayPreviousShelter").value = row.cells[15].textContent;
+    document.getElementById("editNumberOfChildren").value = row.cells[16].textContent;
+    document.getElementById("editEducationLevel").value = row.cells[18].textContent;
+    document.getElementById("editEmploymentStatus").value = row.cells[19].textContent;
+    document.getElementById("editIncomeAmountIntake").value = row.cells[20].textContent;
+    document.getElementById("editIncomeSourceIntake").value = row.cells[21].textContent;
+    document.getElementById("editIncomeAmountExit").value = row.cells[22].textContent;
+    document.getElementById("editIncome1YearExit").value = row.cells[23].textContent;
+    document.getElementById("editWeeksPregnant").value = row.cells[24].textContent;
+    document.getElementById("editPrenatalCarePriorIntake").value = row.cells[25].textContent;
+    document.getElementById("editFatherInvolvement").value = row.cells[26].textContent;
+    document.getElementById("editFatherEducationLevel").value = row.cells[27].textContent;
+    document.getElementById("editFatherOccupation").value = row.cells[28].textContent;
+    document.getElementById("editFatherIncome").value = row.cells[29].textContent;
+    document.getElementById("editDomesticViolenceSurvivor").value = row.cells[30].textContent;
+    document.getElementById("editVeteranStatus").value = row.cells[31].textContent;
+        
+            document.getElementById("editFormModal").style.display = "block";
+        }
         
 
-        function openEditForm(button) {
+        function openEditHealthForm(button) {
             var clientId = button.getAttribute("data-id");
 
             var row = button.closest("tr");
-            document.getElementById("editClientId").value = clientId;
-            document.getElementById("editName").value = row.cells[0].textContent;
-            document.getElementById("editAddress").value = row.cells[1].textContent;
-            document.getElementById("editZipCode").value = row.cells[2].textContent;
-            document.getElementById("editPhone").value = row.cells[3].textContent;
-            document.getElementById("editBirthdate").value = row.cells[4].textContent;
-            document.getElementById("editAge").value = row.cells[5].textContent;
-            document.getElementById("editSex").value = row.cells[6].textContent;
+            document.getElementById("editHealthClientId").value = clientId;
 
-            document.getElementById("editModal").style.display = "block";
+            var healthRow = document.querySelector(`#healthTable tr[data-id="${clientId}"]`);
+            document.getElementById("editHighBp").value = healthRow.cells[0].textContent;
+            document.getElementById("editDiabetes").value = healthRow.cells[1].textContent;
+
+            document.getElementById("editHealthModal").style.display = "block";
         }
 
         function closeEditForm() {
-            document.getElementById("editModal").style.display = "none";
+            document.getElementById("editFormModal").style.display = "none";
+        }
+
+        function closeEditHealthForm() {
+            document.getElementById("editHealthModal").style.display = "none";
         }
 
         function submitEditForm() {
@@ -614,13 +841,42 @@ h2 {
             var formData = {
                 name: document.getElementById("editName").value,
                 address: document.getElementById("editAddress").value,
-                zip_code: document.getElementById("editZipCode").value,
+                zip_code: document.getElementById("editZip").value,
                 phone: document.getElementById("editPhone").value,
                 birthdate: document.getElementById("editBirthdate").value,
                 age: document.getElementById("editAge").value,
                 sex: document.getElementById("editSex").value,
+                race: document.getElementById("editRace").value,
+                ethnicity: document.getElementById("editEthnicity").value,
+                marital_status: document.getElementById("editMaritalStatus").value,
+                length_stay_previous_address: document.getElementById("editLengthStayPreviousAddress").value,
+                country_of_origin: document.getElementById("editCountryOfOrigin").value,
+                times_in_shelter: document.getElementById("editTimesInShelter").value,
+                length_stay_previous_shelter: document.getElementById("editLengthStayPreviousShelter").value,
+                number_of_children: document.getElementById("editNumberOfChildren").value,
+                education_level: document.getElementById("editEducationLevel").value,
+                employment_status: document.getElementById("editEmploymentStatus").value,
+                income_amount_intake: document.getElementById("editIncomeAmountIntake").value,
+                income_source_intake: document.getElementById("editIncomeSourceIntake").value,
+                income_amount_exit: document.getElementById("editIncomeAmountExit").value,
+                income_1_year_exit: document.getElementById("editIncome1YearExit").value,
+                weeks_pregnant: document.getElementById("editWeeksPregnant").value,
+                prenatal_care_prior_intake: document.getElementById("editPrenatalCarePriorIntake").value,
+                father_involvement: document.getElementById("editFatherInvolvement").value,
+                father_education_level: document.getElementById("editFatherEducationLevel").value,
+                father_occupation: document.getElementById("editFatherOccupation").value,
+                father_income: document.getElementById("editFatherIncome").value,
+                domestic_violence_survivor: document.getElementById("editDomesticViolenceSurvivor").value,
+                veteran_status: document.getElementById("editVeteranStatus").value
             };
-
+        
+            // Handle empty optional fields
+            Object.keys(formData).forEach(key => {
+                if (formData[key] === "" || formData[key] === null) {
+                    delete formData[key];
+                }
+            });
+        
             fetch(`/edit_client/${clientId}`, {
                 method: 'PUT',
                 headers: {
@@ -631,47 +887,61 @@ h2 {
             .then(response => response.json())
             .then(data => {
                 if (data.message) {
-                    var row = document.querySelector(`#clientTable tr[data-id="${clientId}"]`);
-                    row.cells[0].textContent = formData.name;
-                    row.cells[1].textContent = formData.address;
-                    row.cells[2].textContent = formData.zip_code;
-                    row.cells[3].textContent = formData.phone;
-                    row.cells[4].textContent = formData.birthdate;
-                    row.cells[5].textContent = formData.age;
-                    row.cells[6].textContent = formData.sex;
-
+                    var row = document.querySelector(`tr[data-id="${clientId}"]`);
+                    row.cells[0].textContent = formData.name || row.cells[0].textContent;
+                    row.cells[1].textContent = formData.address || row.cells[1].textContent;
+                    row.cells[2].textContent = formData.zip_code || row.cells[2].textContent;
+                    row.cells[3].textContent = formData.phone || row.cells[3].textContent;
+                    row.cells[4].textContent = formData.birthdate || row.cells[4].textContent;
+                    row.cells[5].textContent = formData.age || row.cells[5].textContent;
+                    row.cells[6].textContent = formData.sex || row.cells[6].textContent;
+                    row.cells[7].textContent = formData.race || row.cells[7].textContent;
+                    row.cells[8].textContent = formData.ethnicity || row.cells[8].textContent;
+                    row.cells[9].textContent = formData.marital_status || row.cells[9].textContent;
+                    row.cells[10].textContent = formData.length_stay_previous_address || row.cells[10].textContent;
+                    row.cells[11].textContent = formData.country_of_origin || row.cells[11].textContent;
+                    row.cells[12].textContent = formData.times_in_shelter || row.cells[12].textContent;
+                    row.cells[13].textContent = formData.length_stay_previous_shelter || row.cells[13].textContent;
+                    row.cells[14].textContent = formData.number_of_children || row.cells[14].textContent;
+                    row.cells[15].textContent = formData.education_level || row.cells[15].textContent;
+                    row.cells[16].textContent = formData.employment_status || row.cells[16].textContent;
+                    row.cells[17].textContent = formData.income_amount_intake || row.cells[17].textContent;
+                    row.cells[18].textContent = formData.income_source_intake || row.cells[18].textContent;
+                    row.cells[19].textContent = formData.income_amount_exit || row.cells[19].textContent;
+                    row.cells[20].textContent = formData.income_1_year_exit || row.cells[20].textContent;
+                    row.cells[21].textContent = formData.weeks_pregnant || row.cells[21].textContent;
+                    row.cells[22].textContent = formData.prenatal_care_prior_intake || row.cells[22].textContent;
+                    row.cells[23].textContent = formData.father_involvement || row.cells[23].textContent;
+                    row.cells[24].textContent = formData.father_education_level || row.cells[24].textContent;
+                    row.cells[25].textContent = formData.father_occupation || row.cells[25].textContent;
+                    row.cells[26].textContent = formData.father_income || row.cells[26].textContent;
+                    row.cells[27].textContent = formData.domestic_violence_survivor || row.cells[27].textContent;
+                    row.cells[28].textContent = formData.veteran_status || row.cells[28].textContent;
+        
                     closeEditForm();
                     console.log('Client updated successfully');
                 } else {
-                    console.error('Error updating client:', data.message);
+                    console.error('Error updating client');
                 }
             })
-            .catch(error => console.error('Error updating client:', error));
+            .catch(error => console.error('Error:', error));
         }
+        
 
-        function openEditHealthForm(button) {
-            var healthId = button.getAttribute("data-id");
-
-            var row = button.closest("tr");
-            document.getElementById("editHealthId").value = healthId;
-            document.getElementById("editHighBP").value = row.cells[0].textContent;
-            document.getElementById("editDiabetes").value = row.cells[1].textContent;
-
-            document.getElementById("editHealthModal").style.display = "block";
-        }
-
-        function closeEditHealthForm() {
-            document.getElementById("editHealthModal").style.display = "none";
-        }
 
         function submitEditHealthForm() {
-            var healthId = document.getElementById("editHealthId").value;
+            var clientId = document.getElementById("editHealthClientId").value;
             var formData = {
-                highbp: document.getElementById("editHighBP").value,
+                highbp: document.getElementById("editHighBp").value,
                 diabetes: document.getElementById("editDiabetes").value,
             };
 
-            fetch(`/edit_health/${healthId}`, {
+            // Handle empty birthdate
+            if (!formData.birthdate) {
+                delete formData.birthdate;
+            }
+
+            fetch(`/edit_health_client/${clientId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -681,17 +951,19 @@ h2 {
             .then(response => response.json())
             .then(data => {
                 if (data.message) {
-                    var row = document.querySelector(`#healthTable tr[data-id="${healthId}"]`);
-                    row.cells[0].textContent = formData.highbp;
-                    row.cells[1].textContent = formData.diabetes;
+                    var row = document.querySelector(`tr[data-id="${clientId}"]`);
+
+                    var healthRow = document.querySelector(`#healthTable tr[data-id="${clientId}"]`);
+                    healthRow.cells[0].textContent = formData.highbp;
+                    healthRow.cells[1].textContent = formData.diabetes;
 
                     closeEditHealthForm();
-                    console.log('Health details updated successfully');
+                    console.log('Client updated successfully');
                 } else {
-                    console.error('Error updating health details:', data.message);
+                    console.error('Error updating client');
                 }
             })
-            .catch(error => console.error('Error updating health details:', error));
+            .catch(error => console.error('Error:', error));
         }
 
         function openEditInfantForm(button) {
@@ -751,6 +1023,8 @@ h2 {
             .catch(error => console.error('Error updating infant details:', error));
         }
 
+        
+
         function deleteClient(button) {
             var id = document.getElementById("confirmDeleteButton").getAttribute("data-id");
             fetch(`/delete_client/${id}`, {
@@ -767,20 +1041,14 @@ h2 {
             .catch(error => console.error('Error:', error));
         }
 
-        // Close modal when clicking outside of it
+        // Closing modals when clicking outside of them
         window.onclick = function(event) {
-            var editModal = document.getElementById("editModal");
-            var editHealthModal = document.getElementById("editHealthModal");
-            var editInfantModal = document.getElementById("editInfantModal");
-            if (event.target == editModal) {
-                editModal.style.display = "none";
-            }
-            if (event.target == editHealthModal) {
-                editHealthModal.style.display = "none";
-            }
-            if (event.target == editInfantModal) {
-                editInfantModal.style.display = "none";
-            }
+            var modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                }
+            });
         }
     </script>
 </body>

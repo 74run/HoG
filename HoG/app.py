@@ -10,7 +10,7 @@ app.config["MONGO_URI"] = "mongodb+srv://tarunjanapati7:%4074run54I@educationdet
 mongo = PyMongo(app)
 
 # Configure logging
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.WARNING)
 
 @app.route('/submit_form', methods=['POST'])
 def submit_form():
@@ -22,8 +22,33 @@ def submit_form():
             birthdate = data.get('birthdate', '')
             birthdate = datetime.strptime(birthdate, '%Y-%m-%d') if birthdate else None
             
+            
+            date_of_entry = data.get('date_of_entry', '')
+            date_of_entry = datetime.strptime(date_of_entry, '%Y-%m-%d') if date_of_entry else None
+            
+            date_of_exit = data.get('date_of_exit', '')
+            date_of_exit = datetime.strptime(date_of_exit, '%Y-%m-%d') if date_of_exit else None
+            
+            number_of_children = int(data.get('number_of_children', 0))
+            
+            children = []
+            for i in range(1, number_of_children + 1):
+                child_name = data.get(f'child_name_{i}', '')
+                child_dob = data.get(f'child_dob_{i}', '')
+                child_dob = datetime.strptime(child_dob, '%Y-%m-%d') if child_dob else None
+                
+                children.append({
+                    'name': child_name,
+                    'date_of_birth': child_dob
+                })
+            
+            
+            
             user_details = {
                 "client_details" : {
+                    
+                    "date_of_entry": date_of_entry,
+                    "date_of_exit": date_of_exit,
                     "name": data.get('name', ''),
                     "address": data.get('address', ''),
                     "zip_code": data.get('zip', ''),
@@ -39,6 +64,7 @@ def submit_form():
                     "times_in_shelter": int(data.get('times_in_shelter', 0)) if data.get('times_in_shelter') else None,
                     "length_stay_previous_shelter": data.get('length_stay_previous_shelter', ''),
                     "number_of_children": int(data.get('number_of_children', 0)) if data.get('number_of_children') else None,
+                    "children": children,
                     "education_level": data.get('education_level', ''),
                     "employment_status": data.get('employment_status', ''),
                     "income_amount_intake": float(data.get('income_amount_intake', 0)) if data.get('income_amount_intake') else None,
@@ -66,6 +92,7 @@ def submit_form():
                     "highriskpreg": data.get("highriskpreg", ""),
                     "vaginalbirth": data.get("vaginalbirth", "")
                 },
+
                 # Extract infant details from the received JSON
                 "shelter_infant_details" : {
                     "infant_name": data.get("infant_name", ""),
@@ -116,7 +143,8 @@ def submit_form():
         except Exception as e:
             logging.error(f"Error submitting form: {e}")
             return jsonify({'error': str(e)}), 500
-
+        
+        
 @app.route('/')
 def index():
     return render_template('index.html')
