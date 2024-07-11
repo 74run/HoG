@@ -1,9 +1,21 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, render_template_string, session, redirect, url_for
 from flask_pymongo import PyMongo, ObjectId
-from datetime import datetime
+from datetime import datetime, timedelta
+
 import logging
 
+
+
 app = Flask(__name__)
+
+app.secret_key = 'your_secret_key'
+
+# Set the session lifetime to 30 minutes
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=1)
+
+PASSWORD = '12345678'
+
+
 
 # Replace with your MongoDB connection URI
 app.config["MONGO_URI"] = "mongodb+srv://tarunjanapati7:%4074run54I@educationdetaails.x0zu5mp.mongodb.net/client_details?retryWrites=true&w=majority&appName=EducationDetaails"
@@ -149,31 +161,152 @@ def submit_form():
 def index():
     return render_template('index.html')
 
-@app.route('/client_details')
-def client_details():
-    try:
-        clients = mongo.db.user_details.find()
-        clients_list = list(clients)  # Convert to list to pass to the template
-        logging.debug(f"Retrieved {len(clients_list)} clients")
-        return render_template('client_details.html', clients=clients_list)
-    except Exception as e:
-        logging.error(f"Error retrieving client details: {e}")
-        return jsonify({'error': str(e)}), 500
+    
 
+
+@app.route('/client_details', methods=['GET', 'POST'])
+def client_details():
+    error_message = None
+    if request.method == 'POST':
+        password = request.form.get('password')
+        if password == PASSWORD:
+            session['authenticated'] = True
+            session.permanent = True  # Make the session permanent
+            return redirect(url_for('client_details'))
+        else:
+            error_message = "Incorrect password. Access denied."
+            logging.warning("Attempted access with incorrect password.")
+            return render_template_string('''
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Client Details</title>
+                    <!-- Bootstrap CSS -->
+                    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+                    <style>
+                        .center-form {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            height: 100vh;
+                        }
+                        .form-container {
+                            width: 300px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container center-form">
+                        <div class="form-container">
+                            <form action="/client_details" method="POST" id="passwordForm">
+                                <div class="form-group">
+                                <h5> Please Re-enter the password </h5>
+                                <br>
+                            
+                                    <label for="password">Password</label>
+                                    <input type="password" class="form-control" name="password" id="password" placeholder="Enter password" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">View Client Data</button>
+                            </form>
+                            {% if error_message %}
+                                <p class="text-danger text-center mt-3">{{ error_message }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- Bootstrap JS, Popper.js, and jQuery -->
+                    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+                    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                </body>
+                </html>
+            ''', error_message=error_message)
+    
+    if session.get('authenticated'):
+        try:
+            clients = mongo.db.user_details.find()
+            clients_list = list(clients)  # Convert to list to pass to the template
+            logging.debug(f"Retrieved {len(clients_list)} clients")
+            return render_template('client_details.html', clients=clients_list)
+        except Exception as e:
+            logging.error(f"Error retrieving client details: {e}")
+            return jsonify({'error': str(e)}), 500
+    else:
+        return render_template_string('''
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Client Details</title>
+                <!-- Bootstrap CSS -->
+                <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+                <style>
+                    .center-form {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                    }
+                    .form-container {
+                        width: 300px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container center-form">
+                    <div class="form-container">
+                        <form action="/client_details" method="POST" id="passwordForm">
+                            <div class="form-group">
+                           
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" name="password" id="password" placeholder="Enter password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">View Client Data</button>
+                        </form>
+                    </div>
+                </div>
+                <!-- Bootstrap JS, Popper.js, and jQuery -->
+                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            </body>
+            </html>
+        ''')
+
+
+        
+        
 @app.route('/delete_client/<client_id>', methods=['DELETE'])
 def delete_client(client_id):
     try:
         obj_id = ObjectId(client_id)
-        result = mongo.db.user_details.delete_one({'_id': obj_id})
-
-        if result.deleted_count == 1:
-            logging.debug(f"Deleted client with id: {client_id}")
-            return jsonify({'message': 'Client deleted successfully'}), 200
-        else:
+        
+        # Fetch the client details
+        client_details = mongo.db.user_details.find_one({'_id': obj_id})
+        
+        if client_details is None:
             return jsonify({'error': 'Client not found'}), 404
+        
+        # Insert the details into the archive collection
+        archive_result = mongo.db.archive.insert_one(client_details)
+        
+        if archive_result.inserted_id:
+            # Delete the client from the original collection
+            result = mongo.db.user_details.delete_one({'_id': obj_id})
+            
+            if result.deleted_count == 1:
+                logging.debug(f"Deleted client with id: {client_id} and archived details")
+                return jsonify({'message': 'Client deleted and archived successfully'}), 200
+            else:
+                return jsonify({'error': 'Client deletion failed'}), 500
+        else:
+            return jsonify({'error': 'Archiving client details failed'}), 500
     except Exception as e:
         logging.error(f"Error deleting client: {e}")
         return jsonify({'error': str(e)}), 500
+
     
 @app.route('/edit_client/<client_id>', methods=['PUT'])
 def edit_client(client_id):

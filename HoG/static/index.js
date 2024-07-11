@@ -81,3 +81,23 @@ function addChildrenFields() {
       container.appendChild(document.createElement('br')); // Line break
     }
   }
+
+
+
+  document.getElementById('passwordForm').onsubmit = function(e) {
+    e.preventDefault();  // Prevent the form from submitting the default way
+    var form = e.target;
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', form.action, true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // Redirect to the client_details page
+            window.location.href = '/client_details';
+        } else {
+            // Display the error message
+            document.body.innerHTML = xhr.responseText;
+        }
+    };
+    xhr.send(new URLSearchParams(new FormData(form)).toString());
+};
