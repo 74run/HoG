@@ -4,18 +4,52 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Heaven of Grace</title>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="../static/index.css">
 </head>
 <body>
 
-<div class="navbar">
-    <div class="navbar-logo">
-        <img src="/static/HoG.PNG" alt="Logo">
+    <div class="navbar">
+        <div class="navbar-logo">
+            <img src="/static/HoG.PNG" alt="Logo">
+        </div>
+        <div class="navbar-links">
+            <button type="button" class="view-client-button btn btn-primary" data-toggle="modal" data-target="#passwordModal">
+                View Client Data
+            </button>
+        </div>
     </div>
-    <div class="navbar-links">
-        <a href="/client_details" class="view-client-button">View Client Data</a> 
+
+    <!-- Modal -->
+    <div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="passwordModalLabel">Enter Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/client_details" method="POST" id="passwordForm">
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" name="password" id="password" placeholder="Enter password" required>
+                        </div>
+                        {% if error_message %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ error_message }}
+                            </div>
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+
+
+
 
 <div class="form-container">
     <form id="multiSectionForm" action="/submit_form" method="POST">
@@ -83,7 +117,9 @@
                 <option value="separated">Separated</option>
             </select>
 
-            <button type="button" class="next-btn" >Next</button>
+            <div class="form-group text-right">
+                <button type="button" class="btn btn-primary next-btn">Next</button>
+            </div>
         </div>
 
         <div class="form-section">
@@ -373,8 +409,10 @@
             <label for="income_source_intake">Income Source at Time of Intake:</label>
             <input type="text" id="income_source_intake" name="income_source_intake">
 
-            <button type="button" class="prev-btn">Previous</button>
-            <button type="button" class="next-btn">Next</button>
+            <div class="button-container">
+                <button type="button" class="btn btn-secondary prev-btn">Previous</button>
+                <button type="button" class="btn btn-primary next-btn">Next</button>
+            </div>
         </div>
 
         <div class="form-section">
@@ -423,8 +461,11 @@
 
            
 
-            <button type="button" class="prev-btn">Previous</button>
-            <button type="button" class="next-btn">Next</button>
+           
+            <div class="button-container">
+                <button type="button" class="btn btn-secondary prev-btn">Previous</button>
+                <button type="button" class="btn btn-primary next-btn">Next</button>
+            </div>
         </div>
 
         <div class="form-section">
@@ -496,8 +537,10 @@
             </select>
 
         
-            <button type="button" class="prev-btn">Previous</button>
-            <button type="button" class="next-btn">Next</button>
+            <div class="button-container">
+                <button type="button" class="btn btn-secondary prev-btn">Previous</button>
+                <button type="button" class="btn btn-primary next-btn">Next</button>
+            </div>
         </div>
 
         <div class="form-section">
@@ -527,8 +570,10 @@
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
             </select><br>
-            <button type="button" class="prev-btn">Previous</button>
-            <button type="button" class="next-btn">Next</button>
+            <div class="button-container">
+                <button type="button" class="btn btn-secondary prev-btn">Previous</button>
+                <button type="button" class="btn btn-primary next-btn">Next</button>
+            </div>
         </div>
 
         <div class="form-section">
@@ -548,8 +593,10 @@
             <label for="trauma_programming_hours">Hours of Trauma-Informed Programming Received:</label>
             <input type="number" id="trauma_programming_hours" name="trauma_programming_hours" ><br>
             
-            <button type="button" class="prev-btn">Previous</button>
-            <button type="button" class="next-btn">Next</button>
+            <div class="button-container">
+                <button type="button" class="btn btn-secondary prev-btn">Previous</button>
+                <button type="button" class="btn btn-primary next-btn">Next</button>
+            </div>
         </div>
 
         <div class="form-section">
@@ -584,8 +631,10 @@
                 <option value="no">No</option>
             </select><br>
             
-            <button type="button" class="prev-btn">Previous</button>
-            <button type="button" class="next-btn">Next</button>
+            <div class="button-container">
+                <button type="button" class="btn btn-secondary prev-btn">Previous</button>
+                <button type="button" class="btn btn-primary next-btn">Next</button>
+            </div>
         </div>
 
         <div class="form-section">
@@ -638,13 +687,24 @@
                 <!-- Additional transition/movement-related fields here -->
             </section>
             
-            <button type="button" class="prev-btn">Previous</button>
-            <input type="submit" id="submitBtn" value="Submit" onclick="">
+            <div class="button-container">
+                <button type="button" class="btn btn-secondary prev-btn">Previous</button>
+                
+                <input type="submit" class="btn btn-primary submit-btn" id="submitBtn" value="Submit">
+            </div>
+            
         </div>
 
 </div>
 
 <script src="../static/index.js"></script>
+
+<!-- Bootstrap JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
 
 </body>
 </html>
