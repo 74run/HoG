@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Details</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/index.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2><strong>Fill the Housing Information</strong></h2>
+        <form action="/submit_child_demographics" method="POST">
+        <div class="form-group">
+            
+            <label for="length_stay_shelter">Length of Stay in Maternity Shelter:</label>
+            <input type="text" id="length_stay_shelter" name="length_stay_shelter" ><br>
+            
+            <label for="reason_leaving_shelter">Reason for Leaving the Maternity Shelter:</label>
+            <input type="text" id="reason_leaving_shelter" name="reason_leaving_shelter" ><br>
+            
+            <label for="moved_to_transitional_housing">Did the Client Move to HoG or Partner Transitional Housing?</label>
+            <select id="moved_to_transitional_housing" name="moved_to_transitional_housing" >
+                <option value="">Select...</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select><br>
+            
+            <label for="length_stay_transitional_housing">Length of Stay in Transitional Housing:</label>
+            <input type="text" id="length_stay_transitional_housing" name="length_stay_transitional_housing"><br>
+            
+            <label for="housing_voucher_recipient">Housing Voucher Recipient:</label>
+            <select id="housing_voucher_recipient" name="housing_voucher_recipient" >
+                <option value="">Select...</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select><br>
+            
+            <label for="case_management_assistance">Did Case Management Assist in Finding Housing?</label>
+            <select id="case_management_assistance" name="case_management_assistance" >
+                <option value="">Select...</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select><br>
+    
+            </div>
+            <!-- Add the rest of the form fields -->
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <script src="../static/index.js"></script>
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

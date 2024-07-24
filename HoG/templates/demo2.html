@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Details</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/index.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Health Details</h2>
+        <form action="/submit_health_details" method="POST">
+            <!-- Add your form fields here -->
+            <div class="form-group">
+                <label for="rehosp">Rehospitalization:</label>
+                <select id="rehosp" name="rehosp">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            
+                <label for="doula">Doula Support:</label>
+                <select id="doula" name="doula">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            
+                <label for="highriskpreg">High Risk Pregnancy:</label>
+                <select id="highriskpreg" name="highriskpreg">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            
+                <label for="vaginalbirth">Vaginal birth:</label>
+                <select id="vaginalbirth" name="vaginalbirth">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                </select>
+    
+            </div>
+            <!-- Add the rest of the form fields -->
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <script src="../static/index.js"></script>
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

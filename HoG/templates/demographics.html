@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Information</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/index.css">
+    <style>
+        .form-section {
+            display: none;
+        }
+        .form-section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Fill the Client Information</h2>
+        <form action="/submit_demographics_form1" method="POST">
+            <div class="form-section active">
+                <div class="form-group">
+                    <label for="date_of_entry">Date of Entry:</label>
+                    <input type="date" id="date_of_entry" name="date_of_entry" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="date_of_exit">Date of Exit:</label>
+                    <input type="date" id="date_of_exit" name="date_of_exit" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" name="address" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="zip">Zip Code:</label>
+                    <input type="text" id="zip" name="zip" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone:</label>
+                    <input type="text" id="phone" name="phone" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="birthdate">Birthdate:</label>
+                    <input type="date" id="birthdate" name="birthdate" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" name="age" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="sex">Sex:</label>
+                    <select id="sex" name="sex" class="form-control">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group text-right">
+                    <button type="button" class="btn btn-primary next-btn">Next</button>
+                </div>
+            </div>
+            <div class="form-section">
+                <h2><strong>Health Details</strong></h2>
+                <div class="form-group">
+                    <label for="length_stay_previous_address">Length of Stay at Previous Address:</label>
+                    <input type="text" id="length_stay_previous_address" name="length_stay_previous_address" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="country_of_origin">Country of Origin (if not U.S.):</label>
+                    <select id="country" name="country" class="form-control">
+                        <option value="Afghanistan">Afghanistan</option>
+                        <option value="Åland Islands">Åland Islands</option>
+                        <!-- Add other countries here -->
+                    </select>
+                </div>
+                <!-- Add the rest of the form fields for Health Details -->
+                <div class="form-group text-right">
+                    <button type="button" class="btn btn-secondary prev-btn">Previous</button>
+                    <button type="button" class="btn btn-primary next-btn">Next</button>
+                </div>
+            </div>
+            <div class="form-section">
+                <h2><strong>Additional Information</strong></h2>
+                <div class="form-group">
+                    <label for="income_amount_exit">Income Amount when Exiting HoG:</label>
+                    <input type="number" id="income_amount_exit" name="income_amount_exit" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="income_1_year_exit">Income 1 Year from Exiting HoG:</label>
+                    <input type="number" id="income_1_year_exit" name="income_1_year_exit" class="form-control">
+                </div>
+                <!-- Add the rest of the form fields for Additional Information -->
+                <div class="form-group text-right">
+                    <button type="button" class="btn btn-secondary prev-btn">Previous</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let currentSection = 0;
+            const sections = document.querySelectorAll(".form-section");
+            const nextBtns = document.querySelectorAll(".next-btn");
+            const prevBtns = document.querySelectorAll(".prev-btn");
+
+            nextBtns.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    sections[currentSection].classList.remove("active");
+                    currentSection = (currentSection + 1) % sections.length;
+                    sections[currentSection].classList.add("active");
+                });
+            });
+
+            prevBtns.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    sections[currentSection].classList.remove("active");
+                    currentSection = (currentSection - 1 + sections.length) % sections.length;
+                    sections[currentSection].classList.add("active");
+                });
+            });
+        });
+    </script>
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

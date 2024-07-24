@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Details</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/index.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2><strong>Fill the Shelter Infants Details</strong></h2>
+        <form action="/submit_health_details" method="POST">
+            <!-- Add your form fields here -->
+            <div class="form-group">
+                
+                <label for="infant_name">Infant Name:</label>
+                <input type="text" id="infant_name" name="infant_name" placeholder="Infant Name" ><br>
+                
+                <label for="birthdate">Birth Date:</label>
+                <input type="date" id="birthdate" name="birthdate" placeholder="Birth Date" ><br>
+                
+                <label for="birth_weight">Birth Weight:</label>
+                <input type="number" id="birth_weight" name="birth_weight" placeholder="Birth Weight" ><br>
+                
+                <label for="weeks_at_delivery">Weeks at Delivery:</label>
+                <input type="number" id="weeks_at_delivery" name="weeks_at_delivery" placeholder="Weeks at Delivery" ><br>
+                
+                <label for="healthy_delivery">Healthy Delivery:</label>
+                <select id="healthy_delivery" name="healthy_delivery" >
+                    <option value="">Select...</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select><br>
+                
+                <label for="rehospitalization">Rehospitalization:</label>
+                <select id="rehospitalization" name="rehospitalization" >
+                    <option value="">Select...</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select><br>
+    
+            </div>
+            <!-- Add the rest of the form fields -->
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <script src="../static/index.js"></script>
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

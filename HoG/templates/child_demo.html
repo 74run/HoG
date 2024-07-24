@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Child Demographics Details</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/index.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2><strong>Fill the Shelter Children Details</strong></h2>
+        <form action="/submit_child_demographics" method="POST">
+       
+             
+                <div class="form-group">
+                    <label for="child_name">Child Name:</label>
+                    <input type="text" id="child_name" name="child_name" class="form-control">
+              
+                    <label for="birthdate">Birth Date:</label>
+                    <input type="date" id="birthdate" name="birthdate" class="form-control">
+               
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" name="age" class="form-control">
+            
+                    <label for="grade_level">Daycare or School Grade Level:</label>
+                    <input type="text" id="grade_level" name="grade_level" class="form-control">
+             
+                    <label for="trauma_programming_hours">Hours of Trauma-Informed Programming Received:</label>
+                    <input type="number" id="trauma_programming_hours" name="trauma_programming_hours" class="form-control">
+                </div>
+       
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <script src="../static/index.js"></script>
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
