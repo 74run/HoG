@@ -69,20 +69,68 @@ def demo2_form():
 
 @app.route('/child_demogrphics_form')
 def child_demo_form():
-    return render_template('child_demo.html')
+    user_id = request.args.get('user_id')
+    user = mongo.db.users.find_one({'user_id': user_id}, {'_id': 0, 'demographics_form1.name': 1, 'demographics_form1.birthdate': 1})
+
+    if user:
+        user_info = user.get('demographics_form1', {})
+        name = user_info.get('name')
+        birthdate = user_info.get('birthdate')
+        if isinstance(birthdate, datetime):
+            birthdate = birthdate.strftime('%Y-%m-%d')
+    else:
+        name = None
+        birthdate = None
+    return render_template('child_demo.html', name=name, birthdate=birthdate,user_id=user_id)
 
 @app.route('/infants_demographics_form')
 def Infants_demo_form():
-    return render_template('Infant_demo.html')
+    user_id = request.args.get('user_id')
+    user = mongo.db.users.find_one({'user_id': user_id}, {'_id': 0, 'demographics_form1.name': 1, 'demographics_form1.birthdate': 1})
+
+    if user:
+        user_info = user.get('demographics_form1', {})
+        name = user_info.get('name')
+        birthdate = user_info.get('birthdate')
+        if isinstance(birthdate, datetime):
+            birthdate = birthdate.strftime('%Y-%m-%d')
+    else:
+        name = None
+        birthdate = None
+    return render_template('Infant_demo.html',user_id=user_id, name=name, birthdate=birthdate)
 
 @app.route('/exit_info_form')
 def exit_info_form():
-    return render_template('exit_info.html')
+    user_id = request.args.get('user_id')
+    user = mongo.db.users.find_one({'user_id': user_id}, {'_id': 0, 'demographics_form1.name': 1, 'demographics_form1.birthdate': 1})
+
+    if user:
+        user_info = user.get('demographics_form1', {})
+        name = user_info.get('name')
+        birthdate = user_info.get('birthdate')
+        if isinstance(birthdate, datetime):
+            birthdate = birthdate.strftime('%Y-%m-%d')
+    else:
+        name = None
+        birthdate = None
+    return render_template('exit_info.html', user_id=user_id, name=name, birthdate=birthdate)
 
 
 @app.route('/women_served_details')
 def women_served_details_form():
-    return render_template('women_served_details.html')
+    user_id = request.args.get('user_id')
+    user = mongo.db.users.find_one({'user_id': user_id}, {'_id': 0, 'demographics_form1.name': 1, 'demographics_form1.birthdate': 1})
+
+    if user:
+        user_info = user.get('demographics_form1', {})
+        name = user_info.get('name')
+        birthdate = user_info.get('birthdate')
+        if isinstance(birthdate, datetime):
+            birthdate = birthdate.strftime('%Y-%m-%d')
+    else:
+        name = None
+        birthdate = None
+    return render_template('women_served_details.html', name=name, birthdate=birthdate)
 
 
 @app.route('/validate_user', methods=['POST'])
@@ -184,7 +232,8 @@ def submit_demographics_form1():
         {"$set": {"demographics_form1": demographics_data}},
         upsert=True
         )
-        return jsonify({'message': 'Demographics form 1 submitted successfully'}), 200
+        return redirect(url_for('success', user_id=user_id))
+
     except Exception as e:
         logging.error(f"Error submitting demographics form 1: {e}")
         return jsonify({'error': str(e)}), 500
@@ -201,7 +250,7 @@ def submit_demographics_form2():
         return jsonify({'error': 'User ID not found.'}), 404
     try:
         demo_data = {
-            "user_id": user_id,
+            "user_id": user_id, 
             "rehosp": data.get("rehosp", ""),
             "doula": data.get("doula", ""),
             "highriskpreg": data.get("highriskpreg", ""),
@@ -220,16 +269,28 @@ def submit_demographics_form2():
 @app.route('/submit_child_demographics', methods=['POST'])
 def submit_child_demographics():
     data = request.form
+    user_id = data.get('user_id')
+   
+
+    # Validate the user_id by checking if the user exists in the database
+    user = mongo.db.users.find_one({'user_id': user_id})
+    if not user:
+        return jsonify({'error': 'User ID not found.'}), 404
     try:
         child_demo_details = {
+            "user_id": user_id,
             "child_name": data.get("child_name", ""),
             "birthdate": data.get("birthdate", ""),
             "age": int(data.get("age", 0)) if data.get("age") else None,
             "grade_level": data.get("grade_level", ""),
             "trauma_programming_hours": int(data.get("trauma_programming_hours", 0)) if data.get("trauma_programming_hours") else None
         }
-        mongo.db.child_demographics.insert_one(child_demo_details)
-        return jsonify({'message': 'Child demographics submitted successfully'}), 200
+        mongo.db.users.update_one(
+            {"user_id": user_id},
+            {"$set": {"child_demo_data": child_demo_details}}
+        )
+        return redirect(url_for('success', user_id=user_id))
+
     except Exception as e:
         logging.error(f"Error submitting child demographics: {e}")
         return jsonify({'error': str(e)}), 500
@@ -237,6 +298,14 @@ def submit_child_demographics():
 @app.route('/submit_infants_demographics', methods=['POST'])
 def submit_infants_demographics():
     data = request.form
+    user_id = data.get('user_id')
+
+  
+
+    # Validate the user_id by checking if the user exists in the database
+    user = mongo.db.users.find_one({'user_id': user_id})
+    if not user:
+        return jsonify({'error': 'User ID not found.'}), 404
     try:
         infant_details = {
             "infant_name": data.get("infant_name", ""),
@@ -246,8 +315,11 @@ def submit_infants_demographics():
             "healthy_delivery": data.get("healthy_delivery", ""),
             "rehospitalization": data.get("rehospitalization", "")
         }
-        mongo.db.infant_demographics.insert_one(infant_details)
-        return jsonify({'message': 'Infants demographics submitted successfully'}), 200
+        mongo.db.users.update_one(
+            {"user_id": user_id},
+            {"$set": {"infant_data": infant_details}}
+        )
+        return redirect(url_for('success', user_id=user_id))
     except Exception as e:
         logging.error(f"Error submitting infants demographics: {e}")
         return jsonify({'error': str(e)}), 500
@@ -255,6 +327,12 @@ def submit_infants_demographics():
 @app.route('/submit_exit_info', methods=['POST'])
 def submit_exit_info():
     data = request.form
+    user_id = data.get('user_id')
+
+    # Validate the user_id by checking if the user exists in the database
+    user = mongo.db.users.find_one({'user_id': user_id})
+    if not user:
+        return jsonify({'error': 'User ID not found.'}), 404
     try:
         exit_info = {
             "length_stay_shelter": data.get("length_stay_shelter", ""),
@@ -265,8 +343,12 @@ def submit_exit_info():
             "case_management_assistance": data.get("case_management_assistance", "")
             # Add your specific form fields here
         }
-        mongo.db.exit_info.insert_one(exit_info)
-        return jsonify({'message': 'Exit information submitted successfully'}), 200
+        mongo.db.users.update_one(
+            {"user_id": user_id},
+            {"$set": {"infant_data": exit_info}}
+        )
+        return redirect(url_for('success', user_id=user_id))
+
     except Exception as e:
         logging.error(f"Error submitting exit information: {e}")
         return jsonify({'error': str(e)}), 500
@@ -274,12 +356,14 @@ def submit_exit_info():
 @app.route('/submit_women_served_details', methods=['POST'])
 def submit_women_served_details():
     data = request.form
+    user_id = data.get('user_id')
+    
     try:
         women_details = {
             # Add your specific form fields here
         }
         mongo.db.women_served_details.insert_one(women_details)
-        return jsonify({'message': 'Women served details submitted successfully'}), 200
+        return redirect(url_for('success', user_id=user_id))
     except Exception as e:
         logging.error(f"Error submitting women served details: {e}")
         return jsonify({'error': str(e)}), 500
@@ -487,6 +571,13 @@ def edit_health_client(client_id):
     except Exception as e:
         logging.error(f"Error updating client: {e}")
         return jsonify({'error': str(e)}), 500
+    
+@app.route('/success')
+def success():
+    user_id = request.args.get('user_id')
+    return render_template('success.html', user_id=user_id)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Success Page</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+        background-color: #f8f9fa;
+      }
+      
+      .card {
+        max-width: 500px;
+        border-radius: 15px;
+      }
+      
+      .icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .card-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+      }
+      
+      .card-text {
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 1.1rem;
+      }
+      
+  </style>
+</head>
+<body>
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card p-4 text-center shadow">
+      <div class="card-body">
+        <div class="icon mb-4">
+          <i class="fas fa-check-circle text-success" style="font-size: 4em;"></i>
+        </div>
+        <h1 class="card-title">Success!</h1>
+        <p class="card-text">Your action was completed successfully.</p>
+        <p class="card-text">Please Note Your User ID:  {{user_id}}</p>
+        <a href="/" class="btn btn-primary">Go to Home</a>
+
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
