@@ -3,15 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Health Details</title>
+    <title>Infant Birth Details</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../static/index.css">
 </head>
 <body class="bg-gray-100">
     <div class="container mx-auto mt-10">
-        <h2 class="text-2xl font-bold mb-6"><strong>Fill the Shelter Infants Details</strong></h2>
+        <h2 class="text-2xl font-bold mb-6"><strong>Infants Birth Details</strong></h2>
         <div class="border border-gray-300 rounded-md p-6 bg-white shadow-sm">
+            <div class="mb-6">
+                <p class="text-lg font-medium text-gray-700">Name: {{ name }}</p>
+                <p class="text-lg font-medium text-gray-700">Date of Birth: {{ birthdate }}</p>
+            </div>
             <form action="/submit_infants_demographics" method="POST">
+                <input type="hidden" name="user_id" value="{{ user_id }}">
                 <div class="mb-4">
                     <label for="infant_name" class="block text-sm font-medium text-gray-700">Infant Name:</label>
                     <input type="text" id="infant_name" name="infant_name" placeholder="Infant Name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
