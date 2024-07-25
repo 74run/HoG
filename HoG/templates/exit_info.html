@@ -19,8 +19,15 @@
                 <input type="hidden" name="user_id" value="{{ user_id }}">
                 <div class="mb-4">
                     <label for="length_stay_shelter" class="block text-sm font-medium text-gray-700">Length of Stay in Maternity Shelter:</label>
-                    <input type="text" id="length_stay_shelter" name="length_stay_shelter" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <select id="length_stay_shelter" name="length_stay_shelter" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="less_than_30_days">Less than 30 days</option>
+                        <option value="1-6_months">1-6 months</option>
+                        <option value="6-12_months">6-12 months</option>
+                        <option value="greater_than_12_months">>12 months</option>
+                    </select>
                 </div>
+                
                 
                 <div class="mb-4">
                     <label for="reason_leaving_shelter" class="block text-sm font-medium text-gray-700">Reason for Leaving the Maternity Shelter:</label>
@@ -28,7 +35,7 @@
                 </div>
                 
                 <div class="mb-4">
-                    <label for="moved_to_transitional_housing" class="block text-sm font-medium text-gray-700">Did the Client Move to HoG or Partner Transitional Housing?</label>
+                    <label for="moved_to_transitional_housing" class="block text-sm font-medium text-gray-700">Did the Client Move to Quads or Other Housing?</label>
                     <select id="moved_to_transitional_housing" name="moved_to_transitional_housing" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                         <option value="">Select...</option>
                         <option value="yes">Yes</option>
@@ -38,8 +45,15 @@
                 
                 <div class="mb-4">
                     <label for="length_stay_transitional_housing" class="block text-sm font-medium text-gray-700">Length of Stay in Transitional Housing:</label>
-                    <input type="text" id="length_stay_transitional_housing" name="length_stay_transitional_housing" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <select id="length_stay_transitional_housing" name="length_stay_transitional_housing" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="less_than_30_days">Less than 30 days</option>
+                        <option value="1-6_months">1-6 months</option>
+                        <option value="6-12_months">6-12 months</option>
+                        <option value="greater_than_12_months">>12 months</option>
+                    </select>
                 </div>
+                
                 
                 <div class="mb-4">
                     <label for="housing_voucher_recipient" class="block text-sm font-medium text-gray-700">Housing Voucher Recipient:</label>
