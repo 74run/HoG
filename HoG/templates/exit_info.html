@@ -11,7 +11,12 @@
     <div class="container mx-auto mt-10">
         <h2 class="text-2xl font-bold mb-6"><strong>Fill the Housing Information</strong></h2>
         <div class="border border-gray-300 rounded-md p-6 bg-white shadow-sm">
+            <div class="mb-6">
+                <p class="text-lg font-medium text-gray-700">Name: {{ name }}</p>
+                <p class="text-lg font-medium text-gray-700">Date of Birth: {{ birthdate }}</p>
+            </div>
             <form action="/submit_exit_info" method="POST">
+                <input type="hidden" name="user_id" value="{{ user_id }}">
                 <div class="mb-4">
                     <label for="length_stay_shelter" class="block text-sm font-medium text-gray-700">Length of Stay in Maternity Shelter:</label>
                     <input type="text" id="length_stay_shelter" name="length_stay_shelter" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
