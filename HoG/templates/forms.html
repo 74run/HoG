@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Heaven of Grace - Forms</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/index.css">
+</head>
+<body class="bg-gray-100">
+
+    <div class="navbar bg-white shadow-md p-4 flex justify-between items-center">
+        <div class="navbar-logo">
+            <img src="/static/HoG.PNG" alt="Logo" class="h-12">
+        </div>
+        <div class="navbar-links">
+            <button type="button" class="view-client-button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer" onclick="toggleModal('passwordModal')">
+                View Client Data
+            </button>
+        </div>
+    </div>
+
+    <div class="container mx-auto mt-10">
+        <h1 class="text-3xl font-bold text-center mb-6">Welcome to The Heaven of Grace</h1>
+        <div class="border border-gray-300 rounded-md p-6 bg-white shadow-sm">
+            <div class="list-group space-y-2">
+                <div class="border border-gray-300 rounded-md p-6 bg-white shadow-sm">
+                    <a href="{{ url_for('demographics_form') }}" class="block bg-white hover:bg-gray-200 text-blue-700 font-semibold py-2 px-4 rounded shadow-md cursor-pointer">Demographics Form</a>
+                </div>
+                <div class="border border-gray-300 rounded-md p-6 bg-white shadow-sm">
+                    <button onclick="openValidationModal('/demographics_form2')" class="block w-full text-left bg-white hover:bg-gray-200 text-blue-700 font-semibold py-2 px-4 rounded shadow-md cursor-pointer">Maternal Information Form</button>
+                </div>
+                <div class="border border-gray-300 rounded-md p-6 bg-white shadow-sm">
+                    <a onclick="openValidationModal('/child_demogrphics_form')" class="block bg-white hover:bg-gray-200 text-blue-700 font-semibold py-2 px-4 rounded shadow-md cursor-pointer">Child Demographics Form</a>
+                </div>
+                <div class="border border-gray-300 rounded-md p-6 bg-white shadow-sm">
+                    <a onclick="openValidationModal('/infants_demographics_form')" class="block bg-white hover:bg-gray-200 text-blue-700 font-semibold py-2 px-4 rounded shadow-md cursor-pointer">Infants Birth Details Form</a>
+                </div>
+                <div class="border border-gray-300 rounded-md p-6 bg-white shadow-sm">
+                    <a onclick="openValidationModal('/exit_info_form')" class="block bg-white hover:bg-gray-200 text-blue-700 font-semibold py-2 px-4 rounded shadow-md cursor-pointer">Exit Information Form</a>
+                </div>
+                <div class="border border-gray-300 rounded-md p-6 bg-white shadow-sm">
+                    <a onclick="openValidationModal('/women_served_details')" class="block bg-white hover:bg-gray-200 text-blue-700 font-semibold py-2 px-4 rounded shadow-md cursor-pointer">Women Served Details</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel" aria-hidden="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="flex justify-between items-center border-b border-gray-200 pb-4">
+                    <h5 class="text-lg font-medium text-gray-900" id="passwordModalLabel">Enter Password</h5>
+                    <button type="button" class="text-gray-400 hover:text-gray-500 focus:outline-none cursor-pointer" onclick="toggleModal('passwordModal')" aria-label="Close">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="mt-4">
+                    <form action="/client_details" method="POST" id="passwordForm">
+                        <div class="mb-4">
+                            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                            <input type="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" name="password" id="password" placeholder="Enter password" required>
+                        </div>
+                        {% if error_message %}
+                            <div class="alert alert-danger mt-2" role="alert">
+                                {{ error_message }}
+                            </div>
+                        {% endif %}
+                        <div class="flex justify-end">
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User ID Modal -->
+    <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="userIdModal" tabindex="-1" role="dialog" aria-labelledby="userIdModalLabel" aria-hidden="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="flex justify-between items-center border-b border-gray-200 pb-4">
+                    <h5 class="text-lg font-medium text-gray-900" id="userIdModalLabel">Enter User ID</h5>
+                    <button type="button" class="text-gray-400 hover:text-gray-500 focus:outline-none cursor-pointer" onclick="toggleModal('userIdModal')" aria-label="Close">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="mt-4">
+                    <form id="userIdForm">
+                        <div class="mb-4">
+                            <label for="userId" class="block text-sm font-medium text-gray-700">User ID</label>
+                            <input type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" name="userId" id="userId" placeholder="Enter user ID" required>
+                        </div>
+                        <div id="userInfo" class="mb-4 hidden">
+                            <p id="userName" class="text-sm font-medium text-gray-700"></p>
+                            <p id="userBirthdate" class="text-sm font-medium text-gray-700"></p>
+                        </div>
+                        <div class="flex justify-end">
+                            <button type="button" onclick="validateUserId()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">Validate</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleModal(modalID) {
+            document.getElementById(modalID).classList.toggle('hidden');
+        }
+
+        function openValidationModal(targetUrl) {
+            document.getElementById('userIdModal').setAttribute('data-target', targetUrl);
+            toggleModal('userIdModal');
+        }
+
+        function validateUserId() {
+            const userId = document.getElementById('userId').value;
+            const targetUrl = document.getElementById('userIdModal').getAttribute('data-target');
+            fetch('/validate_user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.valid) {
+                    document.getElementById('userInfo').classList.remove('hidden');
+                    document.getElementById('userName').textContent = 'Name: ' + data.user_info.name;
+                    document.getElementById('userBirthdate').textContent = 'Date of Birth: ' + data.user_info.birthdate;
+                    setTimeout(() => {
+                        window.location.href = targetUrl + '?user_id=' + userId;
+                    }, 2000);
+                    
+                } else {
+                    alert('Invalid User ID');
+                }
+            });
+        }
+    </script>
+    <script src="../static/index.js"></script>
+</body>
+</html>

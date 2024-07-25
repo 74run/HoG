@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Details</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/index.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <form action="/submit_health_details" method="POST">
+            <!-- Add your form fields here -->
+            <div class="form-section">
+                <h2><strong>Fill the Women Served Details</strong></h2>
+                <section>
+                    <h3>Intake Information</h3>
+                    <label for="women_accepted_intake">Number of Women Accepted at Intake:</label>
+                    <input type="number" id="women_accepted_intake" name="women_accepted_intake" ><br>
+                    
+                    <label for="incoming_calls_shelter">Incoming Calls for Shelter:</label>
+                    <input type="number" id="incoming_calls_shelter" name="incoming_calls_shelter" ><br>
+                    
+                    <label for="calls_seeking_shelter_women">Number of Calls Seeking Shelter for Women:</label>
+                    <input type="number" id="calls_seeking_shelter_women" name="calls_seeking_shelter_women" ><br>
+                    
+                    <label for="calls_seeking_shelter_pregnant">Number of Calls Seeking Shelter for Pregnant Women:</label>
+                    <input type="number" id="calls_seeking_shelter_pregnant" name="calls_seeking_shelter_pregnant" ><br>
+                    
+                    <label for="pregnant_women_turned_away">Number of Pregnant Women Turned Away:</label>
+                    <input type="number" id="pregnant_women_turned_away" name="pregnant_women_turned_away" ><br>
+                    
+                    <label for="pregnant_women_turned_away_reason">Reason for Turning Away Pregnant Women:</label>
+                    <textarea id="pregnant_women_turned_away_reason" name="pregnant_women_turned_away_reason"></textarea><br>
+                    
+                    <!-- Additional intake-related fields here -->
+                </section>
+                
+                <section>
+                    <h3>Outreach Activities</h3>
+                    <label for="community_outreach_activities">Number of Women and Children Touched During Community Outreach Activities:</label>
+                    <input type="number" id="community_outreach_activities" name="community_outreach_activities" ><br>
+                    
+                    <label for="referrals_other_agencies">Number of Referrals to Other Shelters or Social Service Agencies:</label>
+                    <input type="number" id="referrals_other_agencies" name="referrals_other_agencies" ><br>
+                    
+                    <!-- Additional outreach-related fields here -->
+                </section>
+                
+                <section>
+                    <h3>Transitions and Movements</h3>
+                    <label for="moved_from_maternity_to_apartments">Number of Women Moved from Maternity Shelter to Transitional Apartments:</label>
+                    <input type="number" id="moved_from_maternity_to_apartments" name="moved_from_maternity_to_apartments" ><br>
+                    
+                    <label for="moved_to_aftercare_program">Number of Women Moved to the AfterCare Program:</label>
+                    <input type="number" id="moved_to_aftercare_program" name="moved_to_aftercare_program" ><br>
+                    
+                    <label for="aftercare_program_details">Names, Ages, and School Grade Levels of Children in the Aftercare Program:</label>
+                    <textarea id="aftercare_program_details" name="aftercare_program_details"></textarea><br>
+                    
+                    <!-- Additional transition/movement-related fields here -->
+                </section>
+
+            </div>
+            <!-- Add the rest of the form fields -->
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <script src="../static/index.js"></script>
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
