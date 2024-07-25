@@ -176,8 +176,7 @@ def submit_demographics_form1():
                     "livebirths": data.get("livebirths", ""),
                     "miscarriages": int(data.get("miscarriages", 0)) if data.get("miscarriages") else None,
                     "diagdisabilty": data.get("diagdisabilty", ""),
-        
-            
+
             }
     
         mongo.db.users.update_one(
