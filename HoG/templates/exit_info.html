@@ -4,54 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Health Details</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../static/index.css">
 </head>
-<body>
-    <div class="container mt-5">
-        <h2><strong>Fill the Housing Information</strong></h2>
-        <form action="/submit_child_demographics" method="POST">
-        <div class="form-group">
-            
-            <label for="length_stay_shelter">Length of Stay in Maternity Shelter:</label>
-            <input type="text" id="length_stay_shelter" name="length_stay_shelter" ><br>
-            
-            <label for="reason_leaving_shelter">Reason for Leaving the Maternity Shelter:</label>
-            <input type="text" id="reason_leaving_shelter" name="reason_leaving_shelter" ><br>
-            
-            <label for="moved_to_transitional_housing">Did the Client Move to HoG or Partner Transitional Housing?</label>
-            <select id="moved_to_transitional_housing" name="moved_to_transitional_housing" >
-                <option value="">Select...</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-            </select><br>
-            
-            <label for="length_stay_transitional_housing">Length of Stay in Transitional Housing:</label>
-            <input type="text" id="length_stay_transitional_housing" name="length_stay_transitional_housing"><br>
-            
-            <label for="housing_voucher_recipient">Housing Voucher Recipient:</label>
-            <select id="housing_voucher_recipient" name="housing_voucher_recipient" >
-                <option value="">Select...</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-            </select><br>
-            
-            <label for="case_management_assistance">Did Case Management Assist in Finding Housing?</label>
-            <select id="case_management_assistance" name="case_management_assistance" >
-                <option value="">Select...</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-            </select><br>
-    
-            </div>
-            <!-- Add the rest of the form fields -->
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-10">
+        <h2 class="text-2xl font-bold mb-6"><strong>Fill the Housing Information</strong></h2>
+        <div class="border border-gray-300 rounded-md p-6 bg-white shadow-sm">
+            <form action="/submit_exit_info" method="POST">
+                <div class="mb-4">
+                    <label for="length_stay_shelter" class="block text-sm font-medium text-gray-700">Length of Stay in Maternity Shelter:</label>
+                    <input type="text" id="length_stay_shelter" name="length_stay_shelter" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="reason_leaving_shelter" class="block text-sm font-medium text-gray-700">Reason for Leaving the Maternity Shelter:</label>
+                    <input type="text" id="reason_leaving_shelter" name="reason_leaving_shelter" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="moved_to_transitional_housing" class="block text-sm font-medium text-gray-700">Did the Client Move to HoG or Partner Transitional Housing?</label>
+                    <select id="moved_to_transitional_housing" name="moved_to_transitional_housing" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <option value="">Select...</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="length_stay_transitional_housing" class="block text-sm font-medium text-gray-700">Length of Stay in Transitional Housing:</label>
+                    <input type="text" id="length_stay_transitional_housing" name="length_stay_transitional_housing" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="housing_voucher_recipient" class="block text-sm font-medium text-gray-700">Housing Voucher Recipient:</label>
+                    <select id="housing_voucher_recipient" name="housing_voucher_recipient" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <option value="">Select...</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="case_management_assistance" class="block text-sm font-medium text-gray-700">Did Case Management Assist in Finding Housing?</label>
+                    <select id="case_management_assistance" name="case_management_assistance" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <option value="">Select...</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+            </form>
+        </div>
     </div>
     <script src="../static/index.js"></script>
-    <!-- Bootstrap JS, Popper.js, and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

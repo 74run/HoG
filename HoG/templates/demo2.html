@@ -4,48 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Health Details</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../static/index.css">
 </head>
-<body>
-    <div class="container mt-5">
-        <h2>Health Details</h2>
-        <form action="/submit_health_details" method="POST">
-            <!-- Add your form fields here -->
-            <div class="form-group">
-                <label for="rehosp">Rehospitalization:</label>
-                <select id="rehosp" name="rehosp">
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            
-                <label for="doula">Doula Support:</label>
-                <select id="doula" name="doula">
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            
-                <label for="highriskpreg">High Risk Pregnancy:</label>
-                <select id="highriskpreg" name="highriskpreg">
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            
-                <label for="vaginalbirth">Vaginal birth:</label>
-                <select id="vaginalbirth" name="vaginalbirth">
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-10">
+        <h2 class="text-2xl font-bold mb-6">Health Details</h2>
+        <div class="border border-gray-300 rounded-md p-6 bg-white shadow-sm">
+            <!-- Display user information -->
+            <div class="mb-6">
+                <p class="text-lg font-medium text-gray-700">Name: {{ name }}</p>
+                <p class="text-lg font-medium text-gray-700">Date of Birth: {{ birthdate }}</p>
+            </div>
+            <form action="/submit_demographics_form2" method="POST">
+                <input type="hidden" name="user_id" value="{{ user_id }}">
+                
+                <div class="mb-4">
+                    <label for="rehosp" class="block text-sm font-medium text-gray-700">Rehospitalization:</label>
+                    <select id="rehosp" name="rehosp" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
-                </select>
-    
-            </div>
-            <!-- Add the rest of the form fields -->
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+                    </select>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="doula" class="block text-sm font-medium text-gray-700">Doula Support:</label>
+                    <select id="doula" name="doula" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="highriskpreg" class="block text-sm font-medium text-gray-700">High Risk Pregnancy:</label>
+                    <select id="highriskpreg" name="highriskpreg" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="vaginalbirth" class="block text-sm font-medium text-gray-700">Vaginal Birth:</label>
+                    <select id="vaginalbirth" name="vaginalbirth" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+            </form>
+        </div>
     </div>
-    <script src="../static/index.js"></script>
-    <!-- Bootstrap JS, Popper.js, and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

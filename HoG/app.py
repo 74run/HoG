@@ -5,6 +5,9 @@ from datetime import datetime, timedelta
 import logging
 import uuid
 
+import random
+import string
+
 
 app = Flask(__name__)
 
@@ -24,142 +27,22 @@ mongo = PyMongo(app)
 # Configure logging
 logging.basicConfig(level=logging.WARNING)
 
-@app.route('/submit_form', methods=['POST'])
-def submit_form():
-    if request.method == "POST":
-        try:
-            data = request.form
-            
-            # Parse and format the birthdate
-            birthdate = data.get('birthdate', '')
-            birthdate = datetime.strptime(birthdate, '%Y-%m-%d') if birthdate else None
-            
-            
-            date_of_entry = data.get('date_of_entry', '')
-            date_of_entry = datetime.strptime(date_of_entry, '%Y-%m-%d') if date_of_entry else None
-            
-            date_of_exit = data.get('date_of_exit', '')
-            date_of_exit = datetime.strptime(date_of_exit, '%Y-%m-%d') if date_of_exit else None
-            
-            number_of_children = int(data.get('number_of_children', 0))
-            
-            children = []
-            for i in range(1, number_of_children + 1):
-                child_name = data.get(f'child_name_{i}', '')
-                child_dob = data.get(f'child_dob_{i}', '')
-                child_dob = datetime.strptime(child_dob, '%Y-%m-%d') if child_dob else None
-                
-                children.append({
-                    'name': child_name,
-                    'date_of_birth': child_dob
-                })
-            
-            
-            
-            user_details = {
-                "client_details" : {
-                    
-                    "date_of_entry": date_of_entry,
-                    "date_of_exit": date_of_exit,
-                    "name": data.get('name', ''),
-                    "address": data.get('address', ''),
-                    "zip_code": data.get('zip', ''),
-                    "phone": data.get('phone', ''),
-                    "birthdate": birthdate,
-                    "age": int(data.get('age', 0)) if data.get('age') else None,
-                    "sex": data.get('sex', ''),
-                    "race": data.get('race', ''),
-                    "ethnicity": data.get('ethnicity', ''),
-                    "marital_status": data.get('marital_status', ''),
-                    "length_stay_previous_address": data.get('length_stay_previous_address', ''),
-                    "country_of_origin": data.get('country_of_origin', ''),
-                    "times_in_shelter": int(data.get('times_in_shelter', 0)) if data.get('times_in_shelter') else None,
-                    "length_stay_previous_shelter": data.get('length_stay_previous_shelter', ''),
-                    "number_of_children": int(data.get('number_of_children', 0)) if data.get('number_of_children') else None,
-                    "children": children,
-                    "education_level": data.get('education_level', ''),
-                    "employment_status": data.get('employment_status', ''),
-                    "income_amount_intake": float(data.get('income_amount_intake', 0)) if data.get('income_amount_intake') else None,
-                    "income_source_intake": data.get('income_source_intake', ''),
-                    "income_amount_exit": float(data.get('income_amount_exit', 0)) if data.get('income_amount_exit') else None,
-                    "income_1_year_exit": float(data.get('income_1_year_exit', 0)) if data.get('income_1_year_exit') else None,
-                    "weeks_pregnant": int(data.get('weeks_pregnant', 0)) if data.get('weeks_pregnant') else None,
-                    "prenatal_care_prior_intake": data.get('prenatal_care_prior_intake', ''),
-                    "father_involvement": data.get('father_involvement', ''),
-                    "father_education_level": data.get('father_education_level', ''),
-                    "father_occupation": data.get('father_occupation', ''),
-                    "father_income": float(data.get('father_income', 0)) if data.get('father_income') else None,
-                    "domestic_violence_survivor": data.get('domestic_violence_survivor', ''),
-                    "veteran_status": data.get('veteran_status', '')
-                },
-                "health_details" : {
-                    "highbp": data.get("highbp", ""),
-                    "diabetes": data.get("diabetes", ""),
-                    "heartdisease": data.get("heartdisease", ""),
-                    "livebirths": data.get("livebirths", ""),
-                    "miscarriages": int(data.get("miscarriages", 0)) if data.get("miscarriages") else None,
-                    "diagdisabilty": data.get("diagdisabilty", ""),
-                    "rehosp": data.get("rehosp", ""),
-                    "doula": data.get("doula", ""),
-                    "highriskpreg": data.get("highriskpreg", ""),
-                    "vaginalbirth": data.get("vaginalbirth", "")
-                },
-                
-                # Extract infant details from the received JSON
-                "shelter_infant_details" : {
-                    "infant_name": data.get("infant_name", ""),
-                    "birthdate": data.get("birthdate", ""),
-                    "birth_weight": float(data.get("birth_weight", 0)) if data.get("birth_weight") else None,
-                    "weeks_at_delivery": int(data.get("weeks_at_delivery", 0)) if data.get("weeks_at_delivery") else None,
-                    "healthy_delivery": data.get("healthy_delivery", ""),
-                    "rehospitalization": data.get("rehospitalization", "")
-                },
-                # Extract children details from the received JSON
-                "shelter_children_details" : {
-                    "child_name": data.get("child_name", ""),
-                    "birthdate": data.get("birthdate", ""),
-                    "age": int(data.get("age", 0)) if data.get("age") else None,
-                    "grade_level": data.get("grade_level", ""),
-                    "trauma_programming_hours": int(data.get("trauma_programming_hours", 0)) if data.get("trauma_programming_hours") else None
-                },
-                # Extract housing details from the received JSON
-                "housing_details" : {
-                    "length_stay_shelter": data.get("length_stay_shelter", ""),
-                    "reason_leaving_shelter": data.get("reason_leaving_shelter", ""),
-                    "moved_to_transitional_housing": data.get("moved_to_transitional_housing", ""),
-                    "length_stay_transitional_housing": data.get("length_stay_transitional_housing", ""),
-                    "housing_voucher_recipient": data.get("housing_voucher_recipient", ""),
-                    "case_management_assistance": data.get("case_management_assistance", "")
-                },
-                # Extract women served details from the received JSON
-                "women_served_details" : {
-                    "women_accepted_intake": int(data.get("women_accepted_intake", 0)) if data.get("women_accepted_intake") else None,
-                    "incoming_calls_shelter": int(data.get("incoming_calls_shelter", 0)) if data.get("incoming_calls_shelter") else None,
-                    "calls_seeking_shelter_women": int(data.get("calls_seeking_shelter_women", 0)) if data.get("calls_seeking_shelter_women") else None,
-                    "calls_seeking_shelter_pregnant": int(data.get("calls_seeking_shelter_pregnant", 0)) if data.get("calls_seeking_shelter_pregnant") else None,
-                    "pregnant_women_turned_away": int(data.get("pregnant_women_turned_away", 0)) if data.get("pregnant_women_turned_away") else None,
-                    "pregnant_women_turned_away_reason": data.get("pregnant_women_turned_away_reason", ""),
-                    
-                    "community_outreach_activities": int(data.get("community_outreach_activities", 0)) if data.get("community_outreach_activities") else None,
-                    "referrals_other_agencies": int(data.get("referrals_other_agencies", 0)) if data.get("referrals_other_agencies") else None,
-                    
-                    "moved_from_maternity_to_apartments": int(data.get("moved_from_maternity_to_apartments", 0)) if data.get("moved_from_maternity_to_apartments") else None,
-                    "moved_to_aftercare_program": int(data.get("moved_to_aftercare_program", 0)) if data.get("moved_to_aftercare_program") else None,
-                    "aftercare_program_details": data.get("aftercare_program_details", "")
-                }
 
-            }
+def generate_user_id():
+    return ''.join(random.choices(string.digits, k=6))
 
-            mongo.db.user_details.insert_one(user_details)
-            return jsonify({'message': 'Form submitted successfully'}), 200
-        except Exception as e:
-            logging.error(f"Error submitting form: {e}")
-            return jsonify({'error': str(e)}), 500
+def generate_unique_user_id():
+    while True:
+        user_id = generate_user_id()
+        if not mongo.db.users.find_one({"user_id": user_id}):
+            return user_id
+
+
         
         
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('forms.html')
 
 
 @app.route('/demographics_form1')
@@ -168,7 +51,21 @@ def demographics_form():
 
 @app.route('/demographics_form2')
 def demo2_form():
-    return render_template('demo2.html')
+    user_id = request.args.get('user_id')
+    user = mongo.db.users.find_one({'user_id': user_id}, {'_id': 0, 'demographics_form1.name': 1, 'demographics_form1.birthdate': 1})
+
+    if user:
+        user_info = user.get('demographics_form1', {})
+        name = user_info.get('name')
+        birthdate = user_info.get('birthdate')
+        if isinstance(birthdate, datetime):
+            birthdate = birthdate.strftime('%Y-%m-%d')
+    else:
+        name = None
+        birthdate = None
+
+    return render_template('demo2.html', user_id=user_id, name=name, birthdate=birthdate)
+
 
 @app.route('/child_demogrphics_form')
 def child_demo_form():
@@ -187,6 +84,24 @@ def exit_info_form():
 def women_served_details_form():
     return render_template('women_served_details.html')
 
+
+@app.route('/validate_user', methods=['POST'])
+def validate_user():
+    data = request.json
+    user_id = data.get('userId')
+
+    # Find the user in the database
+    user = mongo.db.users.find_one({'user_id': user_id}, {'_id': 0, 'demographics_form1.name': 1, 'demographics_form1.birthdate': 1})
+
+    if user:
+        user_info = user.get('demographics_form1', {})
+        # Convert birthdate to string format if it's a datetime object
+        birthdate = user_info.get('birthdate')
+        if isinstance(birthdate, datetime):
+            user_info['birthdate'] = birthdate.strftime('%Y-%m-%d')
+        return jsonify({'valid': True, 'user_info': user_info}), 200
+    else:
+        return jsonify({'valid': False}), 404
 
 
 
@@ -220,7 +135,7 @@ def submit_demographics_form1():
                 'date_of_birth': child_dob
             })
             
-        user_id = str(uuid.uuid4())  # Generate a unique identifier for the user
+        user_id = generate_unique_user_id()  # Generate a unique identifier for the user
         demographics_data = {
                     "user_id": user_id,
                     "date_of_entry": date_of_entry,
@@ -264,7 +179,12 @@ def submit_demographics_form1():
         
             
             }
-        mongo.db.demographics_form1.insert_one(demographics_data)
+    
+        mongo.db.users.update_one(
+        {"user_id": user_id},
+        {"$set": {"demographics_form1": demographics_data}},
+        upsert=True
+        )
         return jsonify({'message': 'Demographics form 1 submitted successfully'}), 200
     except Exception as e:
         logging.error(f"Error submitting demographics form 1: {e}")
@@ -273,11 +193,26 @@ def submit_demographics_form1():
 @app.route('/submit_demographics_form2', methods=['POST'])
 def submit_demographics_form2():
     data = request.form
+    
+    user_id = data.get('user_id')
+
+    # Validate the user_id by checking if the user exists in the database
+    user = mongo.db.users.find_one({'user_id': user_id})
+    if not user:
+        return jsonify({'error': 'User ID not found.'}), 404
     try:
-        form_data = {
+        demo_data = {
+            "user_id": user_id,
+            "rehosp": data.get("rehosp", ""),
+            "doula": data.get("doula", ""),
+            "highriskpreg": data.get("highriskpreg", ""),
+            "vaginalbirth": data.get("vaginalbirth", "")
             # Add your specific form fields here
         }
-        mongo.db.demographics_form2.insert_one(form_data)
+        mongo.db.users.update_one(
+            {"user_id": user_id},
+            {"$set": {"form2_data": demo_data}}
+        )
         return jsonify({'message': 'Demographics form 2 submitted successfully'}), 200
     except Exception as e:
         logging.error(f"Error submitting demographics form 2: {e}")
@@ -287,14 +222,14 @@ def submit_demographics_form2():
 def submit_child_demographics():
     data = request.form
     try:
-        child_details = {
+        child_demo_details = {
             "child_name": data.get("child_name", ""),
             "birthdate": data.get("birthdate", ""),
             "age": int(data.get("age", 0)) if data.get("age") else None,
             "grade_level": data.get("grade_level", ""),
             "trauma_programming_hours": int(data.get("trauma_programming_hours", 0)) if data.get("trauma_programming_hours") else None
         }
-        mongo.db.child_demographics.insert_one(child_details)
+        mongo.db.child_demographics.insert_one(child_demo_details)
         return jsonify({'message': 'Child demographics submitted successfully'}), 200
     except Exception as e:
         logging.error(f"Error submitting child demographics: {e}")
@@ -323,6 +258,12 @@ def submit_exit_info():
     data = request.form
     try:
         exit_info = {
+            "length_stay_shelter": data.get("length_stay_shelter", ""),
+            "reason_leaving_shelter": data.get("reason_leaving_shelter", ""),
+            "moved_to_transitional_housing": data.get("moved_to_transitional_housing", ""),
+            "length_stay_transitional_housing": data.get("length_stay_transitional_housing", ""),
+            "housing_voucher_recipient": data.get("housing_voucher_recipient", ""),
+            "case_management_assistance": data.get("case_management_assistance", "")
             # Add your specific form fields here
         }
         mongo.db.exit_info.insert_one(exit_info)
