@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/index.css">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-10">
+        <h2 class="text-2xl font-bold mb-6"><strong>Fill the Shelter Infants Details</strong></h2>
+        <div class="border border-gray-300 rounded-md p-6 bg-white shadow-sm">
+            <form action="/submit_infants_demographics" method="POST">
+                <div class="mb-4">
+                    <label for="infant_name" class="block text-sm font-medium text-gray-700">Infant Name:</label>
+                    <input type="text" id="infant_name" name="infant_name" placeholder="Infant Name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="birthdate" class="block text-sm font-medium text-gray-700">Birth Date:</label>
+                    <input type="date" id="birthdate" name="birthdate" placeholder="Birth Date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="birth_weight" class="block text-sm font-medium text-gray-700">Birth Weight:</label>
+                    <input type="number" id="birth_weight" name="birth_weight" placeholder="Birth Weight" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="weeks_at_delivery" class="block text-sm font-medium text-gray-700">Weeks at Delivery:</label>
+                    <input type="number" id="weeks_at_delivery" name="weeks_at_delivery" placeholder="Weeks at Delivery" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="healthy_delivery" class="block text-sm font-medium text-gray-700">Healthy Delivery:</label>
+                    <select id="healthy_delivery" name="healthy_delivery" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <option value="">Select...</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="rehospitalization" class="block text-sm font-medium text-gray-700">Rehospitalization:</label>
+                    <select id="rehospitalization" name="rehospitalization" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <option value="">Select...</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+            </form>
+        </div>
+    </div>
+    
+    <script src="../static/index.js"></script>
+</body>
+</html>
