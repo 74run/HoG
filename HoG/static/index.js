@@ -100,4 +100,13 @@ function addChildrenFields() {
         }
     };
     xhr.send(new URLSearchParams(new FormData(form)).toString());
+
+
+    function toggleInput(field, container) {        
+        if (field.value === "yes") {
+            container.style.display = "block";
+        } else {
+            container.style.display = "none";
+        }
+    }
 };

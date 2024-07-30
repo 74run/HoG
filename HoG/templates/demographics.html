@@ -492,11 +492,17 @@
                 
             
                 <label for="diabetes" class="block text-sm font-medium text-gray-700 mt-4">Diabetes:</label>
-                <select id="diabetes" name="diabetes" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    <option value="yes">Yes</option>
+                <select id="diabetes" name="diabetes" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" onchange="toggleInput(document.getElementById('diabetes'), document.getElementById('diabetesContainer'))">
                     <option value="no">No</option>
+                    <option value="yes">Yes</option>
                 </select>
-
+                
+                <div id="diabetesContainer" style="display: none;">
+                    <label for="typeofdiabetes">Select your Diabetes Type:</label>
+                    <select id="typeofdiabetes" name="typeofdiabetes">
+                        <option value="normal diabetes">Normal Diabetes</option>
+                        <option value="gestational diabetes">Gestational Diabetes</option>
+                </div>
             
                 <label for="heartdisease" class="block text-sm font-medium text-gray-700 mt-4">Heart disease:</label>
                 <select id="heartdisease" name="heartdisease" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
