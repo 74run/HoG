@@ -25,7 +25,7 @@
                 <div class="mb-4">
                     <label for="birthdate" class="block text-sm font-medium text-gray-700">Birth Date:</label>
                     <input type="date" id="birthdate" name="birthdate" placeholder="Birth Date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                </div>
+                </div>             
                 
                 <div class="mb-4">
                     <label for="birth_weight" class="block text-sm font-medium text-gray-700">Birth Weight:</label>
@@ -39,11 +39,15 @@
                 
                 <div class="mb-4">
                     <label for="healthy_delivery" class="block text-sm font-medium text-gray-700">Healthy Delivery:</label>
-                    <select id="healthy_delivery" name="healthy_delivery" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                        <option value="">Select...</option>
+                    <select id="healthy_delivery" name="healthy_delivery" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" onchange="toggleInput(document.getElementById('healthy_delivery'), document.getElementById('healthydelContainer'))">
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
                     </select>
+
+                    <div id="healthydelContainer" style="display: none;">
+                        <label for="medconcernsonbirth" class="block text-sm font-medium text-gray-700">Any Medical Concerns on Birth:</label>
+                        <input type="text" id="medconcernsonbirth" name="medicalconcernsonbirth" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
                 </div>
                 
                 <div class="mb-4">

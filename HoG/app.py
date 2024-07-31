@@ -220,10 +220,12 @@ def submit_demographics_form1():
                     "veteran_status": data.get('veteran_status', ''),
                     "highbp": data.get("highbp", ""),
                     "diabetes": data.get("diabetes", ""),
+                    "typeofdiabetes": data.get("typeofdiabetes", ""),
                     "heartdisease": data.get("heartdisease", ""),
                     "livebirths": data.get("livebirths", ""),
                     "miscarriages": int(data.get("miscarriages", 0)) if data.get("miscarriages") else None,
                     "diagdisabilty": data.get("diagdisabilty", ""),
+                    "othermedcondition": data.get("othermedcondition", ""),
 
             }
     
@@ -252,6 +254,8 @@ def submit_demographics_form2():
         demo_data = {
             "user_id": user_id, 
             "rehosp": data.get("rehosp", ""),
+            "reasonforhosp": data.get("reasonforhosp", ""),
+            "date_of_rehosp": data.get("date_of_rehosp", ""),
             "doula": data.get("doula", ""),
             "highriskpreg": data.get("highriskpreg", ""),
             "vaginalbirth": data.get("vaginalbirth", "")
@@ -313,6 +317,7 @@ def submit_infants_demographics():
             "birth_weight": float(data.get("birth_weight", 0)) if data.get("birth_weight") else None,
             "weeks_at_delivery": int(data.get("weeks_at_delivery", 0)) if data.get("weeks_at_delivery") else None,
             "healthy_delivery": data.get("healthy_delivery", ""),
+            "medconcernsonbirth" : data.get("medconcernsonbirth", ""),
             "rehospitalization": data.get("rehospitalization", "")
         }
         mongo.db.users.update_one(
@@ -337,7 +342,11 @@ def submit_exit_info():
         exit_info = {
             "length_stay_shelter": data.get("length_stay_shelter", ""),
             "reason_leaving_shelter": data.get("reason_leaving_shelter", ""),
+            "doe_from_maternity_shelter": data.get("doe_from_maternity_shelter", ""),
+            "wheredidugo": data.get("wheredidugo", ""),
             "moved_to_transitional_housing": data.get("moved_to_transitional_housing", ""),
+            "housingreason": data.get("housingreason", ""),
+            "commnityhousingaddr": data.get("commnityhousingaddr", ""),
             "length_stay_transitional_housing": data.get("length_stay_transitional_housing", ""),
             "housing_voucher_recipient": data.get("housing_voucher_recipient", ""),
             "case_management_assistance": data.get("case_management_assistance", "")
