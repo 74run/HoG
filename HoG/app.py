@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, jsonify, render_template_string, session, redirect, url_for
 from flask_pymongo import PyMongo, ObjectId
+from pymongo.errors import PyMongoError
 from datetime import datetime, timedelta
 
 import bcrypt
@@ -292,29 +293,43 @@ def submit_demographics_form2():
 def submit_child_demographics():
     data = request.form
     user_id = data.get('user_id')
-   
 
     # Validate the user_id by checking if the user exists in the database
     user = mongo.db.users.find_one({'user_id': user_id})
     if not user:
         return jsonify({'error': 'User ID not found.'}), 404
+    
     try:
-        child_demo_details = {
-            "user_id": user_id,
-            "child_name": data.get("child_name", ""),
-            "birthdate": data.get("birthdate", ""),
-            "age": int(data.get("age", 0)) if data.get("age") else None,
-            "grade_level": data.get("grade_level", ""),
-            "trauma_programming_hours": int(data.get("trauma_programming_hours", 0)) if data.get("trauma_programming_hours") else None
-        }
+        # Initialize an empty list to hold child details
+        children_details = []
+
+        # Assuming the form sends arrays for each child attribute
+        child_names = data.getlist("child_name[]")
+        birthdates = data.getlist("birthdate[]")
+        ages = data.getlist("age[]")
+        grade_levels = data.getlist("grade_level[]")
+        trauma_programming_hours = data.getlist("trauma_programming_hours[]")
+
+        # Iterate through each array simultaneously using zip
+        for name, birthdate, age, grade_level, hours in zip(child_names, birthdates, ages, grade_levels, trauma_programming_hours):
+            child_detail = {
+                "child_name": name,
+                "birthdate": birthdate,
+                "age": int(age) if age else None,
+                "grade_level": grade_level,
+                "trauma_programming_hours": int(hours) if hours else None
+            }
+            children_details.append(child_detail)
+
+        # Update the user document with the list of child details
         mongo.db.users.update_one(
             {"user_id": user_id},
-            {"$set": {"child_demo_data": child_demo_details}}
+            {"$set": {"child_demo_data": children_details}}
         )
+        
         return redirect(url_for('success', user_id=user_id))
-
-    except Exception as e:
-        logging.error(f"Error submitting child demographics: {e}")
+    except PyMongoError as e:
+        logging.error(f"Database error submitting child demographics: {e}")
         return jsonify({'error': str(e)}), 500
 
 @app.route('/submit_infants_demographics', methods=['POST'])
