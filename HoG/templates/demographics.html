@@ -389,8 +389,14 @@
                 <label for="times_in_shelter" class="block text-sm font-medium text-gray-700 mt-4">Number of Times Living in a Shelter:</label>
                 <input type="number" id="times_in_shelter" name="times_in_shelter" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
 
-                <label for="length_stay_previous_shelter" class="block text-sm font-medium text-gray-700 mt-4">Length of Stay at Previous Shelter (In Weeks)</label>
-                <input type="text" id="length_stay_previous_shelter" name="length_stay_previous_shelter" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                <label for="length_stay_previous_shelter" class="block text-sm font-medium text-gray-700 mt-4">Length of Stay at Previous Shelter</label>
+                <select id="length_stay_previous_shelter" name="length_stay_previous_shelter" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <option value="" disabled selected>Select an option</option>
+                    <option value="less_than_30_days">Less than 30 days</option>
+                    <option value="1-6_months">1-6 months</option>
+                    <option value="6-12_months">6-12 months</option>
+                    <option value="greater_than_12_months">>12 months</option>
+                </select>
 
                 <label for="number_of_children" class="block text-sm font-medium text-gray-700 mt-4">Number of Children:</label>
                 <input type="number" id="number_of_children" name="number_of_children" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" min="0" value="0">
@@ -486,11 +492,18 @@
                 
             
                 <label for="diabetes" class="block text-sm font-medium text-gray-700 mt-4">Diabetes:</label>
-                <select id="diabetes" name="diabetes" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    <option value="yes">Yes</option>
+                <select id="diabetes" name="diabetes" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" onchange="toggleInput(document.getElementById('diabetes'), document.getElementById('diabetesContainer'))">
                     <option value="no">No</option>
+                    <option value="yes">Yes</option>
                 </select>
-
+                
+                <div id="diabetesContainer" style="display: none;">
+                    <label for="typeofdiabetes" class="block text-sm font-medium text-gray-700 mt-4">Select your Diabetes Type:</label>
+                    <select id="typeofdiabetes" name="typeofdiabetes" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        <option value="normal diabetes">Normal Diabetes</option>
+                        <option value="gestational diabetes">Gestational Diabetes</option>
+                    </select>
+                </div>
             
                 <label for="heartdisease" class="block text-sm font-medium text-gray-700 mt-4">Heart disease:</label>
                 <select id="heartdisease" name="heartdisease" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
@@ -508,6 +521,9 @@
             
                 <label for="diagdisabilty" class="block text-sm font-medium text-gray-700 mt-4">Diagnosed Disability:</label>
                 <input type="text" id="diagdisabilty" name="diagdisabilty" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+
+                <label for="othermedcondition" class="block text-sm font-medium text-gray-700 mt-4">Any other medical conditions:</label>
+                <input type="text" id="othermedcondition" name="othermedcondition" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
 
                 <div class="flex justify-between mt-6">
                     <button type="button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded prev-btn">Previous</button>

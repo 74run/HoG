@@ -19,27 +19,64 @@
                 <input type="hidden" name="user_id" value="{{ user_id }}">
                 <div class="mb-4">
                     <label for="length_stay_shelter" class="block text-sm font-medium text-gray-700">Length of Stay in Maternity Shelter:</label>
-                    <input type="text" id="length_stay_shelter" name="length_stay_shelter" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <select id="length_stay_shelter" name="length_stay_shelter" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="less_than_30_days">Less than 30 days</option>
+                        <option value="1-6_months">1-6 months</option>
+                        <option value="6-12_months">6-12 months</option>
+                        <option value="12-24_months">12-24 months</option>
+                        <option value="greater_than_24_months">>24 months</option>
+                    </select>
                 </div>
+                
                 
                 <div class="mb-4">
                     <label for="reason_leaving_shelter" class="block text-sm font-medium text-gray-700">Reason for Leaving the Maternity Shelter:</label>
                     <input type="text" id="reason_leaving_shelter" name="reason_leaving_shelter" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                 </div>
-                
+
                 <div class="mb-4">
-                    <label for="moved_to_transitional_housing" class="block text-sm font-medium text-gray-700">Did the Client Move to HoG or Partner Transitional Housing?</label>
-                    <select id="moved_to_transitional_housing" name="moved_to_transitional_housing" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <label for="wheredidugo" class="block text-sm font-medium text-gray-700">Where did you go?:</label>
+                    <select id="wheredidugo" name="wheredidugo" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                         <option value="">Select...</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
+                        <option value="Permanent housing">Transitional Housing</option>
+                        <option value="Family housing">Family Housing</option>
+                        <option value="Unhoused">Unhoused</option>
                     </select>
                 </div>
+
+                <div class="mb-4">
+                    <label for="doe_from_maternity_shelter" class="block text-sm font-medium text-gray-700">Date of exit from the Maternity Shelter:</label>
+                    <input type="date" id="doe_from_maternity_shelter" name="doe_from_maternity_shelter" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="moved_to_transitional_housing" class="block text-sm font-medium text-gray-700">Did the Client Move to Transitional Housing or Community Housing?</label>
+                    <select id="moved_to_transitional_housing" name="moved_to_transitional_housing" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" onchange="toggleInput(document.getElementById('moved_to_transitional_housing'), document.getElementById('housingContainer'))">
+                        <option value="">Select...</option>
+                        <option value="transitional housing">Transitional Housing</option>
+                        <option value="community housing">Community Housing</option>
+                    </select>
+                    <div id="housingContainer" style="display: none;">
+                        <label for="housingreason" class="block text-sm font-medium text-gray-700">Reason for choosing community housing:</label>
+                        <input type="text" id="housingreason" name="housingreason" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <label for="commnityhousingaddr" class="block text-sm font-medium text-gray-700">Address of the chosen community housing:</label>
+                        <input type="text" id="commnityhousingaddr" name="commnityhousingaddress" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>                 
+               </div>
                 
                 <div class="mb-4">
                     <label for="length_stay_transitional_housing" class="block text-sm font-medium text-gray-700">Length of Stay in Transitional Housing:</label>
-                    <input type="text" id="length_stay_transitional_housing" name="length_stay_transitional_housing" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <select id="length_stay_transitional_housing" name="length_stay_transitional_housing" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="less_than_30_days">Less than 30 days</option>
+                        <option value="1-6_months">1-6 months</option>
+                        <option value="6-12_months">6-12 months</option>
+                        <option value="12-24_months">12-24 months</option>
+                        <option value="greater_than_24_months">>24 months</option>
+                    </select>
                 </div>
+                
                 
                 <div class="mb-4">
                     <label for="housing_voucher_recipient" class="block text-sm font-medium text-gray-700">Housing Voucher Recipient:</label>

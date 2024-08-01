@@ -82,7 +82,29 @@ function addChildrenFields() {
     }
   }
 
-
+  function toggleInput(field, container) { 
+    if (container.id === "healthydelContainer") {
+        if (field.value === "no") {
+            container.style.display = "block";
+        } else {
+            container.style.display = "none";
+        }
+    }
+    else if (container.id === "housingContainer") {
+        if (field.value === "community housing") {
+            container.style.display = "block";
+        } else {
+            container.style.display = "none";
+        }
+    }
+    else {
+    if (field.value === "yes") {
+        container.style.display = "block";
+    } else {
+        container.style.display = "none";
+    }
+    }
+  }
 
   document.getElementById('passwordForm').onsubmit = function(e) {
     e.preventDefault();  // Prevent the form from submitting the default way
@@ -100,4 +122,5 @@ function addChildrenFields() {
         }
     };
     xhr.send(new URLSearchParams(new FormData(form)).toString());
+
 };
