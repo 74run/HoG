@@ -10,44 +10,82 @@
 <body class="bg-gray-100">
     <div class="container mx-auto mt-10">
         <h2 class="text-2xl font-bold mb-6"><strong>Child Demographics</strong></h2>
-        <div class="border border-gray-300 rounded-md p-6 bg-white shadow-sm">
-              <!-- Display user information -->
-              <div class="mb-6">
-                <p class="text-lg font-medium text-gray-700">Name: {{ name }}</p>
-                <p class="text-lg font-medium text-gray-700">Date of Birth: {{ birthdate }}</p>
-                <p>{{user_id}}</p>
+        <form action="/submit_child_demographics" method="POST">
+            <input type="hidden" name="user_id" value="{{ user_id }}">
+            
+            <!-- Child input fields container -->
+            <div id="childInputsContainer">
+                <!-- Initial child inputs -->
+                <fieldset class="mb-4">
+                    <label for="child_name_1" class="block text-sm font-medium text-gray-700">Child Name:</label>
+                    <input type="text" id="child_name_1" name="child_name[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+
+                    <div class="mb-4">
+                        <label for="birthdate_1" class="block text-sm font-medium text-gray-700">Birth Date:</label>
+                        <input type="date" id="birthdate_1" name="birthdate[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="age_1" class="block text-sm font-medium text-gray-700">Age:</label>
+                        <input type="number" id="age_1" name="age[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="grade_level_1" class="block text-sm font-medium text-gray-700">Daycare or School Grade Level:</label>
+                        <input type="text" id="grade_level_1" name="grade_level[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="trauma_programming_hours_1" class="block text-sm font-medium text-gray-700">Hours of Trauma-Informed Programming Received:</label>
+                        <input type="number" id="trauma_programming_hours_1" name="trauma_programming_hours[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                </fieldset>
             </div>
-            <form action="/submit_child_demographics" method="POST">
-                <input type="hidden" name="user_id" value="{{ user_id }}">
-                <div class="mb-4">
-                    <label for="child_name" class="block text-sm font-medium text-gray-700">Child Name:</label>
-                    <input type="text" id="child_name" name="child_name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                </div>
 
-                <div class="mb-4">
-                    <label for="birthdate" class="block text-sm font-medium text-gray-700">Birth Date:</label>
-                    <input type="date" id="birthdate" name="birthdate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                </div>
+            <!-- Add Child Button -->
+            <button type="button" onclick="addChildInput()" class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4">Add Child</button>
 
-                <div class="mb-4">
-                    <label for="age" class="block text-sm font-medium text-gray-700">Age:</label>
-                    <input type="number" id="age" name="age" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                </div>
-
-                <div class="mb-4">
-                    <label for="grade_level" class="block text-sm font-medium text-gray-700">Daycare or School Grade Level:</label>
-                    <input type="text" id="grade_level" name="grade_level" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                </div>
-
-                <div class="mb-4">
-                    <label for="trauma_programming_hours" class="block text-sm font-medium text-gray-700">Hours of Trauma-Informed Programming Received:</label>
-                    <input type="number" id="trauma_programming_hours" name="trauma_programming_hours" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                </div>
-
-                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
-            </form>
-        </div>
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+        </form>
     </div>
-    <script src="../static/index.js"></script>
+
+    <script>
+        function addChildInput() {
+            var container = document.getElementById('childInputsContainer');
+            var count = container.children.length + 1; // Get next child index
+
+            // Create new fieldset for child inputs
+            var newChildInputs = document.createElement('fieldset');
+            newChildInputs.className = 'mb-4';
+
+            newChildInputs.innerHTML = `
+                <label for="child_name_${count}" class="block text-sm font-medium text-gray-700">Child Name:</label>
+                <input type="text" id="child_name_${count}" name="child_name[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+
+                <div class="mb-4">
+                    <label for="birthdate_${count}" class="block text-sm font-medium text-gray-700">Birth Date:</label>
+                    <input type="date" id="birthdate_${count}" name="birthdate[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+
+                <div class="mb-4">
+                    <label for="age_${count}" class="block text-sm font-medium text-gray-700">Age:</label>
+                    <input type="number" id="age_${count}" name="age[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+
+                <div class="mb-4">
+                    <label for="grade_level_${count}" class="block text-sm font-medium text-gray-700">Daycare or School Grade Level:</label>
+                    <input type="text" id="grade_level_${count}" name="grade_level[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+
+                <div class="mb-4">
+                    <label for="trauma_programming_hours_${count}" class="block text-sm font-medium text-gray-700">Hours of Trauma-Informed Programming Received:</label>
+                    <input type="number" id="trauma_programming_hours_${count}" name="trauma_programming_hours[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+            `;
+
+            // Append new fieldset to container
+            container.appendChild(newChildInputs);
+        }
+    </script>
 </body>
 </html>
