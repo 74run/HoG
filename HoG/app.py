@@ -3,6 +3,10 @@ from flask_pymongo import PyMongo, ObjectId
 from pymongo.errors import PyMongoError
 from datetime import datetime, timedelta
 
+import bcrypt
+
+
+
 import logging
 import uuid
 
@@ -39,12 +43,38 @@ def generate_unique_user_id():
             return user_id
 
 
-        
-        
+# Initialize the password if it doesn't exist
+if mongo.db.password.count_documents({}) == 0:
+    hashed_password = bcrypt.hashpw(b'12345678', bcrypt.gensalt())
+    mongo.db.password.insert_one({'password': hashed_password})
+
 @app.route('/')
 def index():
     return render_template('forms.html')
 
+@app.route('/change_password', methods=['GET', 'POST'])
+def change_password():
+    if request.method == 'POST':
+        current_password = request.form.get('current_password')
+        new_password = request.form.get('new_password')
+        confirm_password = request.form.get('confirm_password')
+        
+        stored_password = mongo.db.password.find_one({}, {'_id': 0, 'password': 1})['password']
+
+        if bcrypt.checkpw(current_password.encode('utf-8'), stored_password):
+            if new_password == confirm_password:
+                hashed_new_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+                mongo.db.password.update_one({}, {'$set': {'password': hashed_new_password}})
+                success_message = "Password changed successfully!"
+                return render_template('change_password.html', success_message=success_message)
+            else:
+                error_message = "New passwords do not match."
+        else:
+            error_message = "Current password is incorrect."
+        
+        return render_template('change_password.html', error_message=error_message)
+    
+    return render_template('change_password.html')
 
 @app.route('/demographics_form1')
 def demographics_form():
@@ -119,19 +149,7 @@ def exit_info_form():
 
 @app.route('/women_served_details')
 def women_served_details_form():
-    user_id = request.args.get('user_id')
-    user = mongo.db.users.find_one({'user_id': user_id}, {'_id': 0, 'demographics_form1.name': 1, 'demographics_form1.birthdate': 1})
-
-    if user:
-        user_info = user.get('demographics_form1', {})
-        name = user_info.get('name')
-        birthdate = user_info.get('birthdate')
-        if isinstance(birthdate, datetime):
-            birthdate = birthdate.strftime('%Y-%m-%d')
-    else:
-        name = None
-        birthdate = None
-    return render_template('women_served_details.html', name=name, birthdate=birthdate)
+    return render_template('women_served_details.html')
 
 
 @app.route('/validate_user', methods=['POST'])
@@ -369,7 +387,7 @@ def submit_exit_info():
         }
         mongo.db.users.update_one(
             {"user_id": user_id},
-            {"$set": {"infant_data": exit_info}}
+            {"$set": {"exit_info": exit_info}}
         )
         return redirect(url_for('success', user_id=user_id))
 
@@ -380,21 +398,27 @@ def submit_exit_info():
 @app.route('/submit_women_served_details', methods=['POST'])
 def submit_women_served_details():
     data = request.form
-    user_id = data.get('user_id')
     
     try:
         women_details = {
-            # Add your specific form fields here
+            "women_accepted_intake": int(data.get('women_accepted_intake', 0)),
+            "incoming_calls_shelter": int(data.get('incoming_calls_shelter', 0)),
+            "calls_seeking_shelter_women": int(data.get('calls_seeking_shelter_women', 0)),
+            "calls_seeking_shelter_pregnant": int(data.get('calls_seeking_shelter_pregnant', 0)),
+            "pregnant_women_turned_away": int(data.get('pregnant_women_turned_away', 0)),
+            "pregnant_women_turned_away_reason": data.get('pregnant_women_turned_away_reason', ''),
+            "community_outreach_activities": int(data.get('community_outreach_activities', 0)),
+            "referrals_other_agencies": int(data.get('referrals_other_agencies', 0)),
+            "moved_from_maternity_to_apartments": int(data.get('moved_from_maternity_to_apartments', 0)),
+            "moved_to_aftercare_program": int(data.get('moved_to_aftercare_program', 0))
         }
         mongo.db.women_served_details.insert_one(women_details)
-        return redirect(url_for('success', user_id=user_id))
+        return redirect(url_for('success'))
+
     except Exception as e:
         logging.error(f"Error submitting women served details: {e}")
         return jsonify({'error': str(e)}), 500
-    
-    
-    
-    
+
     
     
     
@@ -406,114 +430,26 @@ def client_details():
     error_message = None
     if request.method == 'POST':
         password = request.form.get('password')
-        if password == PASSWORD:
+        stored_password = mongo.db.password.find_one({}, {'_id': 0, 'password': 1})['password']
+        
+        if bcrypt.checkpw(password.encode('utf-8'), stored_password):
             session['authenticated'] = True
             session.permanent = True  # Make the session permanent
             return redirect(url_for('client_details'))
         else:
             error_message = "Incorrect password. Access denied."
             logging.warning("Attempted access with incorrect password.")
-            return render_template_string('''
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Client Details</title>
-                    <!-- Bootstrap CSS -->
-                    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-                    <style>
-                        .center-form {
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            height: 100vh;
-                        }
-                        .form-container {
-                            width: 300px;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class="container center-form">
-                        <div class="form-container">
-                            <form action="/client_details" method="POST" id="passwordForm">
-                                <div class="form-group">
-                                <h5> Please Re-enter the password </h5>
-                                <br>
-                            
-                                    <label for="password">Password</label>
-                                    <input type="password" class="form-control" name="password" id="password" placeholder="Enter password" required>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-block">View Client Data</button>
-                            </form>
-                            {% if error_message %}
-                                <p class="text-danger text-center mt-3">{{ error_message }}</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <!-- Bootstrap JS, Popper.js, and jQuery -->
-                    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-                    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-                    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-                </body>
-                </html>
-            ''', error_message=error_message)
     
     if session.get('authenticated'):
         try:
-            clients = mongo.db.user_details.find()
-            clients_list = list(clients)  # Convert to list to pass to the template
-            logging.debug(f"Retrieved {len(clients_list)} clients")
-            return render_template('client_details.html', clients=clients_list)
+            users = list(mongo.db.users.find({}))
+            women_served_details = list(mongo.db.women_served_details.find({}))
+            return render_template('client_details.html', users=users, women_served_details=women_served_details)
         except Exception as e:
             logging.error(f"Error retrieving client details: {e}")
             return jsonify({'error': str(e)}), 500
     else:
-        return render_template_string('''
-            <!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Client Details</title>
-                <!-- Bootstrap CSS -->
-                <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-                <style>
-                    .center-form {
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        height: 100vh;
-                    }
-                    .form-container {
-                        width: 300px;
-                    }
-                </style>
-            </head>
-            <body>
-                <div class="container center-form">
-                    <div class="form-container">
-                        <form action="/client_details" method="POST" id="passwordForm">
-                            <div class="form-group">
-                           
-                                <label for="password">Password</label>
-                                <input type="password" class="form-control" name="password" id="password" placeholder="Enter password" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block">View Client Data</button>
-                        </form>
-                    </div>
-                </div>
-                <!-- Bootstrap JS, Popper.js, and jQuery -->
-                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-            </body>
-            </html>
-        ''')
-
-
-        
+        return render_template('password_prompt.html', error_message=error_message)    
         
 @app.route('/delete_client/<client_id>', methods=['DELETE'])
 def delete_client(client_id):
@@ -521,7 +457,7 @@ def delete_client(client_id):
         obj_id = ObjectId(client_id)
         
         # Fetch the client details
-        client_details = mongo.db.user_details.find_one({'_id': obj_id})
+        client_details = mongo.db.users.find_one({'_id': obj_id})
         
         if client_details is None:
             return jsonify({'error': 'Client not found'}), 404
@@ -531,7 +467,7 @@ def delete_client(client_id):
         
         if archive_result.inserted_id:
             # Delete the client from the original collection
-            result = mongo.db.user_details.delete_one({'_id': obj_id})
+            result = mongo.db.users.delete_one({'_id': obj_id})
             
             if result.deleted_count == 1:
                 logging.debug(f"Deleted client with id: {client_id} and archived details")
@@ -545,6 +481,7 @@ def delete_client(client_id):
         return jsonify({'error': str(e)}), 500
 
     
+# Edit Demographics Form 1
 @app.route('/edit_client/<client_id>', methods=['PUT'])
 def edit_client(client_id):
     try:
@@ -554,46 +491,166 @@ def edit_client(client_id):
         birthdate = datetime.strptime(birthdate, '%Y-%m-%d') if birthdate else None
         
         update_fields = {
-            "client_details.name": data.get('name', ''),
-            "client_details.address": data.get('address', ''),
-            "client_details.zip_code": data.get('zip', ''),
-            "client_details.phone": data.get('phone', ''),
-            "client_details.birthdate": birthdate,
-            "client_details.age": int(data.get('age', 0)) if data.get('age') else None,
-            "client_details.sex": data.get('sex', ''),
-
+            "demographics_form1.name": data.get('name', ''),
+            "demographics_form1.address": data.get('address', ''),
+            "demographics_form1.zip_code": data.get('zip_code', ''),
+            "demographics_form1.phone": data.get('phone', ''),
+            "demographics_form1.birthdate": birthdate,
+            "demographics_form1.age": int(data.get('age', 0)) if data.get('age') else None,
+            "demographics_form1.sex": data.get('sex', ''),
+            "demographics_form1.race": data.get('race', ''),
+            "demographics_form1.ethnicity": data.get('ethnicity', ''),
+            "demographics_form1.marital_status": data.get('marital_status', ''),
+            "demographics_form1.length_stay_previous_address": data.get('length_stay_previous_address', ''),
+            "demographics_form1.country_of_origin": data.get('country_of_origin', ''),
+            "demographics_form1.times_in_shelter": int(data.get('times_in_shelter', 0)) if data.get('times_in_shelter') else None,
+            "demographics_form1.length_stay_previous_shelter": data.get('length_stay_previous_shelter', ''),
+            "demographics_form1.number_of_children": int(data.get('number_of_children', 0)) if data.get('number_of_children') else None,
+            "demographics_form1.education_level": data.get('education_level', ''),
+            "demographics_form1.employment_status": data.get('employment_status', ''),
+            "demographics_form1.income_amount_intake": float(data.get('income_amount_intake', 0)) if data.get('income_amount_intake') else None,
+            "demographics_form1.income_source_intake": data.get('income_source_intake', ''),
+            "demographics_form1.income_amount_exit": float(data.get('income_amount_exit', 0)) if data.get('income_amount_exit') else None,
+            "demographics_form1.income_1_year_exit": float(data.get('income_1_year_exit', 0)) if data.get('income_1_year_exit') else None,
+            "demographics_form1.weeks_pregnant": int(data.get('weeks_pregnant', 0)) if data.get('weeks_pregnant') else None,
+            "demographics_form1.prenatal_care_prior_intake": data.get('prenatal_care_prior_intake', ''),
+            "demographics_form1.father_involvement": data.get('father_involvement', ''),
+            "demographics_form1.father_education_level": data.get('father_education_level', ''),
+            "demographics_form1.father_occupation": data.get('father_occupation', ''),
+            "demographics_form1.father_income": float(data.get('father_income', 0)) if data.get('father_income') else None,
+            "demographics_form1.domestic_violence_survivor": data.get('domestic_violence_survivor', ''),
+            "demographics_form1.veteran_status": data.get('veteran_status', '')
         }
         
         # Remove None values to prevent overwriting fields with None
         update_fields = {k: v for k, v in update_fields.items() if v is not None}
 
-        mongo.db.user_details.update_one({'_id': ObjectId(client_id)}, {'$set': update_fields})
+        mongo.db.users.update_one({'_id': ObjectId(client_id)}, {'$set': update_fields})
         return jsonify({'message': 'Client updated successfully'}), 200
     except Exception as e:
         logging.error(f"Error updating client: {e}")
         return jsonify({'error': str(e)}), 500
-    
-    
-@app.route('/edit_health_client/<client_id>', methods=['PUT'])
-def edit_health_client(client_id):
+
+# Edit Maternal Information
+@app.route('/edit_maternal_info/<client_id>', methods=['PUT'])
+def edit_maternal_info(client_id):
     try:
         data = request.json
         
-        birthdate = data.get('birthdate', '')
-        birthdate = datetime.strptime(birthdate, '%Y-%m-%d') if birthdate else None
-        
         update_fields = {
-            "health_details.highbp": data.get("highbp", ""),
-            "health_details.diabetes": data.get("diabetes", ""),
+            "form2_data.rehosp": data.get('rehosp', ''),
+            "form2_data.doula": data.get('doula', ''),
+            "form2_data.highriskpreg": data.get('highriskpreg', ''),
+            "form2_data.vaginalbirth": data.get('vaginalbirth', '')
         }
         
         # Remove None values to prevent overwriting fields with None
         update_fields = {k: v for k, v in update_fields.items() if v is not None}
 
-        mongo.db.user_details.update_one({'_id': ObjectId(client_id)}, {'$set': update_fields})
-        return jsonify({'message': 'Client updated successfully'}), 200
+        mongo.db.users.update_one({'_id': ObjectId(client_id)}, {'$set': update_fields})
+        return jsonify({'message': 'Maternal information updated successfully'}), 200
     except Exception as e:
-        logging.error(f"Error updating client: {e}")
+        logging.error(f"Error updating maternal information: {e}")
+        return jsonify({'error': str(e)}), 500
+
+# Edit Infant Information
+@app.route('/edit_infant/<client_id>', methods=['PUT'])
+def edit_infant(client_id):
+    try:
+        data = request.json
+        
+        update_fields = {
+            "infant_data.infant_name": data.get('infant_name', ''),
+            "infant_data.birthdate": data.get('birthdate', ''),
+            "infant_data.birth_weight": float(data.get('birth_weight', 0)) if data.get('birth_weight') else None,
+            "infant_data.weeks_at_delivery": int(data.get('weeks_at_delivery', 0)) if data.get('weeks_at_delivery') else None,
+            "infant_data.healthy_delivery": data.get('healthy_delivery', ''),
+            "infant_data.rehospitalization": data.get('rehospitalization', '')
+        }
+        
+        # Remove None values to prevent overwriting fields with None
+        update_fields = {k: v for k, v in update_fields.items() if v is not None}
+
+        mongo.db.users.update_one({'_id': ObjectId(client_id)}, {'$set': update_fields})
+        return jsonify({'message': 'Infant details updated successfully'}), 200
+    except Exception as e:
+        logging.error(f"Error updating infant details: {e}")
+        return jsonify({'error': str(e)}), 500
+
+# Edit Child Information
+@app.route('/edit_child/<client_id>', methods=['PUT'])
+def edit_child(client_id):
+    try:
+        data = request.json
+        
+        update_fields = {
+            "child_demo_data.child_name": data.get('child_name', ''),
+            "child_demo_data.birthdate": data.get('birthdate', ''),
+            "child_demo_data.age": int(data.get('age', 0)) if data.get('age') else None,
+            "child_demo_data.grade_level": data.get('grade_level', ''),
+            "child_demo_data.trauma_programming_hours": int(data.get('trauma_programming_hours', 0)) if data.get('trauma_programming_hours') else None
+        }
+        
+        # Remove None values to prevent overwriting fields with None
+        update_fields = {k: v for k, v in update_fields.items() if v is not None}
+
+        mongo.db.users.update_one({'_id': ObjectId(client_id)}, {'$set': update_fields})
+        return jsonify({'message': 'Child details updated successfully'}), 200
+    except Exception as e:
+        logging.error(f"Error updating child details: {e}")
+        return jsonify({'error': str(e)}), 500
+
+# Edit Exit Information
+@app.route('/edit_exit_info/<client_id>', methods=['PUT'])
+def edit_exit_info(client_id):
+    try:
+        data = request.json
+        
+        update_fields = {
+            "exit_info.length_stay_shelter": data.get('length_stay_shelter', ''),
+            "exit_info.reason_leaving_shelter": data.get('reason_leaving_shelter', ''),
+            "exit_info.moved_to_transitional_housing": data.get('moved_to_transitional_housing', ''),
+            "exit_info.length_stay_transitional_housing": data.get('length_stay_transitional_housing', ''),
+            "exit_info.housing_voucher_recipient": data.get('housing_voucher_recipient', ''),
+            "exit_info.case_management_assistance": data.get('case_management_assistance', '')
+        }
+        
+        # Remove None values to prevent overwriting fields with None
+        update_fields = {k: v for k, v in update_fields.items() if v is not None}
+
+        mongo.db.users.update_one({'_id': ObjectId(client_id)}, {'$set': update_fields})
+        return jsonify({'message': 'Exit information updated successfully'}), 200
+    except Exception as e:
+        logging.error(f"Error updating exit information: {e}")
+        return jsonify({'error': str(e)}), 500
+
+# Edit Women Served Details
+@app.route('/edit_women_served/<client_id>', methods=['PUT'])
+def edit_women_served(client_id):
+    try:
+        data = request.json
+        
+        update_fields = {
+            "women_served_details.women_accepted_intake": data.get('women_accepted_intake', ''),
+            "women_served_details.incoming_calls_shelter": data.get('incoming_calls_shelter', ''),
+            "women_served_details.calls_seeking_shelter_women": data.get('calls_seeking_shelter_women', ''),
+            "women_served_details.calls_seeking_shelter_pregnant": data.get('calls_seeking_shelter_pregnant', ''),
+            "women_served_details.pregnant_women_turned_away": data.get('pregnant_women_turned_away', ''),
+            "women_served_details.pregnant_women_turned_away_reason": data.get('pregnant_women_turned_away_reason', ''),
+            "women_served_details.community_outreach_activities": data.get('community_outreach_activities', ''),
+            "women_served_details.referrals_other_agencies": data.get('referrals_other_agencies', ''),
+            "women_served_details.moved_from_maternity_to_apartments": data.get('moved_from_maternity_to_apartments', ''),
+            "women_served_details.moved_to_aftercare_program": data.get('moved_to_aftercare_program', ''),
+            "women_served_details.aftercare_program_details": data.get('aftercare_program_details', '')
+        }
+        
+        # Remove None values to prevent overwriting fields with None
+        update_fields = {k: v for k, v in update_fields.items() if v is not None}
+
+        mongo.db.women_served_details.update_one({'_id': ObjectId(client_id)}, {'$set': update_fields})
+        return jsonify({'message': 'Women served details updated successfully'}), 200
+    except Exception as e:
+        logging.error(f"Error updating women served details: {e}")
         return jsonify({'error': str(e)}), 500
     
 @app.route('/success')
