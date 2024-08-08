@@ -6,64 +6,97 @@
     <title>Infant Birth Details</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../static/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body class="bg-gray-100">
-    <div class="container mx-auto mt-10">
-        <h2 class="text-2xl font-bold mb-6"><strong>Infants Birth Details</strong></h2>
-        <div class="border border-gray-300 rounded-md p-6 bg-white shadow-sm">
-            <div class="mb-6">
-                <p class="text-lg font-medium text-gray-700">Name: {{ name }}</p>
-                <p class="text-lg font-medium text-gray-700">Date of Birth: {{ birthdate }}</p>
+    <form action="/submit_infants_demographics" method="POST">
+        <input type="hidden" name="user_id" value="{{ user_id }}">
+        <div class="container mx-auto mt-10">
+            <h2 class="text-2xl font-bold mb-6"><strong>Infants Birth Details</strong></h2>
+            <div class="border border-gray-300 rounded-md p-6 bg-white shadow-sm">
+                <!-- Infant Forms Container -->
+                <div id="infantFormsContainer" style="display:none;"></div>
+                
+                <!-- Add Infant Button -->
+                <button type="button" onclick="addInfantForm()" class="mt-4 w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Add Infant</button>
+                
+                <!-- Submit Button -->
+                <button type="submit" class="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
             </div>
-            <form action="/submit_infants_demographics" method="POST">
-                <input type="hidden" name="user_id" value="{{ user_id }}">
-                <div class="mb-4">
-                    <label for="infant_name" class="block text-sm font-medium text-gray-700">Infant Name:</label>
-                    <input type="text" id="infant_name" name="infant_name" placeholder="Infant Name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                </div>
-                
-                <div class="mb-4">
-                    <label for="birthdate" class="block text-sm font-medium text-gray-700">Birth Date:</label>
-                    <input type="date" id="birthdate" name="birthdate" placeholder="Birth Date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                </div>             
-                
-                <div class="mb-4">
-                    <label for="birth_weight" class="block text-sm font-medium text-gray-700">Birth Weight:</label>
-                    <input type="number" id="birth_weight" name="birth_weight" placeholder="Birth Weight" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                </div>
-                
-                <div class="mb-4">
-                    <label for="weeks_at_delivery" class="block text-sm font-medium text-gray-700">Weeks at Delivery:</label>
-                    <input type="number" id="weeks_at_delivery" name="weeks_at_delivery" placeholder="Weeks at Delivery" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                </div>
-                
-                <div class="mb-4">
-                    <label for="healthy_delivery" class="block text-sm font-medium text-gray-700">Healthy Delivery:</label>
-                    <select id="healthy_delivery" name="healthy_delivery" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" onchange="toggleInput(document.getElementById('healthy_delivery'), document.getElementById('healthydelContainer'))">
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                    </select>
-
-                    <div id="healthydelContainer" style="display: none;">
-                        <label for="medconcernsonbirth" class="block text-sm font-medium text-gray-700">Any Medical Concerns on Birth:</label>
-                        <input type="text" id="medconcernsonbirth" name="medicalconcernsonbirth" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                    </div>
-                </div>
-                
-                <div class="mb-4">
-                    <label for="rehospitalization" class="block text-sm font-medium text-gray-700">Rehospitalization:</label>
-                    <select id="rehospitalization" name="rehospitalization" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                        <option value="">Select...</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
-            </form>
         </div>
-    </div>
-    
-    <script src="../static/index.js"></script>
+    </form>
+
+    <script>
+        // Template for an infant form
+        const infantFormTemplate = `
+        <div class="infant-form mb-4">
+            <label for="infant_name" class="block text-sm font-medium text-gray-700">Infant Name:</label>
+            <input type="text" name="infant_name[]" placeholder="Infant Name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            
+            <!-- Add other fields similarly -->
+            
+            <label for="birthdate" class="block text-sm font-medium text-gray-700">Birth Date:</label>
+            <input type="date" name="birthdate[]" placeholder="Birth Date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    
+            <label for="birth_weight" class="block text-sm font-medium text-gray-700">Birth Weight:</label>
+            <input type="number" name="birth_weight[]" placeholder="Birth Weight" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+        
+            <label for="weeks_at_delivery" class="block text-sm font-medium text-gray-700">Weeks at Delivery:</label>
+            <input type="number" name="weeks_at_delivery[]" placeholder="Weeks at Delivery" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+        
+            <label for="healthy_delivery" class="block text-sm font-medium text-gray-700">Healthy Delivery:</label>
+            <select name="healthy_delivery[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+
+            <div>
+                <label for="medconcernsonbirth" class="block text-sm font-medium text-gray-700">Any Medical Concerns on Birth:</label>
+                <input type="text" name="medicalconcernsonbirth[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            </div>
+        
+            <label for="rehospitalization" class="block text-sm font-medium text-gray-700">Rehospitalization:</label>
+            <select name="rehospitalization[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                <option value="">Select...</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+            
+            <div class="flex justify-end space-x-2">
+                <button type="button" class="delete-btn bg-red-500 hover:bg-red-800 text-white font-bold py-1 px-2 rounded" title="Delete">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+        `;
+
+        let numberOfInfants = 1; // Start with one infant form
+
+        function addInfantForm() {
+            const container = document.getElementById('infantFormsContainer');
+            if (container.style.display === 'none') {
+                container.style.display = 'block'; // Show the container if it's hidden
+            } else {
+                // Increment the number of infants and update the template accordingly
+                numberOfInfants++;
+                const newForm = document.createElement('div');
+                newForm.innerHTML = infantFormTemplate.replace(/numberOfInfants/g, numberOfInfants); // Update the template with the new number of infants
+                container.appendChild(newForm);
+            }
+        }
+
+        function deleteInfantForm(element) {
+            element.closest('.infant-form').remove();
+        }
+
+        // Initially hide the infantFormsContainer
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('infantFormsContainer');
+            container.style.display = 'none';
+        });
+
+        // Initially add one infant form
+        addInfantForm();
+    </script>
 </body>
 </html>

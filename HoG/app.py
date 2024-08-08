@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, jsonify, render_template_stri
 from flask_pymongo import PyMongo, ObjectId
 from pymongo.errors import PyMongoError
 from datetime import datetime, timedelta
+from pymongo import MongoClient
 
 import bcrypt
 
@@ -19,7 +20,7 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
 # Set the session lifetime to 30 minutes
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=1)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
 
 PASSWORD = '12345678'
 
@@ -114,6 +115,22 @@ def child_demo_form():
         birthdate = None
     return render_template('child_demo.html', name=name, birthdate=birthdate,user_id=user_id)
 
+@app.route('/aftercare_form')
+def aftercare_form():
+    user_id = request.args.get('user_id')
+    user = mongo.db.users.find_one({'user_id': user_id}, {'_id': 0, 'demographics_form1.name': 1, 'demographics_form1.birthdate': 1})
+
+    if user:
+        user_info = user.get('demographics_form1', {})
+        name = user_info.get('name')
+        birthdate = user_info.get('birthdate')
+        if isinstance(birthdate, datetime):
+            birthdate = birthdate.strftime('%Y-%m-%d')
+    else:
+        name = None
+        birthdate = None
+    return render_template('aftercare.html', name=name, birthdate=birthdate,user_id=user_id)
+
 @app.route('/infants_demographics_form')
 def Infants_demo_form():
     user_id = request.args.get('user_id')
@@ -179,15 +196,15 @@ def submit_demographics_form1():
     
     
     try:
-        birthdate = data.get('birthdate', '')
-        birthdate = datetime.strptime(birthdate, '%Y-%m-%d') if birthdate else None
+        # birthdate = data.get('birthdate', '')
+        # birthdate = datetime.strptime(birthdate, '%Y-%m-%d') if birthdate else None
         
         
-        date_of_entry = data.get('date_of_entry', '')
-        date_of_entry = datetime.strptime(date_of_entry, '%Y-%m-%d') if date_of_entry else None
+        # date_of_entry = data.get('date_of_entry', '')
+        # date_of_entry = datetime.strptime(date_of_entry, '%Y-%m-%d') if date_of_entry else None
         
-        date_of_exit = data.get('date_of_exit', '')
-        date_of_exit = datetime.strptime(date_of_exit, '%Y-%m-%d') if date_of_exit else None
+        # date_of_exit = data.get('date_of_exit', '')
+        # date_of_exit = datetime.strptime(date_of_exit, '%Y-%m-%d') if date_of_exit else None
         
         number_of_children = int(data.get('number_of_children', 0))
         
@@ -205,13 +222,13 @@ def submit_demographics_form1():
         user_id = generate_unique_user_id()  # Generate a unique identifier for the user
         demographics_data = {
                     "user_id": user_id,
-                    "date_of_entry": date_of_entry,
-                    "date_of_exit": date_of_exit,
+                    "date_of_entry": data.get('date_of_entry', ''),
+                    "date_of_exit": data.get('date_of_exit', ' ' ),
                     "name": data.get('name', ''),
                     "address": data.get('address', ''),
                     "zip_code": data.get('zip', ''),
                     "phone": data.get('phone', ''),
-                    "birthdate": birthdate,
+                    "birthdate": data.get('birthdate', ''),
                     "age": int(data.get('age', 0)) if data.get('age') else None,
                     "sex": data.get('sex', ''),
                     "race": data.get('race', ''),
@@ -269,9 +286,9 @@ def submit_demographics_form2():
     user = mongo.db.users.find_one({'user_id': user_id})
     if not user:
         return jsonify({'error': 'User ID not found.'}), 404
+
     try:
         demo_data = {
-            "user_id": user_id, 
             "rehosp": data.get("rehosp", ""),
             "reasonforhosp": data.get("reasonforhosp", ""),
             "date_of_rehosp": data.get("date_of_rehosp", ""),
@@ -280,14 +297,19 @@ def submit_demographics_form2():
             "vaginalbirth": data.get("vaginalbirth", "")
             # Add your specific form fields here
         }
+
+        # Remove empty fields to avoid updating with empty strings
+        demo_data = {k: v for k, v in demo_data.items() if v}
+
         mongo.db.users.update_one(
             {"user_id": user_id},
-            {"$set": {"form2_data": demo_data}}
+            {"$set": {"maternity_info": demo_data}}
         )
         return jsonify({'message': 'Demographics form 2 submitted successfully'}), 200
     except Exception as e:
         logging.error(f"Error submitting demographics form 2: {e}")
         return jsonify({'error': str(e)}), 500
+
 
 @app.route('/submit_child_demographics', methods=['POST'])
 def submit_child_demographics():
@@ -331,32 +353,92 @@ def submit_child_demographics():
     except PyMongoError as e:
         logging.error(f"Database error submitting child demographics: {e}")
         return jsonify({'error': str(e)}), 500
-
-@app.route('/submit_infants_demographics', methods=['POST'])
-def submit_infants_demographics():
+    
+@app.route('/submit_aftercare', methods=['POST'])
+def submit_aftercare():
     data = request.form
     user_id = data.get('user_id')
-
-  
 
     # Validate the user_id by checking if the user exists in the database
     user = mongo.db.users.find_one({'user_id': user_id})
     if not user:
         return jsonify({'error': 'User ID not found.'}), 404
+    
     try:
-        infant_details = {
-            "infant_name": data.get("infant_name", ""),
-            "birthdate": data.get("birthdate", ""),
-            "birth_weight": float(data.get("birth_weight", 0)) if data.get("birth_weight") else None,
-            "weeks_at_delivery": int(data.get("weeks_at_delivery", 0)) if data.get("weeks_at_delivery") else None,
-            "healthy_delivery": data.get("healthy_delivery", ""),
-            "medconcernsonbirth" : data.get("medconcernsonbirth", ""),
-            "rehospitalization": data.get("rehospitalization", "")
-        }
+        # Initialize an empty list to hold child details
+        children_details = []
+
+        # Assuming the form sends arrays for each child attribute
+        child_names = data.getlist("child_name[]")
+        ages = data.getlist("age[]")
+        grade_levels = data.getlist("grade_level[]")
+
+        # Iterate through each array simultaneously using zip
+        for name, age, grade_level in zip(child_names, ages, grade_levels):
+            child_detail = {
+                "child_name": name,
+                "age": int(age) if age else None,
+                "grade_level": grade_level,
+            }
+            children_details.append(child_detail)
+
+        # Update the user document with the list of child details
         mongo.db.users.update_one(
+            {"user_id": user_id},
+            {"$set": {"aftercare_children_data": children_details}}
+        )
+        
+        return redirect(url_for('success', user_id=user_id))
+    except PyMongoError as e:
+        logging.error(f"Database error submitting aftercare children details: {e}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/submit_infants_demographics', methods=['POST'])
+def submit_infants_demographics():
+    data = request.form
+    print("the data is:", data)
+    user_id = data.get('user_id')
+
+    # Validate the user_id by checking if the user exists in the database
+    user = mongo.db.users.find_one({'user_id': user_id})
+    if not user:
+        return jsonify({'error': 'User ID not found.'}), 404
+    
+    try:
+        infant_details = []
+
+        # Assuming the form sends arrays for each infant attribute
+        infant_names = data.getlist("infant_name[]")
+        birth_dates = data.getlist("birthdate[]")  # Changed to plural form for consistency
+        birth_weights = data.getlist("birth_weight[]")
+        weeks_at_delivery = data.getlist("weeks_at_delivery[]")
+        healthy_deliveries = data.getlist("healthy_delivery[]")
+        medical_concerns_on_birth = data.getlist("medicalconcernsonbirth[]")
+        rehospitalizations = data.getlist("rehospitalization[]")
+
+        # Iterate through each array simultaneously using zip
+        for name, birth_date, birth_weight, weeks, healthy_delivery, medical_concern, rehospitalization in zip(
+            infant_names, birth_dates, birth_weights, weeks_at_delivery, healthy_deliveries, 
+            medical_concerns_on_birth, rehospitalizations
+        ):
+            infant_detail = {
+                "infant_name": name,
+                "birthdate": birth_date,
+                "birth_weight": int(birth_weight) if birth_weight else None,
+                "weeks_at_delivery": int(weeks) if weeks else None,
+                "healthy_delivery": healthy_delivery,
+                "medical_concerns_on_birth": medical_concern,
+                "rehospitalization": rehospitalization
+            }
+            infant_details.append(infant_detail)
+
+        
+        # Update the user document with the new infant details
+        update_result = mongo.db.users.update_one(
             {"user_id": user_id},
             {"$set": {"infant_data": infant_details}}
         )
+        
         return redirect(url_for('success', user_id=user_id))
     except Exception as e:
         logging.error(f"Error submitting infants demographics: {e}")
@@ -371,24 +453,28 @@ def submit_exit_info():
     user = mongo.db.users.find_one({'user_id': user_id})
     if not user:
         return jsonify({'error': 'User ID not found.'}), 404
+
     try:
+        # Extract form data and handle potential missing fields
         exit_info = {
             "length_stay_shelter": data.get("length_stay_shelter", ""),
             "reason_leaving_shelter": data.get("reason_leaving_shelter", ""),
-            "doe_from_maternity_shelter": data.get("doe_from_maternity_shelter", ""),
             "wheredidugo": data.get("wheredidugo", ""),
+            "doe_from_maternity_shelter": data.get("doe_from_maternity_shelter", ""),
             "moved_to_transitional_housing": data.get("moved_to_transitional_housing", ""),
             "housingreason": data.get("housingreason", ""),
             "commnityhousingaddr": data.get("commnityhousingaddr", ""),
             "length_stay_transitional_housing": data.get("length_stay_transitional_housing", ""),
             "housing_voucher_recipient": data.get("housing_voucher_recipient", ""),
             "case_management_assistance": data.get("case_management_assistance", "")
-            # Add your specific form fields here
         }
+
+        # Update the user document with the exit information
         mongo.db.users.update_one(
             {"user_id": user_id},
             {"$set": {"exit_info": exit_info}}
         )
+
         return redirect(url_for('success', user_id=user_id))
 
     except Exception as e:
@@ -418,11 +504,6 @@ def submit_women_served_details():
     except Exception as e:
         logging.error(f"Error submitting women served details: {e}")
         return jsonify({'error': str(e)}), 500
-
-    
-    
-    
-    
 
 
 @app.route('/client_details', methods=['GET', 'POST'])
@@ -487,15 +568,15 @@ def edit_client(client_id):
     try:
         data = request.json
         
-        birthdate = data.get('birthdate', '')
-        birthdate = datetime.strptime(birthdate, '%Y-%m-%d') if birthdate else None
+        # birthdate = data.get('birthdate', '')
+        # birthdate = datetime.strptime(birthdate, '%Y-%m-%d') if birthdate else None
         
         update_fields = {
             "demographics_form1.name": data.get('name', ''),
             "demographics_form1.address": data.get('address', ''),
-            "demographics_form1.zip_code": data.get('zip_code', ''),
+            "demographics_form1.zip_code": data.get('zip', ''),
             "demographics_form1.phone": data.get('phone', ''),
-            "demographics_form1.birthdate": birthdate,
+            "demographics_form1.birthdate": data.get('birthdate', ''),
             "demographics_form1.age": int(data.get('age', 0)) if data.get('age') else None,
             "demographics_form1.sex": data.get('sex', ''),
             "demographics_form1.race": data.get('race', ''),
@@ -519,7 +600,14 @@ def edit_client(client_id):
             "demographics_form1.father_occupation": data.get('father_occupation', ''),
             "demographics_form1.father_income": float(data.get('father_income', 0)) if data.get('father_income') else None,
             "demographics_form1.domestic_violence_survivor": data.get('domestic_violence_survivor', ''),
-            "demographics_form1.veteran_status": data.get('veteran_status', '')
+            "demographics_form1.veteran_status": data.get('veteran_status', ''),
+            "demographics_form1.highbp": data.get('highbp', ''),
+            "demographics_form1.diabetes": data.get('diabetes', ''),
+            "demographics_form1.typeofdiabetes": data.get('typeofdiabetes', ''),
+            "demographics_form1.heartdisease": data.get('heartdisease', ''),
+            "demographics_form1.livebirths": int(data.get('livebirths', 0)) if data.get('livebirths') else None,
+            "demographics_form1.miscarriages": int(data.get('miscarriages', 0)) if data.get('miscarriages') else None,
+            "demographics_form1.diagdisabilty": data.get('diagdisabilty', '')
         }
         
         # Remove None values to prevent overwriting fields with None
@@ -531,6 +619,7 @@ def edit_client(client_id):
         logging.error(f"Error updating client: {e}")
         return jsonify({'error': str(e)}), 500
 
+
 # Edit Maternal Information
 @app.route('/edit_maternal_info/<client_id>', methods=['PUT'])
 def edit_maternal_info(client_id):
@@ -538,10 +627,12 @@ def edit_maternal_info(client_id):
         data = request.json
         
         update_fields = {
-            "form2_data.rehosp": data.get('rehosp', ''),
-            "form2_data.doula": data.get('doula', ''),
-            "form2_data.highriskpreg": data.get('highriskpreg', ''),
-            "form2_data.vaginalbirth": data.get('vaginalbirth', '')
+            "maternity_info.rehosp": data.get('rehosp', ''),
+            "maternity_info.reasonforhosp": data.get('reasonforhosp', ''),
+            "maternity_info.date_of_rehosp": data.get('date_of_rehosp', ''),
+            "maternity_info.doula": data.get('doula', ''),
+            "maternity_info.highriskpreg": data.get('highriskpreg', ''),
+            "maternity_info.vaginalbirth": data.get('vaginalbirth', '')
         }
         
         # Remove None values to prevent overwriting fields with None
@@ -609,7 +700,11 @@ def edit_exit_info(client_id):
         update_fields = {
             "exit_info.length_stay_shelter": data.get('length_stay_shelter', ''),
             "exit_info.reason_leaving_shelter": data.get('reason_leaving_shelter', ''),
+            "exit_info.wheredidugo": data.get('wheredidugo', ''),
+            "exit_info.doe_from_maternity_shelter": data.get('doe_from_maternity_shelter', ''),
             "exit_info.moved_to_transitional_housing": data.get('moved_to_transitional_housing', ''),
+            "exit_info.housingreason": data.get('housingreason', ''),
+            "exit_info.communityhousingaddr": data.get('commnityhousingaddr', ''),
             "exit_info.length_stay_transitional_housing": data.get('length_stay_transitional_housing', ''),
             "exit_info.housing_voucher_recipient": data.get('housing_voucher_recipient', ''),
             "exit_info.case_management_assistance": data.get('case_management_assistance', '')
@@ -623,6 +718,7 @@ def edit_exit_info(client_id):
     except Exception as e:
         logging.error(f"Error updating exit information: {e}")
         return jsonify({'error': str(e)}), 500
+
 
 # Edit Women Served Details
 @app.route('/edit_women_served/<client_id>', methods=['PUT'])
@@ -651,6 +747,27 @@ def edit_women_served(client_id):
         return jsonify({'message': 'Women served details updated successfully'}), 200
     except Exception as e:
         logging.error(f"Error updating women served details: {e}")
+        return jsonify({'error': str(e)}), 500
+    
+# Edit Aftercare Children Information
+@app.route('/edit_aftercare/<client_id>', methods=['PUT'])
+def edit_aftercare(client_id):
+    try:
+        data = request.json
+        
+        update_fields = {
+            "aftercare_children_data.child_name": data.get('child_name', ''),
+            "aftercare_children_data.age": int(data.get('age', 0)) if data.get('age') else None,
+            "aftercare_children_data.grade_level": data.get('grade_level', '')
+        }
+        
+        # Remove None values to prevent overwriting fields with None
+        update_fields = {k: v for k, v in update_fields.items() if v is not None}
+
+        mongo.db.users.update_one({'_id': ObjectId(client_id)}, {'$set': update_fields})
+        return jsonify({'message': 'Aftercare children details updated successfully'}), 200
+    except Exception as e:
+        logging.error(f"Error updating aftercare children details: {e}")
         return jsonify({'error': str(e)}), 500
     
 @app.route('/success')

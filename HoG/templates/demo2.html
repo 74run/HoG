@@ -21,17 +21,16 @@
                 
                 <div class="mb-4">
                     <label for="rehosp" class="block text-sm font-medium text-gray-700">Rehospitalization:</label>
-                    <select id="rehosp" name="rehosp" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" onchange="toggleInput(document.getElementById('rehosp'), document.getElementById('rehospContainer'))">
+                    <select id="rehosp" name="rehosp" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                         <option value="no">No</option>
                         <option value="yes">Yes</option>
                     </select>
-
-                    <div id="rehospContainer" style="display: none;">
-                        <label for="reasonforhosp" class="block text-sm font-medium text-gray-700">Reason for your Hospitalisation:</label>
-                        <input type="text" id="reasonforhosp" name="reasonforhospitalisation" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                        <label for="date_of_rehosp" class="block text-sm font-medium text-gray-700">Date of Rehospitalisation:</label>
-                        <input type="date" id="date_of_rehosp" name="date_of_rehosp" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                    </div>
+                    
+                    <label for="reasonforhosp" class="block text-sm font-medium text-gray-700 mt-4">If Yes, please provide the reason for your hospitalization:</label>
+                    <input type="text" id="reasonforhosp" name="reasonforhosp" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    
+                    <label for="date_of_rehosp" class="block text-sm font-medium text-gray-700 mt-4">Date of Rehospitalization:</label>
+                    <input type="date" id="date_of_rehosp" name="date_of_rehosp" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                 </div>
        
                 <div class="mb-4">

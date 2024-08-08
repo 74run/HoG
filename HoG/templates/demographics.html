@@ -84,7 +84,7 @@
                 <input type="text" id="phone" name="phone" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
 
                 <label for="birthdate" class="block text-sm font-medium text-gray-700 mt-4">Birthdate:</label>
-                <input type="date" id="birthdate" name="birthdate" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                <input type="date" id="birthdate" name="birthdate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
 
                 <label for="age" class="block text-sm font-medium text-gray-700 mt-4">Age:</label>
                 <input type="number" id="age" name="age" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
@@ -134,7 +134,13 @@
             <div class="form-section">
                 
                 <label for="length_stay_previous_address" class="block text-sm font-medium text-gray-700 mt-4">Length of Stay at Previous Address:</label>
-                <input type="text" id="length_stay_previous_address" name="length_stay_previous_address" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                <select type="text" id="length_stay_previous_address" name="length_stay_previous_address" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                <option value="" disabled selected>Select an option</option>
+                <option value="less_than_30_days">Less than 30 days</option>
+                <option value="1-6_months">1-6 months</option>
+                <option value="6-12_months">6-12 months</option>
+                <option value="greater_than_12_months">>12 months</option>
+                </select>
 
                 <label for="country_of_origin" class="block text-sm font-medium text-gray-700 mt-4">Country of Origin (if not U.S.):</label>
                 <select id="country" name="country" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
@@ -490,20 +496,18 @@
                     <option value="gestational_hypertension">Gestational Hypertension</option>
                 </select>
                 
-            
                 <label for="diabetes" class="block text-sm font-medium text-gray-700 mt-4">Diabetes:</label>
-                <select id="diabetes" name="diabetes" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" onchange="toggleInput(document.getElementById('diabetes'), document.getElementById('diabetesContainer'))">
+                <select id="diabetes" name="diabetes" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                     <option value="no">No</option>
                     <option value="yes">Yes</option>
                 </select>
                 
-                <div id="diabetesContainer" style="display: none;">
-                    <label for="typeofdiabetes" class="block text-sm font-medium text-gray-700 mt-4">Select your Diabetes Type:</label>
-                    <select id="typeofdiabetes" name="typeofdiabetes" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                        <option value="normal diabetes">Normal Diabetes</option>
-                        <option value="gestational diabetes">Gestational Diabetes</option>
-                    </select>
-                </div>
+                <label for="typeofdiabetes" class="block text-sm font-medium text-gray-700 mt-4">If Yes, please select your Diabetes Type:</label>
+                <select id="typeofdiabetes" name="typeofdiabetes" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    <option value="" disabled selected>Select an option</option>
+                    <option value="normal_diabetes">Normal Diabetes</option>
+                    <option value="gestational_diabetes">Gestational Diabetes</option>
+                </select>
             
                 <label for="heartdisease" class="block text-sm font-medium text-gray-700 mt-4">Heart disease:</label>
                 <select id="heartdisease" name="heartdisease" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
