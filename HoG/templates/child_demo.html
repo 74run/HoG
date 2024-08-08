@@ -6,6 +6,8 @@
     <title>Child Demographics Details</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../static/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 </head>
 <body class="bg-gray-100">
     <div class="container mx-auto mt-10">
@@ -15,31 +17,7 @@
             
             <!-- Child input fields container -->
             <div id="childInputsContainer">
-                <!-- Initial child inputs -->
-                <fieldset class="mb-4">
-                    <label for="child_name_1" class="block text-sm font-medium text-gray-700">Child Name:</label>
-                    <input type="text" id="child_name_1" name="child_name[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-
-                    <div class="mb-4">
-                        <label for="birthdate_1" class="block text-sm font-medium text-gray-700">Birth Date:</label>
-                        <input type="date" id="birthdate_1" name="birthdate[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="age_1" class="block text-sm font-medium text-gray-700">Age:</label>
-                        <input type="number" id="age_1" name="age[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="grade_level_1" class="block text-sm font-medium text-gray-700">Daycare or School Grade Level:</label>
-                        <input type="text" id="grade_level_1" name="grade_level[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="trauma_programming_hours_1" class="block text-sm font-medium text-gray-700">Hours of Trauma-Informed Programming Received:</label>
-                        <input type="number" id="trauma_programming_hours_1" name="trauma_programming_hours[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                    </div>
-                </fieldset>
+                
             </div>
 
             <!-- Add Child Button -->
@@ -50,42 +28,55 @@
     </div>
 
     <script>
-        function addChildInput() {
-            var container = document.getElementById('childInputsContainer');
-            var count = container.children.length + 1; // Get next child index
+    function addChildInput() {
+    var container = document.getElementById('childInputsContainer');
 
-            // Create new fieldset for child inputs
-            var newChildInputs = document.createElement('fieldset');
-            newChildInputs.className = 'mb-4';
+    // Create new fieldset for child inputs
+    var newChildInputs = document.createElement('fieldset');
+    newChildInputs.className = 'mb-4';
 
-            newChildInputs.innerHTML = `
-                <label for="child_name_${count}" class="block text-sm font-medium text-gray-700">Child Name:</label>
-                <input type="text" id="child_name_${count}" name="child_name[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+    newChildInputs.innerHTML = `
+        <h3 class="text-lg font-semibold mb-2">Child Details:</h3>
+        <label for="child_name" class="block text-sm font-medium text-gray-700">Child Name:</label>
+        <input type="text" id="child_name" name="child_name[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
 
-                <div class="mb-4">
-                    <label for="birthdate_${count}" class="block text-sm font-medium text-gray-700">Birth Date:</label>
-                    <input type="date" id="birthdate_${count}" name="birthdate[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                </div>
+        <div class="mb-4">
+            <label for="birthdate" class="block text-sm font-medium text-gray-700">Birth Date:</label>
+            <input type="date" id="birthdate" name="birthdate[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+        </div>
 
-                <div class="mb-4">
-                    <label for="age_${count}" class="block text-sm font-medium text-gray-700">Age:</label>
-                    <input type="number" id="age_${count}" name="age[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                </div>
+        <div class="mb-4">
+            <label for="age" class="block text-sm font-medium text-gray-700">Age:</label>
+            <input type="number" id="age" name="age[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+        </div>
 
-                <div class="mb-4">
-                    <label for="grade_level_${count}" class="block text-sm font-medium text-gray-700">Daycare or School Grade Level:</label>
-                    <input type="text" id="grade_level_${count}" name="grade_level[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                </div>
+        <div class="mb-4">
+            <label for="grade_level" class="block text-sm font-medium text-gray-700">Daycare or School Grade Level:</label>
+            <input type="text" id="grade_level" name="grade_level[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+        </div>
 
-                <div class="mb-4">
-                    <label for="trauma_programming_hours_${count}" class="block text-sm font-medium text-gray-700">Hours of Trauma-Informed Programming Received:</label>
-                    <input type="number" id="trauma_programming_hours_${count}" name="trauma_programming_hours[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                </div>
-            `;
+        <div class="mb-4">
+            <label for="trauma_programming_hours" class="block text-sm font-medium text-gray-700">Hours of Trauma-Informed Programming Received:</label>
+            <input type="number" id="trauma_programming_hours" name="trauma_programming_hours[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+        </div>
 
-            // Append new fieldset to container
-            container.appendChild(newChildInputs);
-        }
+        <div class="flex justify-end space-x-2">
+            <button type="button" class="delete-btn bg-red-500 hover:bg-red-800 text-white font-bold py-1 px-2 rounded" title="Delete">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    `;
+
+    // Append new fieldset to container
+    container.appendChild(newChildInputs);
+
+    // Add event listener to delete button
+    var deleteButton = newChildInputs.querySelector('.delete-btn');
+    deleteButton.addEventListener('click', function() {
+        // Remove the fieldset containing this button
+        newChildInputs.remove();
+    });
+    }
     </script>
 </body>
 </html>
