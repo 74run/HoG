@@ -115,6 +115,22 @@ def child_demo_form():
         birthdate = None
     return render_template('child_demo.html', name=name, birthdate=birthdate,user_id=user_id)
 
+@app.route('/aftercare_form')
+def aftercare_form():
+    user_id = request.args.get('user_id')
+    user = mongo.db.users.find_one({'user_id': user_id}, {'_id': 0, 'demographics_form1.name': 1, 'demographics_form1.birthdate': 1})
+
+    if user:
+        user_info = user.get('demographics_form1', {})
+        name = user_info.get('name')
+        birthdate = user_info.get('birthdate')
+        if isinstance(birthdate, datetime):
+            birthdate = birthdate.strftime('%Y-%m-%d')
+    else:
+        name = None
+        birthdate = None
+    return render_template('aftercare.html', name=name, birthdate=birthdate,user_id=user_id)
+
 @app.route('/infants_demographics_form')
 def Infants_demo_form():
     user_id = request.args.get('user_id')
@@ -337,6 +353,45 @@ def submit_child_demographics():
     except PyMongoError as e:
         logging.error(f"Database error submitting child demographics: {e}")
         return jsonify({'error': str(e)}), 500
+    
+@app.route('/submit_aftercare', methods=['POST'])
+def submit_aftercare():
+    data = request.form
+    user_id = data.get('user_id')
+
+    # Validate the user_id by checking if the user exists in the database
+    user = mongo.db.users.find_one({'user_id': user_id})
+    if not user:
+        return jsonify({'error': 'User ID not found.'}), 404
+    
+    try:
+        # Initialize an empty list to hold child details
+        children_details = []
+
+        # Assuming the form sends arrays for each child attribute
+        child_names = data.getlist("child_name[]")
+        ages = data.getlist("age[]")
+        grade_levels = data.getlist("grade_level[]")
+
+        # Iterate through each array simultaneously using zip
+        for name, age, grade_level in zip(child_names, ages, grade_levels):
+            child_detail = {
+                "child_name": name,
+                "age": int(age) if age else None,
+                "grade_level": grade_level,
+            }
+            children_details.append(child_detail)
+
+        # Update the user document with the list of child details
+        mongo.db.users.update_one(
+            {"user_id": user_id},
+            {"$set": {"aftercare_children_data": children_details}}
+        )
+        
+        return redirect(url_for('success', user_id=user_id))
+    except PyMongoError as e:
+        logging.error(f"Database error submitting aftercare children details: {e}")
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/submit_infants_demographics', methods=['POST'])
 def submit_infants_demographics():
@@ -449,11 +504,6 @@ def submit_women_served_details():
     except Exception as e:
         logging.error(f"Error submitting women served details: {e}")
         return jsonify({'error': str(e)}), 500
-
-    
-    
-    
-    
 
 
 @app.route('/client_details', methods=['GET', 'POST'])
@@ -689,6 +739,27 @@ def edit_women_served(client_id):
         return jsonify({'message': 'Women served details updated successfully'}), 200
     except Exception as e:
         logging.error(f"Error updating women served details: {e}")
+        return jsonify({'error': str(e)}), 500
+    
+# Edit Aftercare Children Information
+@app.route('/edit_aftercare/<client_id>', methods=['PUT'])
+def edit_aftercare(client_id):
+    try:
+        data = request.json
+        
+        update_fields = {
+            "aftercare_children_data.child_name": data.get('child_name', ''),
+            "aftercare_children_data.age": int(data.get('age', 0)) if data.get('age') else None,
+            "aftercare_children_data.grade_level": data.get('grade_level', '')
+        }
+        
+        # Remove None values to prevent overwriting fields with None
+        update_fields = {k: v for k, v in update_fields.items() if v is not None}
+
+        mongo.db.users.update_one({'_id': ObjectId(client_id)}, {'$set': update_fields})
+        return jsonify({'message': 'Aftercare children details updated successfully'}), 200
+    except Exception as e:
+        logging.error(f"Error updating aftercare children details: {e}")
         return jsonify({'error': str(e)}), 500
     
 @app.route('/success')

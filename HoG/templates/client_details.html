@@ -560,6 +560,37 @@
             </table>
         </div>
 
+        <h2>Aftercare Children Details Table</h2>
+        <div class="table-container">
+            <table class="child_table" id="childTable">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Child Name</th>
+                        <th>Age</th>
+                        <th>Grade Level</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    {% if user.aftercare_children_data %}
+                    <tr data-id="{{ user._id }}">
+                        <td>{{ user.demographics_form1.user_id }}</td>
+                        <td>{{ user.aftercare_children_data.child_name }}</td>
+                        <td>{{ user.aftercare_children_data.age }}</td>
+                        <td>{{ user.aftercare_children_data.grade_level }}</td>
+                        <td>
+                            <button class="edit-button" data-id="{{ user._id }}" onclick="openEditChildForm(this)">Edit</button>
+                            <button class="delete-button" onclick="openDeleteModal('{{ user._id }}')">Delete</button>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
         <button class="back-to-form-button" onclick="location.href='/';">Back to Form</button>
     </div>
 

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfterCare Program Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-10">
+        <h2 class="text-2xl font-bold mb-6"><strong>Aftercare Children Details</strong></h2>
+        <form action="/submit_aftercare" method="POST">
+            <input type="hidden" name="user_id" value="{{ user_id }}">
+            
+            <!-- aftercare input fields container -->
+            <div id="aftercareInputsContainer">
+                
+            </div>
+
+            <!-- Add Child Button -->
+            <button type="button" onclick="addChildInput()" class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4">Add Child</button>
+
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+        </form>
+    </div>
+
+    <script>
+    function addChildInput() {
+    var container = document.getElementById('aftercareInputsContainer');
+
+    // Create new fieldset for child inputs
+    var newChildInputs = document.createElement('fieldset');
+    newChildInputs.className = 'mb-4';
+
+    newChildInputs.innerHTML = `
+        <h3 class="text-lg font-semibold mb-2">Child Details:</h3>
+        <label for="child_name" class="block text-sm font-medium text-gray-700">Child Name:</label>
+        <input type="text" id="child_name" name="child_name[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+
+        <div class="mb-4">
+            <label for="age" class="block text-sm font-medium text-gray-700">Age:</label>
+            <input type="number" id="age" name="age[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+        </div>
+
+        <div class="mb-4">
+            <label for="grade_level" class="block text-sm font-medium text-gray-700">Daycare or School Grade Level:</label>
+            <input type="text" id="grade_level" name="grade_level[]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+        </div>
+
+        <div class="flex justify-end space-x-2">
+            <button type="button" class="delete-btn bg-red-500 hover:bg-red-800 text-white font-bold py-1 px-2 rounded" title="Delete">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    `;
+
+    // Append new fieldset to container
+    container.appendChild(newChildInputs);
+
+    // Add event listener to delete button
+    var deleteButton = newChildInputs.querySelector('.delete-btn');
+    deleteButton.addEventListener('click', function() {
+        // Remove the fieldset containing this button
+        newChildInputs.remove();
+    });
+    }
+    </script>
+</body>
+</html>
