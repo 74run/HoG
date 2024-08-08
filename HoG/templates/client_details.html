@@ -254,6 +254,7 @@
         </div>
         
         <!-- First table for Demographics Form 1 -->
+        <div class="container mx-auto mt-10">
         <h2>Client Demographics Table</h2>
         <div class="table-container">
             <table class="client-table" id="clientTable">
@@ -360,8 +361,9 @@
                 </tbody>
             </table>
         </div>
-
+    </div>
         <!-- Second table for Demographics Form 2 -->
+        <div class="container mx-auto mt-10">
         <h2>Maternal Information Table</h2>
         <div class="table-container">
             <table class="form2_table" id="form2Table">
@@ -398,78 +400,129 @@
                 </tbody>
             </table>
         </div>
+    </div>
 
-        <h2>Infants Details Table</h2>
-        <div class="table-container">
-            <table class="infant_table" id="infantTable">
-                <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>Infant Name</th>
-                        <th>Birth Date</th>
-                        <th>Birth Weight</th>
-                        <th>Weeks at Delivery</th>
-                        <th>Healthy Delivery</th>
-                        <th>Rehospitalization</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for user in users %}
-                    {% if user.infant_data %}
-                    <tr data-id="{{ user._id }}">
-                        <td>{{ user.demographics_form1.user_id }}</td>
-                        <td>{{ user.infant_data.infant_name }}</td>
-                        <td>{{ user.infant_data.birthdate }}</td>
-                        <td>{{ user.infant_data.birth_weight }}</td>
-                        <td>{{ user.infant_data.weeks_at_delivery }}</td>
-                        <td>{{ user.infant_data.healthy_delivery }}</td>
-                        <td>{{ user.infant_data.rehospitalization }}</td>
-                        <td>
-                            <button class="edit-button" data-id="{{ user._id }}" onclick="openEditInfantForm(this)">Edit</button>
-                            <button class="delete-button" onclick="openDeleteModal('{{ user._id }}')">Delete</button>
-                        </td>
-                    </tr>
-                    {% endif %}
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="container mx-auto mt-10">
+            <h2 class="text-2xl font-bold mb-6">Infants Details Table</h2>
+            <div class="table-container">
+                <table class="infant_table" id="infantTable">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Infant Name</th>
+                            <th>Birth Date</th>
+                            <th>Birth Weight</th>
+                            <th>Weeks at Delivery</th>
+                            <th>Healthy Delivery</th>
+                            <th>Rehospitalization</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            {% if user.infant_data %}
+                                {% for infant in user.infant_data %}
+                                    <tr data-id="{{ user._id }}">
+                                        <td>{{ user.demographics_form1.user_id }}</td>
+                                        <td>{{ infant.infant_name }}</td>
+                                        <td>{{ infant.birthdate }}</td>
+                                        <td>{{ infant.birth_weight }}</td>
+                                        <td>{{ infant.weeks_at_delivery }}</td>
+                                        <td>{{ infant.healthy_delivery }}</td>
+                                        <td>{{ infant.rehospitalization }}</td>
+                                        <td>
+                                            <button class="edit-button bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded" data-id="{{ user._id }}" onclick="openEditInfantForm(this)">Edit</button>
+                                            <button class="delete-button bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded" onclick="openDeleteModal('{{ user._id }}')">Delete</button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <h2>Children Details Table</h2>
-        <div class="table-container">
-            <table class="child_table" id="childTable">
-                <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>Child Name</th>
-                        <th>Birth Date</th>
-                        <th>Age</th>
-                        <th>Grade Level</th>
-                        <th>Trauma Programming Hours</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for user in users %}
-                    {% if user.child_demo_data %}
-                    <tr data-id="{{ user._id }}">
-                        <td>{{ user.demographics_form1.user_id }}</td>
-                        <td>{{ user.child_demo_data.child_name }}</td>
-                        <td>{{ user.child_demo_data.birthdate }}</td>
-                        <td>{{ user.child_demo_data.age }}</td>
-                        <td>{{ user.child_demo_data.grade_level }}</td>
-                        <td>{{ user.child_demo_data.trauma_programming_hours }}</td>
-                        <td>
-                            <button class="edit-button" data-id="{{ user._id }}" onclick="openEditChildForm(this)">Edit</button>
-                            <button class="delete-button" onclick="openDeleteModal('{{ user._id }}')">Delete</button>
-                        </td>
-                    </tr>
-                    {% endif %}
-                    {% endfor %}
-                </tbody>
-            </table>
+
+
+        <div class="container mx-auto mt-10">
+            <h2 class="text-2xl font-bold mb-6">Children Details Table</h2>
+            <div class="table-container">
+                <table class="child_table" id="childTable">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Child Name</th>
+                            <th>Birth Date</th>
+                            <th>Age</th>
+                            <th>Grade Level</th>
+                            <th>Trauma Programming Hours</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            {% if user.child_demo_data %}
+                                {% for child in user.child_demo_data %}
+                                    <tr data-id="{{ user._id }}">
+                                        <td>{{ user.demographics_form1.user_id }}</td>
+                                        <td>{{ child.child_name }}</td>
+                                        <td>{{ child.birthdate }}</td>
+                                        <td>{{ child.age }}</td>
+                                        <td>{{ child.grade_level }}</td>
+                                        <td>{{ child.trauma_programming_hours }}</td>
+                                        <td>
+                                            <button class="edit-button bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded" data-id="{{ user._id }}" onclick="openEditChildForm(this)">Edit</button>
+                                            <button class="delete-button bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded" onclick="openDeleteModal('{{ user._id }}')">Delete</button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
+
+
+        <div class="container mx-auto mt-10">
+            <h2>Aftercare Children Details Table</h2>
+            <div class="table-container">
+                <table class="aftercare_table" id="aftercareTable">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Child Name</th>
+                            <th>Age</th>
+                            <th>Grade Level</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            {% if user.aftercare_child_data %}
+                                {% for child in user.aftercare_child_data %}
+                                    <tr data-id="{{ user._id }}">
+                                        <td>{{ user.demographics_form1.user_id }}</td>
+                                        <td>{{ child.child_name }}</td>
+                                        <td>{{ child.age }}</td>
+                                        <td>{{ child.grade_level }}</td>
+                                        <td>
+                                            <button class="edit-button bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded" data-id="{{ user._id }}" onclick="openEditAftercareForm(this)">Edit</button>
+                                            <button class="delete-button bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded" onclick="openDeleteModal('{{ user._id }}')">Delete</button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    
+        </div>
+
+
+        <div class="container mx-auto mt-10">
 
         <h2>Exit Information Table</h2>
 <div class="table-container">
@@ -516,6 +569,10 @@
     </table>
 </div>
 
+</div>
+
+<div class="container mx-auto mt-10">
+
 
         <h2>Women Served Details</h2>
         <div class="table-container">
@@ -560,36 +617,12 @@
             </table>
         </div>
 
-        <h2>Aftercare Children Details Table</h2>
-        <div class="table-container">
-            <table class="child_table" id="childTable">
-                <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>Child Name</th>
-                        <th>Age</th>
-                        <th>Grade Level</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for user in users %}
-                    {% if user.aftercare_children_data %}
-                    <tr data-id="{{ user._id }}">
-                        <td>{{ user.demographics_form1.user_id }}</td>
-                        <td>{{ user.aftercare_children_data.child_name }}</td>
-                        <td>{{ user.aftercare_children_data.age }}</td>
-                        <td>{{ user.aftercare_children_data.grade_level }}</td>
-                        <td>
-                            <button class="edit-button" data-id="{{ user._id }}" onclick="openEditChildForm(this)">Edit</button>
-                            <button class="delete-button" onclick="openDeleteModal('{{ user._id }}')">Delete</button>
-                        </td>
-                    </tr>
-                    {% endif %}
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+    </div>
+
+
+   
+
+    </div>
 
         <button class="back-to-form-button" onclick="location.href='/';">Back to Form</button>
     </div>
