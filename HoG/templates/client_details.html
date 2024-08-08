@@ -472,41 +472,50 @@
         </div>
 
         <h2>Exit Information Table</h2>
-        <div class="table-container">
-            <table class="exit_table" id="exitTable">
-                <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>Length of Stay in Shelter</th>
-                        <th>Reason for Leaving Shelter</th>
-                        <th>Moved to Transitional Housing</th>
-                        <th>Length of Stay in Transitional Housing</th>
-                        <th>Housing Voucher Recipient</th>
-                        <th>Case Management Assistance</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for user in users %}
-                    {% if user.exit_info %}
-                    <tr data-id="{{ user._id }}">
-                        <td>{{ user.demographics_form1.user_id }}</td>
-                        <td>{{ user.exit_info.length_stay_shelter }}</td>
-                        <td>{{ user.exit_info.reason_leaving_shelter }}</td>
-                        <td>{{ user.exit_info.moved_to_transitional_housing }}</td>
-                        <td>{{ user.exit_info.length_stay_transitional_housing }}</td>
-                        <td>{{ user.exit_info.housing_voucher_recipient }}</td>
-                        <td>{{ user.exit_info.case_management_assistance }}</td>
-                        <td>
-                            <button class="edit-button" data-id="{{ user._id }}" onclick="openEditExitForm(this)">Edit</button>
-                            <button class="delete-button" onclick="openDeleteModal('{{ user._id }}')">Delete</button>
-                        </td>
-                    </tr>
-                    {% endif %}
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+<div class="table-container">
+    <table class="exit_table" id="exitTable">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Length of Stay in Shelter</th>
+                <th>Reason for Leaving Shelter</th>
+                <th>Where Did You Go?</th>
+                <th>Date of Exit from Shelter</th>
+                <th>Moved to Transitional Housing</th>
+                <th>Reason for Choosing Community Housing</th>
+                <th>Address of Chosen Community Housing</th>
+                <th>Length of Stay in Transitional Housing</th>
+                <th>Housing Voucher Recipient</th>
+                <th>Case Management Assistance</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            {% if user.exit_info %}
+            <tr data-id="{{ user._id }}">
+                <td>{{ user.demographics_form1.user_id }}</td>
+                <td>{{ user.exit_info.length_stay_shelter }}</td>
+                <td>{{ user.exit_info.reason_leaving_shelter }}</td>
+                <td>{{ user.exit_info.wheredidugo }}</td>
+                <td>{{ user.exit_info.doe_from_maternity_shelter }}</td>
+                <td>{{ user.exit_info.moved_to_transitional_housing }}</td>
+                <td>{{ user.exit_info.housingreason }}</td>
+                <td>{{ user.exit_info.commnityhousingaddr }}</td>
+                <td>{{ user.exit_info.length_stay_transitional_housing }}</td>
+                <td>{{ user.exit_info.housing_voucher_recipient }}</td>
+                <td>{{ user.exit_info.case_management_assistance }}</td>
+                <td>
+                    <button class="edit-button" data-id="{{ user._id }}" onclick="openEditExitForm(this)">Edit</button>
+                    <button class="delete-button" onclick="openDeleteModal('{{ user._id }}')">Delete</button>
+                </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 
         <h2>Women Served Details</h2>
         <div class="table-container">
@@ -1018,29 +1027,82 @@
         </div>
     </div>
 
-    <!-- Modal for Editing Exit Information -->
-    <div id="editExitFormModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeEditExitForm()">&times;</span>
-            <h2>Edit Exit Information</h2>
-            <form id="editExitForm">
-                <input type="hidden" id="editExitId">
-                <label for="editLengthStayShelter">Length of Stay in Shelter:</label>
-                <input type="text" id="editLengthStayShelter" name="length_stay_shelter"><br>
-                <label for="editReasonLeavingShelter">Reason for Leaving Shelter:</label>
-                <input type="text" id="editReasonLeavingShelter" name="reason_leaving_shelter"><br>
-                <label for="editMovedToTransitionalHousing">Moved to Transitional Housing:</label>
-                <input type="text" id="editMovedToTransitionalHousing" name="moved_to_transitional_housing"><br>
-                <label for="editLengthStayTransitionalHousing">Length of Stay in Transitional Housing:</label>
-                <input type="text" id="editLengthStayTransitionalHousing" name="length_stay_transitional_housing"><br>
-                <label for="editHousingVoucherRecipient">Housing Voucher Recipient:</label>
-                <input type="text" id="editHousingVoucherRecipient" name="housing_voucher_recipient"><br>
-                <label for="editCaseManagementAssistance">Case Management Assistance:</label>
-                <input type="text" id="editCaseManagementAssistance" name="case_management_assistance"><br>
-                <button type="button" onclick="submitEditExitForm()">Save Changes</button>
-            </form>
-        </div>
+<!-- Modal for Editing Exit Information -->
+<div id="editExitFormModal" class="modal hidden fixed z-50 inset-0 overflow-y-auto">
+    <div class="modal-content bg-white rounded-lg p-6 mx-auto mt-20 shadow-lg">
+        <span class="close text-gray-600 hover:text-gray-800 cursor-pointer" onclick="closeEditExitForm()">&times;</span>
+        <h2 class="text-xl font-bold mb-4">Edit Exit Information</h2>
+        <form id="editExitForm" method="POST" action="/submit_edit_exit_info">
+            <input type="hidden" id="editExitId" name="user_id">
+
+            <label for="editLengthStayShelter" class="block text-sm font-medium text-gray-700">Length of Stay in Shelter:</label>
+            <select id="editLengthStayShelter" name="length_stay_shelter" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                <option value="" disabled selected>Select an option</option>
+                <option value="less_than_30_days">Less than 30 days</option>
+                <option value="1-6_months">1-6 months</option>
+                <option value="6-12_months">6-12 months</option>
+                <option value="12-24_months">12-24 months</option>
+                <option value="greater_than_24_months">>24 months</option>
+            </select><br>
+
+            <label for="editReasonLeavingShelter" class="block text-sm font-medium text-gray-700">Reason for Leaving Shelter:</label>
+            <input type="text" id="editReasonLeavingShelter" name="reason_leaving_shelter" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"><br>
+
+            <label for="editWhereDidYouGo" class="block text-sm font-medium text-gray-700">Where Did You Go?</label>
+            <select id="editWhereDidYouGo" name="wheredidugo" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                <option value="">Select...</option>
+                <option value="transitional_housing">Transitional Housing</option>
+                <option value="family_housing">Family Housing</option>
+                <option value="unhoused">Unhoused</option>
+            </select><br>
+
+            <label for="editDateOfExit" class="block text-sm font-medium text-gray-700">Date of Exit from Shelter:</label>
+            <input type="date" id="editDateOfExit" name="doe_from_maternity_shelter" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"><br>
+
+            <label for="editMovedToTransitionalHousing" class="block text-sm font-medium text-gray-700">Moved to Transitional Housing:</label>
+            <select id="editMovedToTransitionalHousing" name="moved_to_transitional_housing" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                <option value="">Select...</option>
+                <option value="transitional_housing">Transitional Housing</option>
+                <option value="community_housing">Community Housing</option>
+            </select><br>
+
+            <label for="editHousingReason" class="block text-sm font-medium text-gray-700">Reason for Choosing Community Housing:</label>
+            <input type="text" id="editHousingReason" name="housingreason" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"><br>
+
+            <label for="editCommunityHousingAddress" class="block text-sm font-medium text-gray-700">Address of Chosen Community Housing:</label>
+            <input type="text" id="editCommunityHousingAddress" name="commnityhousingaddr" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"><br>
+
+            <label for="editLengthStayTransitionalHousing" class="block text-sm font-medium text-gray-700">Length of Stay in Transitional Housing:</label>
+            <select id="editLengthStayTransitionalHousing" name="length_stay_transitional_housing" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                <option value="" disabled selected>Select an option</option>
+                <option value="less_than_30_days">Less than 30 days</option>
+                <option value="1-6_months">1-6 months</option>
+                <option value="6-12_months">6-12 months</option>
+                <option value="12-24_months">12-24 months</option>
+                <option value="greater_than_24_months">>24 months</option>
+            </select><br>
+
+            <label for="editHousingVoucherRecipient" class="block text-sm font-medium text-gray-700">Housing Voucher Recipient:</label>
+            <select id="editHousingVoucherRecipient" name="housing_voucher_recipient" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                <option value="">Select...</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select><br>
+
+            <label for="editCaseManagementAssistance" class="block text-sm font-medium text-gray-700">Case Management Assistance:</label>
+            <select id="editCaseManagementAssistance" name="case_management_assistance" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                <option value="">Select...</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select><br>
+
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save Changes</button>
+        </form>
     </div>
+</div>
+
+
+
 
     <!-- Modal for Editing Women Served Details -->
     <div id="editWomenServedFormModal" class="modal">
@@ -1469,25 +1531,33 @@
             var clientId = button.getAttribute("data-id");
             var row = button.closest("tr");
             document.getElementById("editExitId").value = clientId;
-            document.getElementById("editLengthStayShelter").value = row.cells[1].textContent;
-            document.getElementById("editReasonLeavingShelter").value = row.cells[2].textContent;
-            document.getElementById("editMovedToTransitionalHousing").value = row.cells[3].textContent;
-            document.getElementById("editLengthStayTransitionalHousing").value = row.cells[4].textContent;
-            document.getElementById("editHousingVoucherRecipient").value = row.cells[5].textContent;
-            document.getElementById("editCaseManagementAssistance").value = row.cells[6].textContent;
+            document.getElementById("editLengthStayShelter").value = row.cells[1].textContent.trim();
+            document.getElementById("editReasonLeavingShelter").value = row.cells[2].textContent.trim();
+            document.getElementById("editDateOfExit").value = row.cells[4].textContent.trim();
+            document.getElementById("editWhereDidYouGo").value = row.cells[3].textContent.trim();
+            document.getElementById("editMovedToTransitionalHousing").value = row.cells[5].textContent.trim();
+            document.getElementById("editHousingReason").value = row.cells[6].textContent.trim();
+            document.getElementById("editCommunityHousingAddress").value = row.cells[7].textContent.trim();
+            document.getElementById("editLengthStayTransitionalHousing").value = row.cells[8].textContent.trim();
+            document.getElementById("editHousingVoucherRecipient").value = row.cells[9].textContent.trim();
+            document.getElementById("editCaseManagementAssistance").value = row.cells[10].textContent.trim();
             document.getElementById("editExitFormModal").style.display = "block";
         }
-
+        
         function closeEditExitForm() {
             document.getElementById("editExitFormModal").style.display = "none";
         }
-
+        
         function submitEditExitForm() {
             var clientId = document.getElementById("editExitId").value;
             var formData = {
                 length_stay_shelter: document.getElementById("editLengthStayShelter").value,
                 reason_leaving_shelter: document.getElementById("editReasonLeavingShelter").value,
+                wheredidugo: document.getElementById("editWhereDidYouGo").value,
+                doe_from_maternity_shelter: document.getElementById("editDateOfExit").value,
                 moved_to_transitional_housing: document.getElementById("editMovedToTransitionalHousing").value,
+                housingreason: document.getElementById("editHousingReason").value,
+                commnityhousingaddress: document.getElementById("editCommunityHousingAddress").value,
                 length_stay_transitional_housing: document.getElementById("editLengthStayTransitionalHousing").value,
                 housing_voucher_recipient: document.getElementById("editHousingVoucherRecipient").value,
                 case_management_assistance: document.getElementById("editCaseManagementAssistance").value
@@ -1513,10 +1583,14 @@
                     var row = document.querySelector(`tr[data-id="${clientId}"]`);
                     row.cells[1].textContent = formData.length_stay_shelter || row.cells[1].textContent;
                     row.cells[2].textContent = formData.reason_leaving_shelter || row.cells[2].textContent;
-                    row.cells[3].textContent = formData.moved_to_transitional_housing || row.cells[3].textContent;
-                    row.cells[4].textContent = formData.length_stay_transitional_housing || row.cells[4].textContent;
-                    row.cells[5].textContent = formData.housing_voucher_recipient || row.cells[5].textContent;
-                    row.cells[6].textContent = formData.case_management_assistance || row.cells[6].textContent;
+                    row.cells[3].textContent = formData.wheredidugo || row.cells[3].textContent;
+                    row.cells[4].textContent = formData.doe_from_maternity_shelter || row.cells[4].textContent;
+                    row.cells[5].textContent = formData.moved_to_transitional_housing || row.cells[5].textContent;
+                    row.cells[6].textContent = formData.housingreason || row.cells[6].textContent;
+                    row.cells[7].textContent = formData.commnityhousingaddress || row.cells[7].textContent;
+                    row.cells[8].textContent = formData.length_stay_transitional_housing || row.cells[8].textContent;
+                    row.cells[9].textContent = formData.housing_voucher_recipient || row.cells[9].textContent;
+                    row.cells[10].textContent = formData.case_management_assistance || row.cells[10].textContent;
                     closeEditExitForm();
                     console.log('Exit information updated successfully');
                 } else {
@@ -1525,6 +1599,7 @@
             })
             .catch(error => console.error('Error:', error));
         }
+        
 
         function openEditWomenServedForm(button) {
             var clientId = button.getAttribute("data-id");

@@ -361,7 +361,9 @@ def submit_exit_info():
     user = mongo.db.users.find_one({'user_id': user_id})
     if not user:
         return jsonify({'error': 'User ID not found.'}), 404
+
     try:
+        # Extract form data and handle potential missing fields
         exit_info = {
             "length_stay_shelter": data.get("length_stay_shelter", ""),
             "reason_leaving_shelter": data.get("reason_leaving_shelter", ""),
@@ -373,12 +375,14 @@ def submit_exit_info():
             "length_stay_transitional_housing": data.get("length_stay_transitional_housing", ""),
             "housing_voucher_recipient": data.get("housing_voucher_recipient", ""),
             "case_management_assistance": data.get("case_management_assistance", "")
-            # Add your specific form fields here
         }
+
+        # Update the user document with the exit information
         mongo.db.users.update_one(
             {"user_id": user_id},
             {"$set": {"exit_info": exit_info}}
         )
+
         return redirect(url_for('success', user_id=user_id))
 
     except Exception as e:
