@@ -180,15 +180,15 @@ def submit_demographics_form1():
     
     
     try:
-        birthdate = data.get('birthdate', '')
-        birthdate = datetime.strptime(birthdate, '%Y-%m-%d') if birthdate else None
+        # birthdate = data.get('birthdate', '')
+        # birthdate = datetime.strptime(birthdate, '%Y-%m-%d') if birthdate else None
         
         
-        date_of_entry = data.get('date_of_entry', '')
-        date_of_entry = datetime.strptime(date_of_entry, '%Y-%m-%d') if date_of_entry else None
+        # date_of_entry = data.get('date_of_entry', '')
+        # date_of_entry = datetime.strptime(date_of_entry, '%Y-%m-%d') if date_of_entry else None
         
-        date_of_exit = data.get('date_of_exit', '')
-        date_of_exit = datetime.strptime(date_of_exit, '%Y-%m-%d') if date_of_exit else None
+        # date_of_exit = data.get('date_of_exit', '')
+        # date_of_exit = datetime.strptime(date_of_exit, '%Y-%m-%d') if date_of_exit else None
         
         number_of_children = int(data.get('number_of_children', 0))
         
@@ -206,13 +206,13 @@ def submit_demographics_form1():
         user_id = generate_unique_user_id()  # Generate a unique identifier for the user
         demographics_data = {
                     "user_id": user_id,
-                    "date_of_entry": date_of_entry,
-                    "date_of_exit": date_of_exit,
+                    "date_of_entry": data.get('date_of_entry', ''),
+                    "date_of_exit": data.get('date_of_exit', ' ' ),
                     "name": data.get('name', ''),
                     "address": data.get('address', ''),
                     "zip_code": data.get('zip', ''),
                     "phone": data.get('phone', ''),
-                    "birthdate": birthdate,
+                    "birthdate": data.get('birthdate', ''),
                     "age": int(data.get('age', 0)) if data.get('age') else None,
                     "sex": data.get('sex', ''),
                     "race": data.get('race', ''),
@@ -404,8 +404,8 @@ def submit_exit_info():
         exit_info = {
             "length_stay_shelter": data.get("length_stay_shelter", ""),
             "reason_leaving_shelter": data.get("reason_leaving_shelter", ""),
-            "doe_from_maternity_shelter": data.get("doe_from_maternity_shelter", ""),
             "wheredidugo": data.get("wheredidugo", ""),
+            "doe_from_maternity_shelter": data.get("doe_from_maternity_shelter", ""),
             "moved_to_transitional_housing": data.get("moved_to_transitional_housing", ""),
             "housingreason": data.get("housingreason", ""),
             "commnityhousingaddr": data.get("commnityhousingaddr", ""),
@@ -518,15 +518,15 @@ def edit_client(client_id):
     try:
         data = request.json
         
-        birthdate = data.get('birthdate', '')
-        birthdate = datetime.strptime(birthdate, '%Y-%m-%d') if birthdate else None
+        # birthdate = data.get('birthdate', '')
+        # birthdate = datetime.strptime(birthdate, '%Y-%m-%d') if birthdate else None
         
         update_fields = {
             "demographics_form1.name": data.get('name', ''),
             "demographics_form1.address": data.get('address', ''),
             "demographics_form1.zip_code": data.get('zip', ''),
             "demographics_form1.phone": data.get('phone', ''),
-            "demographics_form1.birthdate": birthdate,
+            "demographics_form1.birthdate": data.get('birthdate', ''),
             "demographics_form1.age": int(data.get('age', 0)) if data.get('age') else None,
             "demographics_form1.sex": data.get('sex', ''),
             "demographics_form1.race": data.get('race', ''),
@@ -553,6 +553,7 @@ def edit_client(client_id):
             "demographics_form1.veteran_status": data.get('veteran_status', ''),
             "demographics_form1.highbp": data.get('highbp', ''),
             "demographics_form1.diabetes": data.get('diabetes', ''),
+            "demographics_form1.typeofdiabetes": data.get('typeofdiabetes', ''),
             "demographics_form1.heartdisease": data.get('heartdisease', ''),
             "demographics_form1.livebirths": int(data.get('livebirths', 0)) if data.get('livebirths') else None,
             "demographics_form1.miscarriages": int(data.get('miscarriages', 0)) if data.get('miscarriages') else None,
@@ -576,10 +577,12 @@ def edit_maternal_info(client_id):
         data = request.json
         
         update_fields = {
-            "form2_data.rehosp": data.get('rehosp', ''),
-            "form2_data.doula": data.get('doula', ''),
-            "form2_data.highriskpreg": data.get('highriskpreg', ''),
-            "form2_data.vaginalbirth": data.get('vaginalbirth', '')
+            "maternity_info.rehosp": data.get('rehosp', ''),
+            "maternity_info.reasonforhosp": data.get('reasonforhosp', ''),
+            "maternity_info.date_of_rehosp": data.get('date_of_rehosp', ''),
+            "maternity_info.doula": data.get('doula', ''),
+            "maternity_info.highriskpreg": data.get('highriskpreg', ''),
+            "maternity_info.vaginalbirth": data.get('vaginalbirth', '')
         }
         
         # Remove None values to prevent overwriting fields with None
@@ -647,7 +650,11 @@ def edit_exit_info(client_id):
         update_fields = {
             "exit_info.length_stay_shelter": data.get('length_stay_shelter', ''),
             "exit_info.reason_leaving_shelter": data.get('reason_leaving_shelter', ''),
+            "exit_info.wheredidugo": data.get('wheredidugo', ''),
+            "exit_info.doe_from_maternity_shelter": data.get('doe_from_maternity_shelter', ''),
             "exit_info.moved_to_transitional_housing": data.get('moved_to_transitional_housing', ''),
+            "exit_info.housingreason": data.get('housingreason', ''),
+            "exit_info.communityhousingaddr": data.get('commnityhousingaddr', ''),
             "exit_info.length_stay_transitional_housing": data.get('length_stay_transitional_housing', ''),
             "exit_info.housing_voucher_recipient": data.get('housing_voucher_recipient', ''),
             "exit_info.case_management_assistance": data.get('case_management_assistance', '')
@@ -661,6 +668,7 @@ def edit_exit_info(client_id):
     except Exception as e:
         logging.error(f"Error updating exit information: {e}")
         return jsonify({'error': str(e)}), 500
+
 
 # Edit Women Served Details
 @app.route('/edit_women_served/<client_id>', methods=['PUT'])
