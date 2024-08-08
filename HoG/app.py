@@ -18,7 +18,7 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
 # Set the session lifetime to 30 minutes
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=1)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
 
 PASSWORD = '12345678'
 
@@ -268,9 +268,9 @@ def submit_demographics_form2():
     user = mongo.db.users.find_one({'user_id': user_id})
     if not user:
         return jsonify({'error': 'User ID not found.'}), 404
+
     try:
         demo_data = {
-            "user_id": user_id, 
             "rehosp": data.get("rehosp", ""),
             "reasonforhosp": data.get("reasonforhosp", ""),
             "date_of_rehosp": data.get("date_of_rehosp", ""),
@@ -279,14 +279,19 @@ def submit_demographics_form2():
             "vaginalbirth": data.get("vaginalbirth", "")
             # Add your specific form fields here
         }
+
+        # Remove empty fields to avoid updating with empty strings
+        demo_data = {k: v for k, v in demo_data.items() if v}
+
         mongo.db.users.update_one(
             {"user_id": user_id},
-            {"$set": {"form2_data": demo_data}}
+            {"$set": {"maternity_info": demo_data}}
         )
         return jsonify({'message': 'Demographics form 2 submitted successfully'}), 200
     except Exception as e:
         logging.error(f"Error submitting demographics form 2: {e}")
         return jsonify({'error': str(e)}), 500
+
 
 @app.route('/submit_child_demographics', methods=['POST'])
 def submit_child_demographics():
@@ -478,7 +483,7 @@ def edit_client(client_id):
         update_fields = {
             "demographics_form1.name": data.get('name', ''),
             "demographics_form1.address": data.get('address', ''),
-            "demographics_form1.zip_code": data.get('zip_code', ''),
+            "demographics_form1.zip_code": data.get('zip', ''),
             "demographics_form1.phone": data.get('phone', ''),
             "demographics_form1.birthdate": birthdate,
             "demographics_form1.age": int(data.get('age', 0)) if data.get('age') else None,
@@ -504,7 +509,13 @@ def edit_client(client_id):
             "demographics_form1.father_occupation": data.get('father_occupation', ''),
             "demographics_form1.father_income": float(data.get('father_income', 0)) if data.get('father_income') else None,
             "demographics_form1.domestic_violence_survivor": data.get('domestic_violence_survivor', ''),
-            "demographics_form1.veteran_status": data.get('veteran_status', '')
+            "demographics_form1.veteran_status": data.get('veteran_status', ''),
+            "demographics_form1.highbp": data.get('highbp', ''),
+            "demographics_form1.diabetes": data.get('diabetes', ''),
+            "demographics_form1.heartdisease": data.get('heartdisease', ''),
+            "demographics_form1.livebirths": int(data.get('livebirths', 0)) if data.get('livebirths') else None,
+            "demographics_form1.miscarriages": int(data.get('miscarriages', 0)) if data.get('miscarriages') else None,
+            "demographics_form1.diagdisabilty": data.get('diagdisabilty', '')
         }
         
         # Remove None values to prevent overwriting fields with None
@@ -515,6 +526,7 @@ def edit_client(client_id):
     except Exception as e:
         logging.error(f"Error updating client: {e}")
         return jsonify({'error': str(e)}), 500
+
 
 # Edit Maternal Information
 @app.route('/edit_maternal_info/<client_id>', methods=['PUT'])
