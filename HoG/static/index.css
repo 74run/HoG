@@ -103,8 +103,8 @@ button {
     padding: 10px 20px;
     margin: 10px 5px 0;
     border: none;
-    background-color: #007BFF;
-    color: white;
+    background-color: #3a0688;
+    color: rgb(223, 15, 15);
     cursor: pointer;
     border-radius: 4px;
 }
@@ -147,7 +147,7 @@ button:hover {
 }
 
 .container {
-    padding-top: 80px;
+   
     max-width: 800px;
     margin: 0 auto;
 }
