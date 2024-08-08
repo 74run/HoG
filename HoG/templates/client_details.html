@@ -563,8 +563,7 @@
         <button class="back-to-form-button" onclick="location.href='/';">Back to Form</button>
     </div>
 
-    <!-- Edit Form Modal -->
-    <!-- Edit Form Modal -->
+<!-- Edit Form Modal -->
 <div id="editFormModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeEditForm()">&times;</span>
@@ -934,17 +933,15 @@
                 <option value="gestational_hypertension">Gestational Hypertension</option>
             </select><br>
             <label for="editDiabetes">Diabetes:</label>
-            <select id="editDiabetes" name="diabetes" onchange="toggleInput(this, document.getElementById('editDiabetesContainer'))">
+            <select id="editDiabetes" name="diabetes">
                 <option value="no">No</option>
                 <option value="yes">Yes</option>
             </select><br>
-            <div id="editDiabetesContainer" style="display: none;">
-                <label for="editTypeOfDiabetes">Select your Diabetes Type:</label>
-                <select id="editTypeOfDiabetes" name="typeofdiabetes">
-                    <option value="normal diabetes">Normal Diabetes</option>
-                    <option value="gestational diabetes">Gestational Diabetes</option>
-                </select><br>
-            </div>
+            <label for="editTypeOfDiabetes">Select your Diabetes Type:</label>
+            <select id="editTypeOfDiabetes" name="typeofdiabetes">
+                <option value="normal diabetes">Normal Diabetes</option>
+                <option value="gestational diabetes">Gestational Diabetes</option>
+            </select><br>
             <label for="editHeartDisease">Heart Disease:</label>
             <select id="editHeartDisease" name="heartdisease">
                 <option value="yes">Yes</option>
@@ -976,13 +973,14 @@
                 <option value="yes">Yes</option>
             </select><br>
             
-            <div id="editRehospContainer" style="display: none;">
-                <label for="editReasonForHosp">Reason for your Hospitalisation:</label>
-                <input type="text" id="editReasonForHosp" name="reasonforhospitalisation" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"><br>
-                <label for="editDateOfRehosp">Date of Rehospitalisation:</label>
-                <input type="date" id="editDateOfRehosp" name="date_of_rehosp" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"><br>
-            </div>
             
+            <label for="editReasonForHosp">Reason for your Hospitalisation:</label>
+            <input type="text" id="editReasonForHosp" name="reasonforhosp" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"><br>
+
+
+            <label for="editDateOfRehosp">Date of Rehospitalisation:</label>
+            <input type="date" id="editDateOfRehosp" name="date_of_rehosp" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"><br>
+        
             <label for="editDoula">Doula Support:</label>
             <select id="editDoula" name="doula" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                 <option value="yes">Yes</option>
@@ -1028,12 +1026,12 @@
     </div>
 
 <!-- Modal for Editing Exit Information -->
-<div id="editExitFormModal" class="modal hidden fixed z-50 inset-0 overflow-y-auto">
-    <div class="modal-content bg-white rounded-lg p-6 mx-auto mt-20 shadow-lg">
-        <span class="close text-gray-600 hover:text-gray-800 cursor-pointer" onclick="closeEditExitForm()">&times;</span>
-        <h2 class="text-xl font-bold mb-4">Edit Exit Information</h2>
-        <form id="editExitForm" method="POST" action="/submit_edit_exit_info">
-            <input type="hidden" id="editExitId" name="user_id">
+<div id="editExitFormModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeEditExitForm()">&times;</span>
+        <h2>Edit Exit Information</h2>
+        <form id="editExitForm">
+            <input type="hidden" id="editExitId">
 
             <label for="editLengthStayShelter" class="block text-sm font-medium text-gray-700">Length of Stay in Shelter:</label>
             <select id="editLengthStayShelter" name="length_stay_shelter" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
@@ -1048,6 +1046,11 @@
             <label for="editReasonLeavingShelter" class="block text-sm font-medium text-gray-700">Reason for Leaving Shelter:</label>
             <input type="text" id="editReasonLeavingShelter" name="reason_leaving_shelter" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"><br>
 
+      
+
+            <label for="editDateOfExit" class="block text-sm font-medium text-gray-700">Date of Exit from Shelter:</label>
+            <input type="date" id="editDateOfExit" name="doe_from_maternity_shelter" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            
             <label for="editWhereDidYouGo" class="block text-sm font-medium text-gray-700">Where Did You Go?</label>
             <select id="editWhereDidYouGo" name="wheredidugo" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                 <option value="">Select...</option>
@@ -1055,9 +1058,6 @@
                 <option value="family_housing">Family Housing</option>
                 <option value="unhoused">Unhoused</option>
             </select><br>
-
-            <label for="editDateOfExit" class="block text-sm font-medium text-gray-700">Date of Exit from Shelter:</label>
-            <input type="date" id="editDateOfExit" name="doe_from_maternity_shelter" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"><br>
 
             <label for="editMovedToTransitionalHousing" class="block text-sm font-medium text-gray-700">Moved to Transitional Housing:</label>
             <select id="editMovedToTransitionalHousing" name="moved_to_transitional_housing" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
@@ -1096,11 +1096,10 @@
                 <option value="no">No</option>
             </select><br>
 
-            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save Changes</button>
+            <button type="button" onclick="submitEditExitForm()" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save Changes</button>
         </form>
     </div>
 </div>
-
 
 
 
@@ -1234,18 +1233,19 @@
             document.getElementById("editVeteranStatus").value = row.cells[32].textContent;
             document.getElementById("editHighBP").value = row.cells[33].textContent;
             document.getElementById("editDiabetes").value = row.cells[34].textContent;
-            document.getElementById("editHeartDisease").value = row.cells[35].textContent;
-            document.getElementById("editLiveBirths").value = row.cells[36].textContent;
-            document.getElementById("editMiscarriages").value = row.cells[37].textContent;
-            document.getElementById("editDisabilityDiagnosis").value = row.cells[38].textContent;
-
+            document.getElementById("editTypeOfDiabetes").value = row.cells[35].textContent;
+            document.getElementById("editHeartDisease").value = row.cells[36].textContent;
+            document.getElementById("editLiveBirths").value = row.cells[37].textContent;
+            document.getElementById("editMiscarriages").value = row.cells[38].textContent;
+            document.getElementById("editDisabilityDiagnosis").value = row.cells[39].textContent;
+    
             document.getElementById("editFormModal").style.display = "block";
         }
-
+    
         function closeEditForm() {
             document.getElementById("editFormModal").style.display = "none";
         }
-
+    
         function submitEditForm() {
             var clientId = document.getElementById("editClientId").value;
             var formData = {
@@ -1282,19 +1282,20 @@
                 veteran_status: document.getElementById("editVeteranStatus").value,
                 highbp: document.getElementById("editHighBP").value,
                 diabetes: document.getElementById("editDiabetes").value,
+                typeofdiabetes: document.getElementById("editTypeOfDiabetes").value,
                 heartdisease: document.getElementById("editHeartDisease").value,
                 livebirths: document.getElementById("editLiveBirths").value,
                 miscarriages: document.getElementById("editMiscarriages").value,
                 diagdisabilty: document.getElementById("editDisabilityDiagnosis").value
             };
-        
+    
             // Handle empty optional fields
             Object.keys(formData).forEach(key => {
                 if (formData[key] === "" || formData[key] === null) {
                     delete formData[key];
                 }
             });
-        
+    
             fetch(`/edit_client/${clientId}`, {
                 method: 'PUT',
                 headers: {
@@ -1339,11 +1340,12 @@
                     row.cells[32].textContent = formData.veteran_status || row.cells[32].textContent;
                     row.cells[33].textContent = formData.highbp || row.cells[33].textContent;
                     row.cells[34].textContent = formData.diabetes || row.cells[34].textContent;
-                    row.cells[35].textContent = formData.heartdisease || row.cells[35].textContent;
-                    row.cells[36].textContent = formData.livebirths || row.cells[36].textContent;
-                    row.cells[37].textContent = formData.miscarriages || row.cells[37].textContent;
-                    row.cells[38].textContent = formData.diagdisabilty || row.cells[38].textContent;
-        
+                    row.cells[35].textContent = formData.typeofdiabetes || row.cells[35].textContent;
+                    row.cells[36].textContent = formData.heartdisease || row.cells[36].textContent;
+                    row.cells[37].textContent = formData.livebirths || row.cells[37].textContent;
+                    row.cells[38].textContent = formData.miscarriages || row.cells[38].textContent;
+                    row.cells[39].textContent = formData.diagdisabilty || row.cells[39].textContent;
+    
                     closeEditForm();
                     console.log('Client updated successfully');
                 } else {
@@ -1358,9 +1360,11 @@
             var row = button.closest("tr");
             document.getElementById("editClientId2").value = clientId;
             document.getElementById("editRehosp").value = row.cells[1].textContent;
-            document.getElementById("editDoula").value = row.cells[2].textContent;
-            document.getElementById("editHighRiskPreg").value = row.cells[3].textContent;
-            document.getElementById("editVaginalBirth").value = row.cells[4].textContent;
+            document.getElementById("editReasonForHosp").value = row.cells[2].textContent;
+            document.getElementById("editDateOfRehosp").value = row.cells[3].textContent;
+            document.getElementById("editDoula").value = row.cells[4].textContent;
+            document.getElementById("editHighRiskPreg").value = row.cells[5].textContent;
+            document.getElementById("editVaginalBirth").value = row.cells[6].textContent;
             document.getElementById("editFormModal2").style.display = "block";
         }
 
@@ -1372,6 +1376,8 @@
             var clientId = document.getElementById("editClientId2").value;
             var formData = {
                 rehosp: document.getElementById("editRehosp").value,
+                reasonforhosp: document.getElementById("editReasonForHosp").value,
+                date_of_rehosp: document.getElementById("editDateOfRehosp").value,
                 doula: document.getElementById("editDoula").value,
                 highriskpreg: document.getElementById("editHighRiskPreg").value,
                 vaginalbirth: document.getElementById("editVaginalBirth").value
@@ -1396,9 +1402,11 @@
                 if (data.message) {
                     var row = document.querySelector(`tr[data-id="${clientId}"]`);
                     row.cells[1].textContent = formData.rehosp || row.cells[1].textContent;
-                    row.cells[2].textContent = formData.doula || row.cells[2].textContent;
-                    row.cells[3].textContent = formData.highriskpreg || row.cells[3].textContent;
-                    row.cells[4].textContent = formData.vaginalbirth || row.cells[4].textContent;
+                    row.cells[2].textContent = formData.reasonforhosp || row.cells[2].textContent;
+                    row.cells[3].textContent = formData.date_of_rehosp || row.cells[3].textContent;
+                    row.cells[4].textContent = formData.doula || row.cells[4].textContent;
+                    row.cells[5].textContent = formData.highriskpreg || row.cells[5].textContent;
+                    row.cells[6].textContent = formData.vaginalbirth || row.cells[6].textContent;
                     closeEditForm2();
                     console.log('Maternal information updated successfully');
                 } else {
@@ -1527,22 +1535,25 @@
             .catch(error => console.error('Error:', error));
         }
 
-        function openEditExitForm(button) {
-            var clientId = button.getAttribute("data-id");
-            var row = button.closest("tr");
-            document.getElementById("editExitId").value = clientId;
-            document.getElementById("editLengthStayShelter").value = row.cells[1].textContent.trim();
-            document.getElementById("editReasonLeavingShelter").value = row.cells[2].textContent.trim();
-            document.getElementById("editDateOfExit").value = row.cells[4].textContent.trim();
-            document.getElementById("editWhereDidYouGo").value = row.cells[3].textContent.trim();
-            document.getElementById("editMovedToTransitionalHousing").value = row.cells[5].textContent.trim();
-            document.getElementById("editHousingReason").value = row.cells[6].textContent.trim();
-            document.getElementById("editCommunityHousingAddress").value = row.cells[7].textContent.trim();
-            document.getElementById("editLengthStayTransitionalHousing").value = row.cells[8].textContent.trim();
-            document.getElementById("editHousingVoucherRecipient").value = row.cells[9].textContent.trim();
-            document.getElementById("editCaseManagementAssistance").value = row.cells[10].textContent.trim();
-            document.getElementById("editExitFormModal").style.display = "block";
-        }
+    
+            function openEditExitForm(button) {
+                var clientId = button.getAttribute("data-id");
+                var row = button.closest("tr");
+                document.getElementById("editExitId").value = clientId;
+                document.getElementById("editLengthStayShelter").value = row.cells[1].textContent;
+                document.getElementById("editReasonLeavingShelter").value = row.cells[2].textContent;
+                document.getElementById("editWhereDidYouGo").value = row.cells[3].textContent;
+                document.getElementById("editDateOfExit").value = row.cells[4].textContent;
+                document.getElementById("editMovedToTransitionalHousing").value = row.cells[5].textContent;
+                document.getElementById("editHousingReason").value = row.cells[6].textContent;
+                document.getElementById("editCommunityHousingAddress").value = row.cells[7].textContent;
+                document.getElementById("editLengthStayTransitionalHousing").value = row.cells[8].textContent;
+                document.getElementById("editHousingVoucherRecipient").value = row.cells[9].textContent;
+                document.getElementById("editCaseManagementAssistance").value = row.cells[10].textContent;
+                document.getElementById("editExitFormModal").style.display = "block";
+            }
+            
+        
         
         function closeEditExitForm() {
             document.getElementById("editExitFormModal").style.display = "none";
@@ -1557,7 +1568,7 @@
                 doe_from_maternity_shelter: document.getElementById("editDateOfExit").value,
                 moved_to_transitional_housing: document.getElementById("editMovedToTransitionalHousing").value,
                 housingreason: document.getElementById("editHousingReason").value,
-                commnityhousingaddress: document.getElementById("editCommunityHousingAddress").value,
+                commnityhousingaddr: document.getElementById("editCommunityHousingAddress").value,
                 length_stay_transitional_housing: document.getElementById("editLengthStayTransitionalHousing").value,
                 housing_voucher_recipient: document.getElementById("editHousingVoucherRecipient").value,
                 case_management_assistance: document.getElementById("editCaseManagementAssistance").value
@@ -1569,6 +1580,8 @@
                     delete formData[key];
                 }
             });
+        
+            console.log(formData); // Debugging statement
         
             fetch(`/edit_exit_info/${clientId}`, {
                 method: 'PUT',
@@ -1587,7 +1600,7 @@
                     row.cells[4].textContent = formData.doe_from_maternity_shelter || row.cells[4].textContent;
                     row.cells[5].textContent = formData.moved_to_transitional_housing || row.cells[5].textContent;
                     row.cells[6].textContent = formData.housingreason || row.cells[6].textContent;
-                    row.cells[7].textContent = formData.commnityhousingaddress || row.cells[7].textContent;
+                    row.cells[7].textContent = formData.commnityhousingaddr || row.cells[7].textContent;
                     row.cells[8].textContent = formData.length_stay_transitional_housing || row.cells[8].textContent;
                     row.cells[9].textContent = formData.housing_voucher_recipient || row.cells[9].textContent;
                     row.cells[10].textContent = formData.case_management_assistance || row.cells[10].textContent;
@@ -1599,6 +1612,7 @@
             })
             .catch(error => console.error('Error:', error));
         }
+        
         
 
         function openEditWomenServedForm(button) {
