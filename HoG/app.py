@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, jsonify, render_template_stri
 from flask_pymongo import PyMongo, ObjectId
 from pymongo.errors import PyMongoError
 from datetime import datetime, timedelta
+from pymongo import MongoClient
 
 import bcrypt
 
@@ -335,28 +336,49 @@ def submit_child_demographics():
 @app.route('/submit_infants_demographics', methods=['POST'])
 def submit_infants_demographics():
     data = request.form
+    print("the data is:", data)
     user_id = data.get('user_id')
-
-  
 
     # Validate the user_id by checking if the user exists in the database
     user = mongo.db.users.find_one({'user_id': user_id})
     if not user:
         return jsonify({'error': 'User ID not found.'}), 404
+    
     try:
-        infant_details = {
-            "infant_name": data.get("infant_name", ""),
-            "birthdate": data.get("birthdate", ""),
-            "birth_weight": float(data.get("birth_weight", 0)) if data.get("birth_weight") else None,
-            "weeks_at_delivery": int(data.get("weeks_at_delivery", 0)) if data.get("weeks_at_delivery") else None,
-            "healthy_delivery": data.get("healthy_delivery", ""),
-            "medconcernsonbirth" : data.get("medconcernsonbirth", ""),
-            "rehospitalization": data.get("rehospitalization", "")
-        }
-        mongo.db.users.update_one(
+        infant_details = []
+
+        # Assuming the form sends arrays for each infant attribute
+        infant_names = data.getlist("infant_name[]")
+        birth_dates = data.getlist("birthdate[]")  # Changed to plural form for consistency
+        birth_weights = data.getlist("birth_weight[]")
+        weeks_at_delivery = data.getlist("weeks_at_delivery[]")
+        healthy_deliveries = data.getlist("healthy_delivery[]")
+        medical_concerns_on_birth = data.getlist("medicalconcernsonbirth[]")
+        rehospitalizations = data.getlist("rehospitalization[]")
+
+        # Iterate through each array simultaneously using zip
+        for name, birth_date, birth_weight, weeks, healthy_delivery, medical_concern, rehospitalization in zip(
+            infant_names, birth_dates, birth_weights, weeks_at_delivery, healthy_deliveries, 
+            medical_concerns_on_birth, rehospitalizations
+        ):
+            infant_detail = {
+                "infant_name": name,
+                "birthdate": birth_date,
+                "birth_weight": int(birth_weight) if birth_weight else None,
+                "weeks_at_delivery": int(weeks) if weeks else None,
+                "healthy_delivery": healthy_delivery,
+                "medical_concerns_on_birth": medical_concern,
+                "rehospitalization": rehospitalization
+            }
+            infant_details.append(infant_detail)
+
+        
+        # Update the user document with the new infant details
+        update_result = mongo.db.users.update_one(
             {"user_id": user_id},
             {"$set": {"infant_data": infant_details}}
         )
+        
         return redirect(url_for('success', user_id=user_id))
     except Exception as e:
         logging.error(f"Error submitting infants demographics: {e}")
